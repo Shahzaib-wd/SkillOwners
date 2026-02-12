@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- SEO Meta Tags -->
+    <title>Skill Owners - Find Expert Freelancers & Agencies Instantly</title>
+    <meta name="description" content="Connect with top freelancers and agencies. Get projects done faster with verified professionals. Browse thousands of services in design, development, marketing, and more.">
+    <meta name="keywords" content="freelancers, agencies, hire freelancers, gig marketplace, web development, design services, digital marketing">
+    <meta name="author" content="Skill Owners">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="Skill Owners - Find Expert Talent Instantly">
+    <meta property="og:description" content="Connect with top freelancers and agencies worldwide. Browse verified professionals and get your projects done.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="<?php echo SITE_URL; ?>">
+    <meta property="og:image" content="<?php echo SITE_URL; ?>/assets/images/og-image.png">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Skill Owners - Find Expert Talent Instantly">
+    <meta name="twitter:description" content="Connect with top freelancers and agencies worldwide.">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="<?php echo SITE_URL; ?>/assets/images/favicon.svg">
+    
+    <!-- Stylesheets -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="<?php echo SITE_URL; ?>/assets/css/style.css">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="<?php echo SITE_URL; ?>" class="navbar-brand" style="text-decoration: none; display: flex; align-items: center; gap: 0.5rem; font-weight: 700; font-size: 1.25rem;">
+                <div class="logo" style="background: #10b981; color: white; width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 0.875rem; font-weight: 700;">SO</div>
+                <span>Skill<span style="color: #10b981;">Owners</span></span>
+            </a>
+            
+            <ul class="navbar-menu">
+                <li><a href="<?php echo SITE_URL; ?>/browse.php">Browse Services</a></li>
+                <li><a href="<?php echo SITE_URL; ?>/about.php">How It Works</a></li>
+                
+                <!-- Mobile only links -->
+                <?php if (isLoggedIn()): ?>
+                    <li class="mobile-only"><a href="<?php echo SITE_URL; ?>/dashboard/<?php echo getUserRole(); ?>.php">Dashboard</a></li>
+                    <li class="mobile-only"><a href="<?php echo SITE_URL; ?>/logout.php">Logout</a></li>
+                <?php else: ?>
+                    <li class="mobile-only"><a href="<?php echo SITE_URL; ?>/login.php">Log In</a></li>
+                    <li class="mobile-only"><a href="<?php echo SITE_URL; ?>/register.php">Get Started</a></li>
+                <?php endif; ?>
+            </ul>
+            
+            <div class="navbar-actions">
+                <?php if (isLoggedIn()): ?>
+                    <div class="navbar-user-avatar me-2" style="width: 32px; height: 32px; border-radius: 50%; overflow: hidden; border: 2px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                        <?php if (!empty($_SESSION['user_image'])): ?>
+                            <img src="<?php echo SITE_URL; ?>/uploads/<?php echo $_SESSION['user_image']; ?>" class="w-100 h-100" style="object-fit: cover;">
+                        <?php else: ?>
+                            <div class="w-100 h-100 d-flex align-items-center justify-content-center bg-primary text-white" style="font-size: 0.75rem; font-weight: 800;">
+                                <?php echo strtoupper(substr($_SESSION['user_name'] ?? 'U', 0, 1)); ?>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+                    <a href="<?php echo SITE_URL; ?>/dashboard/<?php echo getUserRole(); ?>.php" class="btn btn-ghost btn-sm">Dashboard</a>
+                    <a href="javascript:void(0);" onclick="scrollToMessages()" class="navbar-messages-icon" id="navbarMessagesIcon" title="Messages">
+                        <i class="fas fa-envelope"></i>
+                        <span class="navbar-unread-dot" id="navbarUnreadDot" style="display: none;"></span>
+                    </a>
+                    <a href="<?php echo SITE_URL; ?>/logout.php" class="btn btn-outline btn-sm">Logout</a>
+                <?php else: ?>
+                    <a href="<?php echo SITE_URL; ?>/login.php" class="btn btn-ghost btn-sm">Log In</a>
+                    <a href="<?php echo SITE_URL; ?>/register.php" class="btn btn-primary btn-sm">Get Started</a>
+                <?php endif; ?>
+            </div>
+            
+            <button class="mobile-toggle" onclick="toggleMobileMenu()">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+    
+    <style>
+    .navbar-messages-icon {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        color: var(--foreground);
+        transition: all 0.2s;
+        text-decoration: none;
+    }
+    .navbar-messages-icon:hover {
+        background: var(--muted);
+        color: var(--primary);
+    }
+    .navbar-messages-icon i {
+        font-size: 1.1rem;
+    }
+    .navbar-unread-dot {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        width: 10px;
+        height: 10px;
+        background: #ef4444;
+        border: 2px solid var(--background);
+        border-radius: 50%;
+        animation: pulse-navbar-dot 2s ease-in-out infinite;
+    }
+    @keyframes pulse-navbar-dot {
+        0%, 100% { opacity: 1; transform: scale(1); }
+        50% { opacity: 0.7; transform: scale(1.2); }
+    }
+    </style>
+    
+    <script>
+    function scrollToMessages() {
+        // Always navigate to dedicated inbox page
+        window.location.href = '<?php echo SITE_URL; ?>/inbox.php';
+    }
+    
+    function toggleMobileMenu() {
+        document.querySelector('.navbar-menu').classList.toggle('show');
+        // Removed navbar-actions toggle since we use mobile-only links now
+    }
+    
+    <?php if (isLoggedIn()): ?>
+    // Poll for unread messages count (navbar indicator)
+    let navbarPreviousUnreadCount = 0;
+    
+    function updateNavbarUnreadIndicator() {
+        if (typeof ajaxRequest === 'function') {
+            ajaxRequest('<?php echo SITE_URL; ?>/chat_api.php?action=get_unread_count&_=' + Date.now())
+                .then(data => {
+                    if (data.success) {
+                        const count = parseInt(data.unread_count) || 0;
+                        const dot = document.getElementById('navbarUnreadDot');
+                        
+                        if (dot) {
+                            if (count > 0) {
+                                dot.style.display = 'block';
+                                
+                                // Play sound if count increased (new message)
+                                if (count > navbarPreviousUnreadCount && navbarPreviousUnreadCount >= 0) {
+                                    playMessageNotificationSound();
+                                }
+                            } else {
+                                dot.style.display = 'none';
+                            }
+                        }
+                        
+                        navbarPreviousUnreadCount = count;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error updating navbar unread indicator:', error);
+                });
+        }
+    }
+    
+    // Sound notification
+    function playMessageNotificationSound() {
+        try {
+            // Create a pleasant notification sound using Web Audio API
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            // Pleasant notification tone (two quick beeps)
+            oscillator.frequency.value = 800; // Higher pitch
+            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+            
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 0.1);
+            
+            // Second beep
+            setTimeout(() => {
+                const oscillator2 = audioContext.createOscillator();
+                const gainNode2 = audioContext.createGain();
+                
+                oscillator2.connect(gainNode2);
+                gainNode2.connect(audioContext.destination);
+                
+                oscillator2.frequency.value = 1000;
+                gainNode2.gain.setValueAtTime(0.3, audioContext.currentTime);
+                gainNode2.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+                
+                oscillator2.start(audioContext.currentTime);
+                oscillator2.stop(audioContext.currentTime + 0.1);
+            }, 150);
+            
+        } catch (error) {
+            console.log('Audio notification not available:', error);
+        }
+    }
+    
+    // Initial check and polling
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function() {
+            updateNavbarUnreadIndicator();
+            setInterval(updateNavbarUnreadIndicator, 10000); // Check every 10 seconds
+            
+            // Scroll to messages if anchor present
+            if (window.location.hash === '#messages') {
+                const messagesSection = document.getElementById('messages');
+                if (messagesSection) {
+                    setTimeout(() => {
+                        messagesSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }, 300);
+                }
+            }
+        });
+    } else {
+        updateNavbarUnreadIndicator();
+        setInterval(updateNavbarUnreadIndicator, 10000);
+        
+        // Scroll to messages if anchor present
+        if (window.location.hash === '#messages') {
+            const messagesSection = document.getElementById('messages');
+            if (messagesSection) {
+                setTimeout(() => {
+                    messagesSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 300);
+            }
+        }
+    }
+    <?php endif; ?>
+    </script>
