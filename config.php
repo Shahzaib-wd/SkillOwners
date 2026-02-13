@@ -281,3 +281,23 @@ function requireCSRF() {
     }
 }
 
+
+function containsProfanity($text) {
+    if (empty($text)) return false;
+    
+    // List of common abusive words (simplified for this task)
+    $badWords = [
+        'abuse', 'stupid', 'idiot', 'garbage', 'trash', 
+        'scam', 'fraud', 'fake', 'liar', 'bastard',
+        'damn', 'hell', 'shit', 'fuck', 'bitch'
+    ];
+    
+    $lowerText = strtolower($text);
+    foreach ($badWords as $word) {
+        if (strpos($lowerText, $word) !== false) {
+            return true;
+        }
+    }
+    
+    return false;
+}

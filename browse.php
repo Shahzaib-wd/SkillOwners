@@ -64,6 +64,51 @@ include 'views/partials/header.php';
     font-weight: 600;
     color: var(--primary);
 }
+/* Rating display in grid */
+.gig-rating {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    margin-bottom: 0.5rem;
+    font-size: 0.8rem;
+}
+.gig-rating i {
+    color: #f59e0b;
+}
+.gig-rating .rating-value {
+    font-weight: 600;
+    color: var(--foreground);
+    margin-right: 0.125rem;
+}
+.gig-rating .review-count {
+    color: var(--muted-foreground);
+    font-size: 0.75rem;
+}
+.gig-seller-info {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+}
+.seller-avatar {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    object-fit: cover;
+    background: var(--muted);
+}
+.seller-avatar-fallback {
+    width: 24px;
+    height: 24px;
+    background: #e2e8f0;
+    color: #475569;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.7rem;
+}
 </style>
 
 <div class="browse-container">
@@ -93,7 +138,25 @@ include 'views/partials/header.php';
                         <img src="<?php echo $gig['image'] ? SITE_URL . '/uploads/' . $gig['image'] : 'https://via.placeholder.com/280x200?text=' . urlencode($gig['title']); ?>" alt="<?php echo htmlspecialchars($gig['title']); ?>" class="gig-image">
                         <div class="gig-content">
                             <h3 class="gig-title"><?php echo htmlspecialchars($gig['title']); ?></h3>
-                            <div class="gig-seller">by <?php echo htmlspecialchars($gig['full_name']); ?></div>
+                            <div class="gig-seller-info">
+                                <?php if ($gig['seller_image']): ?>
+                                    <img src="<?php echo SITE_URL; ?>/uploads/<?php echo $gig['seller_image']; ?>" 
+                                         alt="<?php echo htmlspecialchars($gig['full_name']); ?>"
+                                         class="seller-avatar">
+                                <?php else: ?>
+                                    <div class="seller-avatar-fallback">
+                                        <?php echo strtoupper(substr($gig['full_name'], 0, 1)); ?>
+                                    </div>
+                                <?php endif; ?>
+                                <div class="gig-seller"><?php echo htmlspecialchars($gig['full_name']); ?></div>
+                            </div>
+                            <div class="gig-rating">
+                                <span class="rating-value">
+                                    <i class="fas fa-star"></i> 
+                                    <?php echo $gig['avg_rating'] > 0 ? round($gig['avg_rating'], 1) : 'New'; ?>
+                                </span>
+                                <span class="review-count">(<?php echo $gig['review_count']; ?>)</span>
+                            </div>
                             <div class="gig-footer">
                                 <span class="badge badge-primary"><?php echo htmlspecialchars($gig['category']); ?></span>
                                 <span class="gig-price">$<?php echo number_format($gig['price'], 2); ?></span>

@@ -4,3 +4,15 @@
 [12-Feb-2026 16:25:11 UTC] PHP Warning:  Trying to access array offset on value of type bool in C:\xamppp\htdocs\skill_owners\dashboard\freelancer.php on line 276
 [12-Feb-2026 23:52:09 UTC] PHP Parse error:  syntax error, unexpected token "public" in C:\xamppp\htdocs\skill_owners\models\Order.php on line 108
 [12-Feb-2026 23:52:16 UTC] PHP Parse error:  syntax error, unexpected token "public" in C:\xamppp\htdocs\skill_owners\models\Order.php on line 108
+[13-Feb-2026 00:06:15 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'skill_owners.reviews' doesn't exist in C:\xamppp\htdocs\skill_owners\models\Review.php:22
+Stack trace:
+#0 C:\xamppp\htdocs\skill_owners\models\Review.php(22): PDO->prepare('SELECT r.*, u.f...')
+#1 C:\xamppp\htdocs\skill_owners\gig.php(15): Review->findByGigId('1')
+#2 {main}
+  thrown in C:\xamppp\htdocs\skill_owners\models\Review.php on line 22
+[13-Feb-2026 00:06:31 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'skill_owners.reviews' doesn't exist in C:\xamppp\htdocs\skill_owners\models\Review.php:22
+Stack trace:
+#0 C:\xamppp\htdocs\skill_owners\models\Review.php(22): PDO->prepare('SELECT r.*, u.f...')
+#1 C:\xamppp\htdocs\skill_owners\gig.php(15): Review->findByGigId('1')
+#2 {main}
+  thrown in C:\xamppp\htdocs\skill_owners\models\Review.php on line 22

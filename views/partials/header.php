@@ -36,23 +36,14 @@
     <!-- Navbar -->
     <nav class="navbar">
         <div class="container">
-            <a href="<?php echo SITE_URL; ?>" class="navbar-brand" style="text-decoration: none; display: flex; align-items: center; gap: 0.5rem; font-weight: 700; font-size: 1.25rem;">
-                <div class="logo" style="background: #10b981; color: white; width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 0.875rem; font-weight: 700;">SO</div>
-                <span>Skill<span style="color: #10b981;">Owners</span></span>
+            <a href="<?php echo SITE_URL; ?>" class="navbar-brand" style="text-decoration: none; display: flex; align-items: center; gap: 0.625rem; font-weight: 700; font-size: 1.25rem;">
+                <div class="logo" style="background: #10b981; color: white; width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 0.875rem; font-weight: 700; flex-shrink: 0;">SO</div>
+                <span class="d-flex align-items-center">Skill<span style="color: #10b981;">Owners</span></span>
             </a>
             
             <ul class="navbar-menu">
                 <li><a href="<?php echo SITE_URL; ?>/browse.php">Browse Services</a></li>
                 <li><a href="<?php echo SITE_URL; ?>/about.php">How It Works</a></li>
-                
-                <!-- Mobile only links -->
-                <?php if (isLoggedIn()): ?>
-                    <li class="mobile-only"><a href="<?php echo SITE_URL; ?>/dashboard/<?php echo getUserRole(); ?>.php">Dashboard</a></li>
-                    <li class="mobile-only"><a href="<?php echo SITE_URL; ?>/logout.php">Logout</a></li>
-                <?php else: ?>
-                    <li class="mobile-only"><a href="<?php echo SITE_URL; ?>/login.php">Log In</a></li>
-                    <li class="mobile-only"><a href="<?php echo SITE_URL; ?>/register.php">Get Started</a></li>
-                <?php endif; ?>
             </ul>
             
             <div class="navbar-actions">
@@ -109,6 +100,18 @@
     @keyframes pulse-navbar-dot {
         0%, 100% { opacity: 1; transform: scale(1); }
         50% { opacity: 0.7; transform: scale(1.2); }
+    }
+    /* Navbar buttons refinement (Dashboard, Logout, Log In) */
+    .navbar .btn-ghost,
+    .navbar .btn-outline {
+        transition: all 0.2s ease;
+    }
+    .navbar .btn-ghost:hover,
+    .navbar .btn-outline:hover {
+        transform: none !important;
+        background: var(--muted);
+        border-color: var(--border);
+        color: var(--primary);
     }
     </style>
     

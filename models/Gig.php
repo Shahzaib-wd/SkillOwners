@@ -38,9 +38,12 @@ class Gig {
     }
     
     public function search($query = '', $category = '', $filters = []) {
-        $sql = "SELECT g.*, u.full_name, u.profile_image as seller_image
+        $sql = "SELECT g.*, u.full_name, u.profile_image as seller_image,
+                       COALESCE(AVG(r.rating), 0) as avg_rating,
+                       COUNT(r.id) as review_count
                 FROM gigs g
                 JOIN users u ON g.user_id = u.id
+                LEFT JOIN reviews r ON g.id = r.gig_id
                 WHERE g.is_active = 1";
         $params = [];
 
@@ -56,7 +59,7 @@ class Gig {
             $params[] = $category;
         }
 
-        $sql .= " ORDER BY g.created_at DESC LIMIT 100";
+        $sql .= " GROUP BY g.id ORDER BY g.created_at DESC LIMIT 100";
 
         $stmt = $this->conn->prepare($sql);
         $stmt->execute($params);
