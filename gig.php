@@ -67,10 +67,23 @@ include 'views/partials/header.php';
                     <h3 class="h5 mb-3">$<?php echo number_format($gig['price'], 2); ?></h3>
                     <p class="text-muted mb-3"><i class="fas fa-clock"></i> <?php echo $gig['delivery_time']; ?> days delivery</p>
                     
-                    <?php if (isLoggedIn() && getUserRole() === 'buyer'): ?>
-                        <a href="<?php echo SITE_URL; ?>/chat.php?seller_id=<?php echo $gig['user_id']; ?>" class="btn btn-primary order-btn">
-                            <i class="fas fa-message"></i> Contact Seller
-                        </a>
+                    <?php if (isLoggedIn()): ?>
+                        <?php if ($gig['user_id'] == $_SESSION['user_id']): ?>
+                            <a href="<?php echo SITE_URL; ?>/dashboard/<?php echo getUserRole(); ?>/gigs.php" class="btn btn-primary order-btn">
+                                <i class="fas fa-edit"></i> Manage This Gig
+                            </a>
+                        <?php elseif (getUserRole() === 'buyer'): ?>
+                            <a href="<?php echo SITE_URL; ?>/checkout.php?id=<?php echo $gig['id']; ?>" class="btn btn-primary order-btn mb-2">
+                                <i class="fas fa-shopping-cart"></i> Order Now
+                            </a>
+                            <a href="<?php echo SITE_URL; ?>/chat.php?seller_id=<?php echo $gig['user_id']; ?>" class="btn btn-outline btn-block mb-3">
+                                <i class="fas fa-comments"></i> Contact Seller
+                            </a>
+                        <?php else: ?>
+                            <a href="<?php echo SITE_URL; ?>/chat.php?seller_id=<?php echo $gig['user_id']; ?>" class="btn btn-primary order-btn">
+                                <i class="fas fa-comments"></i> Contact Seller
+                            </a>
+                        <?php endif; ?>
                     <?php else: ?>
                         <a href="<?php echo SITE_URL; ?>/login.php" class="btn btn-primary order-btn">
                             Login to Order

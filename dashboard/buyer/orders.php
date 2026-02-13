@@ -19,45 +19,19 @@ include '../../views/partials/header.php';
     
     <main class="dashboard-content">
         <div class="page-header">
-            <h1 class="page-title">Buyer Dashboard</h1>
-            <p class="text-muted">Manage your service purchases and interactions</p>
+            <h1 class="page-title">My Orders</h1>
+            <p class="text-muted">Track and manage your service purchases</p>
         </div>
 
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-icon info">
-                    <i class="fas fa-shopping-basket"></i>
-                </div>
-                <div class="stat-data">
-                    <span class="stat-value"><?php echo count($orders); ?></span>
-                    <span class="stat-label">My Orders</span>
-                </div>
-            </div>
-            
-            <div class="stat-card">
-                <div class="stat-icon primary">
-                    <i class="fas fa-comment-dots"></i>
-                </div>
-                <div class="stat-data">
-                    <span class="stat-value">Active</span>
-                    <span class="stat-label">Messenger</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="dashboard-card mb-4">
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <h3 class="h5 mb-0">Recent Orders</h3>
-                <a href="<?php echo SITE_URL; ?>/dashboard/buyer/orders.php" class="btn btn-outline btn-sm">View All Orders</a>
-            </div>
-            
-            <?php 
-            $recent_orders = array_slice($orders, 0, 5);
-            if (empty($recent_orders)): 
-            ?>
+        <div class="dashboard-card">
+            <?php if (empty($orders)): ?>
                 <div class="text-center py-5">
-                    <i class="fas fa-shopping-cart fa-3x text-muted opacity-25 mb-3"></i>
-                    <p class="text-muted">You haven't placed any orders yet.</p>
+                    <div class="stat-icon info mb-3 mx-auto">
+                        <i class="fas fa-shopping-cart fa-2x"></i>
+                    </div>
+                    <h3>No Orders Yet</h3>
+                    <p class="text-muted">You haven't placed any orders yet. Browse services to get started.</p>
+                    <a href="<?php echo SITE_URL; ?>/browse.php" class="btn btn-primary mt-3">Browse Services</a>
                 </div>
             <?php else: ?>
                 <div class="data-table-container">
@@ -69,23 +43,40 @@ include '../../views/partials/header.php';
                                 <th>Seller</th>
                                 <th>Amount</th>
                                 <th>Status</th>
+                                <th>Date</th>
                                 <th class="text-right">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <?php foreach ($recent_orders as $order): ?>
+                            <?php foreach ($orders as $order): ?>
                                 <tr>
                                     <td><span class="font-weight-600 text-primary">#<?php echo $order['id']; ?></span></td>
                                     <td><?php echo htmlspecialchars($order['gig_title']); ?></td>
                                     <td><?php echo htmlspecialchars($order['seller_name']); ?></td>
                                     <td><span class="font-weight-700">$<?php echo number_format($order['amount'], 2); ?></span></td>
                                     <td>
-                                        <span class="badge-primary user-role">
+                                        <span class="badge-<?php echo $order['status'] === 'completed' ? 'success' : 'primary'; ?> user-role">
                                             <?php echo ucfirst($order['status']); ?>
                                         </span>
                                     </td>
+                                    <td><span class="text-muted small"><?php echo date('M d, Y', strtotime($order['created_at'])); ?></span></td>
                                     <td class="text-right">
                                         <div class="d-flex justify-content-end gap-2">
+                                            <?php if ($order['status'] !== 'completed' && $order['status'] !== 'cancelled'): ?>
+                                                <?php if (!$order['buyer_confirmed']): ?>
+                                                    <form action="<?php echo SITE_URL; ?>/dashboard/update_order_status.php" method="POST" class="d-inline">
+                                                        <input type="hidden" name="order_id" value="<?php echo $order['id']; ?>">
+                                                        <input type="hidden" name="csrf_token" value="<?php echo generateCSRFToken(); ?>">
+                                                        <button type="submit" class="btn btn-sm btn-primary">
+                                                            <i class="fas fa-check"></i> Mark as Done
+                                                        </button>
+                                                    </form>
+                                                <?php else: ?>
+                                                    <span class="badge bg-warning text-dark small" style="font-size: 0.7rem; padding: 0.4rem 0.8rem; border-radius: 2rem;">
+                                                        <i class="fas fa-hourglass-half me-1"></i> Waiting for Seller
+                                                    </span>
+                                                <?php endif; ?>
+                                            <?php endif; ?>
                                             <a href="<?php echo SITE_URL; ?>/chat.php?receiver_id=<?php echo $order['seller_id']; ?>" class="btn btn-sm btn-outline">
                                                 <i class="fas fa-comment"></i> Contact
                                             </a>

@@ -106,4 +106,46 @@ class Order {
         $stmt->execute(['user_id' => $userId]);
         return $stmt->fetchAll();
     }
+
+    public function confirmOrder($orderId, $userId) {
+        // Find the order to get roles
+        $order = $this->findById($orderId);
+        if (!$order) return false;
+
+        $updateField = '';
+        if ($userId == $order['buyer_id']) {
+            $updateField = 'buyer_confirmed';
+        } elseif ($userId == $order['seller_id']) {
+            $updateField = 'seller_confirmed';
+        }
+
+        if (!$updateField) return false;
+
+        // Start transaction
+        $this->conn->beginTransaction();
+        try {
+            // Update the specific confirmation
+            $sql = "UPDATE orders SET $updateField = 1 WHERE id = :id";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute(['id' => $orderId]);
+
+            // Check if both are now confirmed
+            $sql = "SELECT buyer_confirmed, seller_confirmed FROM orders WHERE id = :id";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute(['id' => $orderId]);
+            $updatedOrder = $stmt->fetch();
+
+            if ($updatedOrder['buyer_confirmed'] && $updatedOrder['seller_confirmed']) {
+                $sql = "UPDATE orders SET status = 'completed', completed_at = NOW(), updated_at = NOW() WHERE id = :id";
+                $stmt = $this->conn->prepare($sql);
+                $stmt->execute(['id' => $orderId]);
+            }
+
+            $this->conn->commit();
+            return true;
+        } catch (Exception $e) {
+            $this->conn->rollBack();
+            return false;
+        }
+    }
 }

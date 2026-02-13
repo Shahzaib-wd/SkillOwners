@@ -57,15 +57,6 @@
             
             <div class="navbar-actions">
                 <?php if (isLoggedIn()): ?>
-                    <div class="navbar-user-avatar me-2" style="width: 32px; height: 32px; border-radius: 50%; overflow: hidden; border: 2px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-                        <?php if (!empty($_SESSION['user_image'])): ?>
-                            <img src="<?php echo SITE_URL; ?>/uploads/<?php echo $_SESSION['user_image']; ?>" class="w-100 h-100" style="object-fit: cover;">
-                        <?php else: ?>
-                            <div class="w-100 h-100 d-flex align-items-center justify-content-center bg-primary text-white" style="font-size: 0.75rem; font-weight: 800;">
-                                <?php echo strtoupper(substr($_SESSION['user_name'] ?? 'U', 0, 1)); ?>
-                            </div>
-                        <?php endif; ?>
-                    </div>
                     <a href="<?php echo SITE_URL; ?>/dashboard/<?php echo getUserRole(); ?>.php" class="btn btn-ghost btn-sm">Dashboard</a>
                     <a href="javascript:void(0);" onclick="scrollToMessages()" class="navbar-messages-icon" id="navbarMessagesIcon" title="Messages">
                         <i class="fas fa-envelope"></i>
@@ -238,3 +229,26 @@
     }
     <?php endif; ?>
     </script>
+</nav>
+
+<div class="container" style="margin-top: 2rem;">
+    <?php if ($error = getError()): ?>
+        <div class="alert alert-danger alert-dismissible fade show shadow-sm border-0 rounded-lg py-3 px-4 mb-0" role="alert" style="background: #fef2f2; border-left: 4px solid #ef4444 !important; color: #991b1b;">
+            <div class="d-flex align-items-center gap-3">
+                <i class="fas fa-exclamation-circle text-danger"></i>
+                <div class="font-weight-600"><?php echo $error; ?></div>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <?php endif; ?>
+
+    <?php if ($success = getSuccess()): ?>
+        <div class="alert alert-success alert-dismissible fade show shadow-sm border-0 rounded-lg py-3 px-4 mb-0" role="alert" style="background: #f0fdf4; border-left: 4px solid #10b981 !important; color: #065f46;">
+            <div class="d-flex align-items-center gap-3">
+                <i class="fas fa-check-circle text-primary"></i>
+                <div class="font-weight-600"><?php echo $success; ?></div>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <?php endif; ?>
+</div>
