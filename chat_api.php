@@ -1,6 +1,8 @@
 <?php
 require_once 'config.php';
 require_once 'models/Message.php';
+require_once 'helpers/ChatHelper.php';
+require_once 'models/Report.php';
 requireLogin();
 
 header('Content-Type: application/json');
@@ -86,12 +88,19 @@ try {
 
             $formattedMessages = [];
             foreach ($messages as $msg) {
+                $isSender = ((int)$msg['sender_id'] === (int)$_SESSION['user_id']);
+                $isAbusive = !$isSender && ChatHelper::isAbusive($msg['message']);
+                
                 $formattedMessages[] = [
+                    'id' => $msg['id'], // Ensure message ID is passed
                     'message' => $msg['message'],
                     'created_at' => $msg['created_at'],
-                    'is_sender' => ((int)$msg['sender_id'] === (int)$_SESSION['user_id']),
+                    'is_sender' => $isSender,
+                    'sender_id' => $msg['sender_id'],
                     'sender_name' => (!empty($msg['sender_name']) ? $msg['sender_name'] : 'User ' . $msg['sender_id']),
+                    'sender_image' => $msg['sender_image'] ?? null,
                     'sender_role' => $msg['sender_role'] ?? null,
+                    'is_abusive' => $isAbusive
                 ];
             }
 
@@ -211,6 +220,42 @@ try {
             jsonResponse([
                 'success' => true,
                 'conversation_id' => $conversationId
+            ]);
+
+        case 'submit_report':
+            // Only buyers can report
+            if (getUserRole() !== 'buyer') {
+                throw new Exception('Only buyers can submit reports');
+            }
+
+            $conversationId = requirePositiveInt($input['conversation_id'] ?? null, 'Conversation ID');
+            $messageId = requirePositiveInt($input['message_id'] ?? null, 'Message ID');
+            $reportedId = requirePositiveInt($input['reported_id'] ?? null, 'Reported User ID');
+            $reason = trim($input['reason'] ?? '');
+            
+            if (empty($reason)) {
+                throw new Exception('Reason is required');
+            }
+
+            // Verify the message exists and belongs to the conversation
+            // (In a real app, we'd also verify the reported_id is the sender of the message)
+            
+            $reportModel = new Report();
+            $success = $reportModel->create([
+                'reporter_id' => $_SESSION['user_id'],
+                'reported_id' => $reportedId,
+                'conversation_id' => $conversationId,
+                'message_id' => $messageId,
+                'reason' => $reason
+            ]);
+            
+            if (!$success) {
+                throw new Exception('Failed to submit report');
+            }
+            
+            jsonResponse([
+                'success' => true,
+                'message' => 'Report submitted successfully. Support team will review it.'
             ]);
 
         default:

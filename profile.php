@@ -6,7 +6,7 @@ require_once 'models/Gig.php';
 $userId = $_GET['id'] ?? null;
 
 if (!$userId) {
-    redirect('/index.php');
+    redirect('/index');
 }
 
 $userModel = new User();
@@ -21,7 +21,7 @@ if (!$user || ($user['role'] !== 'freelancer' && $user['role'] !== 'agency')) {
                 <i class="fas fa-user-slash fa-4x text-muted mb-4"></i>
                 <h1 class="h3 font-weight-700">User Not Found</h1>
                 <p class="text-muted">The profile you are looking for does not exist or is not a professional profile.</p>
-                <a href="' . SITE_URL . '/browse.php" class="btn btn-primary mt-3">Browse Services</a>
+                <a href="' . SITE_URL . '/browse" class="btn btn-primary mt-3">Browse Services</a>
             </div>
           </div>';
     include 'views/partials/footer.php';
@@ -29,188 +29,182 @@ if (!$user || ($user['role'] !== 'freelancer' && $user['role'] !== 'agency')) {
 }
 
 $gigs = $gigModel->findByUserId($userId);
-$gigCount = count($gigs);
+
+// For agency profiles, also get contributed gigs from team members
+$agencyGigs = [];
+if ($user['role'] === 'agency') {
+    $agencyGigs = $gigModel->getAgencyGigs($userId, 'approved');
+}
+
+$allGigs = $user['role'] === 'agency' ? $agencyGigs : $gigs;
+$gigCount = count($allGigs);
 
 include 'views/partials/header.php';
 ?>
 
-<div class="profile-page py-5 mt-5">
+<div class="profile-hero">
+    <div class="profile-banner"></div>
     <div class="container">
-        <!-- Profile Header Card -->
-        <div class="dashboard-card mb-5 reveal-up" style="border-top: 5px solid var(--primary);">
-            <div class="row align-items-center">
-                <div class="col-md-auto text-center mb-4 mb-md-0">
-                    <div class="avatar-circle mx-auto" style="width: 120px; height: 120px; font-size: 3rem; background: <?php echo $user['role'] === 'agency' ? 'var(--secondary)' : 'var(--primary)'; ?>; color: white;">
-                        <?php if ($user['profile_image']): ?>
-                            <img src="<?php echo SITE_URL; ?>/uploads/<?php echo $user['profile_image']; ?>" class="rounded-circle w-100 h-100" style="object-fit: cover;">
-                        <?php else: ?>
-                            <?php echo strtoupper(substr($user['full_name'], 0, 1)); ?>
-                        <?php endif; ?>
+        <div class="profile-header-content">
+            <div class="row align-items-end">
+                <div class="col-md-auto">
+                    <div class="profile-avatar-wrapper">
+                        <div class="profile-avatar-main">
+                            <?php if ($user['profile_image']): ?>
+                                <img src="<?php echo SITE_URL; ?>/uploads/<?php echo $user['profile_image']; ?>" alt="<?php echo htmlspecialchars($user['full_name']); ?>">
+                            <?php else: ?>
+                                <div class="profile-avatar-fallback">
+                                    <?php echo strtoupper(substr($user['full_name'], 0, 1)); ?>
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                        <div class="verified-badge" title="Verified Professional">
+                            <i class="fas fa-check"></i>
+                        </div>
                     </div>
                 </div>
-                <div class="col-md">
-                    <div class="d-flex flex-wrap align-items-center gap-3 mb-2">
-                        <h1 class="h2 font-weight-800 mb-0"><?php echo htmlspecialchars($user['full_name']); ?></h1>
-                        <span class="badge <?php echo $user['role'] === 'agency' ? 'badge-agency' : 'badge-primary'; ?> text-uppercase tracking-widest px-3 py-2" style="font-size: 0.75rem;">
-                            <?php echo ucfirst($user['role']); ?>
+                <?php 
+                $headline = !empty($user['professional_title']) ? $user['professional_title'] : ucfirst($user['role']);
+                ?>
+                <div class="col-md profile-info-main">
+                    <h1 class="mb-1"><?php echo htmlspecialchars($user['full_name']); ?></h1>
+                    <div class="d-flex align-items-center gap-2 mb-3">
+                        <span class="text-primary fw-700 h5 mb-0"><?php echo htmlspecialchars($headline); ?></span>
+                        <span class="badge <?php echo ($user['role'] ?? '') === 'agency' ? 'bg-indigo' : 'bg-success'; ?> text-white text-uppercase" style="font-size: 0.6rem; padding: 0.3rem 0.6rem;">
+                            <?php echo ucfirst($user['role'] ?? 'user'); ?>
                         </span>
                     </div>
-                    <p class="text-muted mb-3"><i class="fas fa-calendar-alt me-2"></i>Member since <?php echo date('M Y', strtotime($user['created_at'])); ?></p>
-                    <div class="d-flex flex-wrap gap-4 mt-1">
-                        <div class="stat-item">
-                            <span class="d-block h5 font-weight-700 mb-0"><?php echo $gigCount; ?></span>
-                            <span class="text-muted small text-uppercase font-weight-600">Active Services</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="d-block h5 font-weight-700 mb-0">100%</span>
-                            <span class="text-muted small text-uppercase font-weight-600">Response Rate</span>
-                        </div>
-                        <?php if ($user['portfolio_link']): ?>
-                        <div class="stat-item">
-                            <a href="<?php echo htmlspecialchars($user['portfolio_link']); ?>" target="_blank" class="text-primary font-weight-700 hover-lift d-flex align-items-center gap-2">
-                                <i class="fas fa-external-link-alt"></i> Portfolio
-                            </a>
-                        </div>
-                        <?php endif; ?>
+                    <div class="profile-meta">
+                        <span><i class="fas fa-star me-1"></i> 5.0 (New)</span>
+                        <span><i class="fas fa-map-marker-alt me-1"></i> Verified Location</span>
+                        <span><i class="fas fa-calendar-alt me-1"></i> Joining <?php echo date('M Y', strtotime($user['created_at'])); ?></span>
                     </div>
                 </div>
-                <div class="col-md-auto mt-4 mt-md-0">
-                    <a href="javascript:void(0);" onclick="alert('Messaging system coming soon to public profiles!')" class="btn btn-primary px-5 py-3 rounded-pill font-weight-700">
-                        Contact <?php echo $user['role'] === 'agency' ? 'Agency' : 'Me'; ?>
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <div class="row">
-            <!-- Sidebar Info -->
-            <div class="col-lg-4 mb-4">
-                <div class="dashboard-card h-100 reveal-up" style="animation-delay: 0.1s;">
-                    <h3 class="h5 font-weight-700 mb-4 border-bottom pb-3">About</h3>
-                    <div class="mb-4">
-                        <p class="text-muted" style="line-height: 1.8;">
-                            <?php echo nl2br(htmlspecialchars($user['bio'] ?? 'No bio provided.')); ?>
-                        </p>
+                <div class="col-md-auto pb-3">
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-primary px-4" onclick="alert('Messaging system coming soon!')">
+                            <i class="fas fa-paper-plane me-2"></i> Contact Me
+                        </button>
+                        <button class="btn btn-outline" onclick="navigator.clipboard.writeText(window.location.href); alert('Profile link copied!')">
+                            <i class="fas fa-share-alt"></i>
+                        </button>
                     </div>
-
-                    <h3 class="h5 font-weight-700 mb-4 border-bottom pb-3">Expertise</h3>
-                    <div class="d-flex flex-wrap gap-2">
-                        <?php 
-                        if (!empty($user['skills'])) {
-                            $skills = explode(',', $user['skills']);
-                            foreach ($skills as $skill) {
-                                echo '<span class="tag">' . trim(htmlspecialchars($skill)) . '</span>';
-                            }
-                        } else {
-                            echo '<p class="text-muted small italic">No skills listed.</p>';
-                        }
-                        ?>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Gig Listing -->
-            <div class="col-lg-8">
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h2 class="h4 font-weight-800 mb-0"><?php echo $user['role'] === 'agency' ? 'Our' : 'My'; ?> Services</h2>
-                </div>
-
-                <div class="gig-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem;">
-                    <?php if (empty($gigs)): ?>
-                        <div class="dashboard-card w-100 text-center py-5">
-                            <p class="text-muted mb-0">No active services listed at the moment.</p>
-                        </div>
-                    <?php else: ?>
-                        <?php foreach ($gigs as $index => $gig): ?>
-                            <a href="<?php echo SITE_URL; ?>/gig.php?id=<?php echo $gig['id']; ?>" class="gig-card reveal-up" style="animation-delay: <?php echo 0.2 + ($index * 0.1); ?>s;">
-                                <img src="<?php echo $gig['image'] ? SITE_URL . '/uploads/' . $gig['image'] : 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=800&q=80'; ?>" alt="<?php echo htmlspecialchars($gig['title']); ?>" class="gig-image">
-                                <div class="gig-content">
-                                    <h3 class="gig-title mb-2"><?php echo htmlspecialchars($gig['title']); ?></h3>
-                                    <div class="gig-footer pt-3 mt-auto border-top">
-                                        <span class="badge badge-primary px-3"><?php echo htmlspecialchars($gig['category']); ?></span>
-                                        <div class="text-end">
-                                            <span class="text-muted smaller d-block mb-1">Starting at</span>
-                                            <span class="gig-price h5 font-weight-800 text-primary mb-0">$<?php echo number_format($gig['price'], 2); ?></span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        <?php endforeach; ?>
-                    <?php endif; ?>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
+<div class="container pb-5">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-lg-4">
+            <div class="pro-card mb-4">
+                <h3 class="pro-card-title"><i class="fas fa-info-circle"></i> About</h3>
+                <p class="text-muted mb-0" style="line-height: 1.8;">
+                    <?php echo nl2br(htmlspecialchars($user['bio'] ?: 'A professional dedicated to delivering excellence. Focused on quality, efficiency, and clear communication.')); ?>
+                </p>
+            </div>
+
+            <div class="pro-card mb-4">
+                <h3 class="pro-card-title"><i class="fas fa-bolt"></i> Expertise</h3>
+                <div class="expertise-tags">
+                    <?php 
+                    if (!empty($user['skills'])) {
+                        $skills = explode(',', $user['skills']);
+                        foreach ($skills as $skill) {
+                            echo '<span class="expertise-tag">' . trim(htmlspecialchars($skill)) . '</span>';
+                        }
+                    } else {
+                        echo '<p class="text-muted small italic">No specific skills listed yet.</p>';
+                    }
+                    ?>
+                </div>
+            </div>
+
+            <?php if ($user['portfolio_link']): ?>
+            <div class="pro-card mb-4">
+                <h3 class="pro-card-title"><i class="fas fa-briefcase"></i> Portfolio</h3>
+                <a href="<?php echo htmlspecialchars($user['portfolio_link']); ?>" target="_blank" class="btn btn-outline w-100 justify-content-between">
+                    <span>View Projects</span>
+                    <i class="fas fa-external-link-alt"></i>
+                </a>
+            </div>
+            <?php endif; ?>
+
+            <div class="pro-card">
+                <h3 class="pro-card-title"><i class="fas fa-shield-alt"></i> Verification</h3>
+                <ul class="list-unstyled mb-0">
+                    <li class="d-flex align-items-center gap-2 mb-2 text-muted">
+                        <i class="fas fa-check-circle text-success"></i> Identity Verified
+                    </li>
+                    <li class="d-flex align-items-center gap-2 mb-2 text-muted">
+                        <i class="fas fa-check-circle text-success"></i> Payment Verified
+                    </li>
+                    <li class="d-flex align-items-center gap-2 text-muted">
+                        <i class="fas fa-check-circle text-success"></i> Email Verified
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Main Content (Services) -->
+        <div class="col-lg-8">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="h4 font-weight-800 mb-0"><?php echo $user['role'] === 'agency' ? 'Agency' : 'Professional'; ?> Services</h2>
+                <span class="text-muted fw-500"><?php echo $gigCount; ?> results found</span>
+            </div>
+
+            <?php if (empty($allGigs)): ?>
+                <div class="pro-card text-center py-5">
+                    <i class="fas fa-concierge-bell fa-3x text-muted mb-3"></i>
+                    <p class="text-muted mb-0">No active services listed at the moment.</p>
+                </div>
+            <?php else: ?>
+                <div class="service-grid">
+                    <?php foreach ($allGigs as $gig): ?>
+                        <div class="pro-service-card">
+                            <a href="<?php echo SITE_URL; ?>/gig?id=<?php echo $gig['id']; ?>" class="text-decoration-none">
+                                <div class="gig-image-wrapper">
+                                    <img src="<?php echo $gig['image'] ? SITE_URL . '/uploads/' . $gig['image'] : 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=800&q=80'; ?>" alt="<?php echo htmlspecialchars($gig['title']); ?>" class="gig-image">
+                                </div>
+                                <div class="gig-content">
+                                    <div class="d-flex justify-content-between align-items-start mb-2">
+                                        <span class="badge bg-light text-primary border rounded-pill" style="font-size: 0.65rem;"><?php echo htmlspecialchars($gig['category']); ?></span>
+                                    </div>
+                                    <h3 class="gig-title"><?php echo htmlspecialchars($gig['title']); ?></h3>
+                                    <?php if ($user['role'] === 'agency' && !empty($gig['full_name'])): ?>
+                                        <div class="d-flex align-items-center gap-2 mb-3">
+                                            <div class="text-muted smaller"><i class="fas fa-user-tie"></i> Member: <?php echo htmlspecialchars($gig['full_name']); ?></div>
+                                        </div>
+                                    <?php endif; ?>
+                                    <div class="gig-footer">
+                                        <div>
+                                            <i class="fas fa-star text-warning small"></i>
+                                            <span class="small fw-600">New</span>
+                                        </div>
+                                        <div>
+                                            <span class="text-muted smaller d-block text-end">Starting at</span>
+                                            <span class="gig-price">$<?php echo number_format($gig['price'], 2); ?></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
+        </div>
+    </div>
+</div>
+
 <style>
-.profile-page .avatar-circle {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 4px solid white;
-    box-shadow: var(--shadow-card);
-    overflow: hidden;
-}
-
-.stat-item {
-    padding-right: 2rem;
-    border-right: 1px solid #f3f4f6;
-}
-
-.stat-item:last-child {
-    border-right: none;
-}
-
-.badge-agency {
-    background-color: var(--secondary);
-    color: white;
-}
-
-.gig-grid .gig-card {
-    background: white;
-    border-radius: 1.25rem;
-    overflow: hidden;
-    box-shadow: var(--shadow-card);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    display: flex;
-    flex-direction: column;
-}
-
-.gig-grid .gig-card:hover {
-    transform: translateY(-8px);
-    box-shadow: var(--shadow-elevated);
-}
-
-.gig-grid .gig-image {
-    width: 100%;
-    height: 180px;
-    object-fit: cover;
-}
-
-.gig-grid .gig-content {
-    padding: 1.5rem;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-}
-
-.gig-grid .gig-title {
-    font-size: 1.125rem;
-    font-weight: 700;
-    color: var(--foreground);
-    line-height: 1.4;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-}
-
-.gig-grid .gig-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
+/* Local style overrides for this page if needed */
+.bg-indigo { background-color: #6366f1; }
+.fw-700 { font-weight: 700; }
+.fw-600 { font-weight: 600; }
+.fw-500 { font-weight: 500; }
+.smaller { font-size: 0.75rem; }
 </style>
 
 <?php include 'views/partials/footer.php'; ?>

@@ -12,10 +12,16 @@ if (!$gig) {
     die('Gig not found');
 }
 
+// Track click
+$gigModel->incrementClick($gigId);
+
 $reviews = $reviewModel->findByGigId($gigId);
 $ratingData = $reviewModel->getAverageRating($gigId);
 $avgRating = round($ratingData['avg_rating'] ?? 0, 1);
 $reviewCount = $ratingData['count'] ?? 0;
+
+// Get related gigs
+$relatedGigs = $gigModel->getRelatedGigs($gigId, $gig['category'], 3);
 
 include 'views/partials/header.php';
 ?>
@@ -30,7 +36,7 @@ include 'views/partials/header.php';
 }
 .gig-main-image {
     width: 100%;
-    max-height: 500px;
+    aspect-ratio: 712 / 433;
     object-fit: cover;
     border-radius: var(--radius);
     margin-bottom: 2rem;
@@ -96,6 +102,41 @@ include 'views/partials/header.php';
                     </div>
                 </div>
 
+                <!-- Related Gigs Section -->
+                <?php if (!empty($relatedGigs)): ?>
+                <div class="related-gigs-section mb-4">
+                    <h3 class="h4 mb-3">Related Gigs</h3>
+                    <div class="row">
+                        <?php foreach ($relatedGigs as $relatedGig): ?>
+                        <div class="col-md-4">
+                            <a href="<?php echo SITE_URL; ?>/gig?id=<?php echo $relatedGig['id']; ?>" class="gig-card" style="display: block; text-decoration: none; color: inherit;">
+                                <div class="gig-image-wrapper">
+                                    <img src="<?php echo $relatedGig['image'] ? SITE_URL . '/uploads/' . $relatedGig['image'] : 'https://via.placeholder.com/280x200?text=' . urlencode($relatedGig['title']); ?>" 
+                                         alt="<?php echo htmlspecialchars($relatedGig['title']); ?>" 
+                                         class="gig-image">
+                                    <span class="gig-card-badge"><?php echo htmlspecialchars($relatedGig['category']); ?></span>
+                                </div>
+                                <div class="gig-content">
+                                    <h4 class="gig-title" style="font-size: 0.95rem;"><?php echo htmlspecialchars($relatedGig['title']); ?></h4>
+                                    <div class="gig-rating">
+                                        <span class="rating-value">
+                                            <i class="fas fa-star"></i> 
+                                            <?php echo $relatedGig['avg_rating'] > 0 ? round($relatedGig['avg_rating'], 1) : 'New'; ?>
+                                        </span>
+                                        <span class="review-count">(<?php echo $relatedGig['review_count']; ?>)</span>
+                                    </div>
+                                    <div class="gig-footer">
+                                        <span class="gig-price-label">Starting at</span>
+                                        <span class="gig-price">$<?php echo number_format($relatedGig['price'], 2); ?></span>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+                <?php endif; ?>
+
                 <div class="reviews-section">
                     <h3 class="h4 mb-4">Customer Reviews (<?php echo $reviewCount; ?>)</h3>
                     
@@ -145,23 +186,23 @@ include 'views/partials/header.php';
                     
                     <?php if (isLoggedIn()): ?>
                         <?php if ($gig['user_id'] == $_SESSION['user_id']): ?>
-                            <a href="<?php echo SITE_URL; ?>/dashboard/<?php echo getUserRole(); ?>/gigs.php" class="btn btn-primary order-btn">
+                            <a href="<?php echo SITE_URL; ?>/dashboard/<?php echo getUserRole(); ?>/gigs" class="btn btn-primary order-btn">
                                 <i class="fas fa-edit"></i> Manage This Gig
                             </a>
                         <?php elseif (getUserRole() === 'buyer'): ?>
-                            <a href="<?php echo SITE_URL; ?>/checkout.php?id=<?php echo $gig['id']; ?>" class="btn btn-primary order-btn mb-2">
+                            <a href="<?php echo SITE_URL; ?>/checkout?id=<?php echo $gig['id']; ?>" class="btn btn-primary order-btn mb-2">
                                 <i class="fas fa-shopping-cart"></i> Order Now
                             </a>
-                            <a href="<?php echo SITE_URL; ?>/chat.php?seller_id=<?php echo $gig['user_id']; ?>" class="btn btn-outline btn-block mb-3">
+                            <a href="<?php echo SITE_URL; ?>/chat?seller_id=<?php echo $gig['user_id']; ?>" class="btn btn-outline btn-block mb-3">
                                 <i class="fas fa-comments"></i> Contact Seller
                             </a>
                         <?php else: ?>
-                            <a href="<?php echo SITE_URL; ?>/chat.php?seller_id=<?php echo $gig['user_id']; ?>" class="btn btn-primary order-btn">
+                            <a href="<?php echo SITE_URL; ?>/chat?seller_id=<?php echo $gig['user_id']; ?>" class="btn btn-primary order-btn">
                                 <i class="fas fa-comments"></i> Contact Seller
                             </a>
                         <?php endif; ?>
                     <?php else: ?>
-                        <a href="<?php echo SITE_URL; ?>/login.php" class="btn btn-primary order-btn">
+                        <a href="<?php echo SITE_URL; ?>/login" class="btn btn-primary order-btn">
                             Login to Order
                         </a>
                     <?php endif; ?>

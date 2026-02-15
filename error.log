@@ -16,3 +16,239 @@ Stack trace:
 #1 C:\xamppp\htdocs\skill_owners\gig.php(15): Review->findByGigId('1')
 #2 {main}
   thrown in C:\xamppp\htdocs\skill_owners\models\Review.php on line 22
+[14-Feb-2026 08:57:59 UTC] Password reset link for alphathewebdeveloper@gmail.com: http://localhost/skill_owners/reset_password.php?token=a138db097ceb5f41238182b7e4f0a128a13931162c7ae316a721181180b0cf5a
+[15-Feb-2026 12:45:36 UTC] PHP Fatal error:  Uncaught Error: Class "User" not found in C:\xamppp\htdocs\skill_owners\controllers\AgencyController.php:188
+Stack trace:
+#0 C:\xamppp\htdocs\skill_owners\dashboard\agency\agency_actions.php(34): AgencyController->applyToAgency('3', 1)
+#1 {main}
+  thrown in C:\xamppp\htdocs\skill_owners\controllers\AgencyController.php on line 188
+[15-Feb-2026 12:46:30 UTC] PHP Fatal error:  Uncaught Error: Class "User" not found in C:\xamppp\htdocs\skill_owners\controllers\AgencyController.php:188
+Stack trace:
+#0 C:\xamppp\htdocs\skill_owners\dashboard\agency\agency_actions.php(34): AgencyController->applyToAgency('3', 1)
+#1 {main}
+  thrown in C:\xamppp\htdocs\skill_owners\controllers\AgencyController.php on line 188
+[15-Feb-2026 12:52:44 UTC] PHP Fatal error:  Uncaught Error: Class "User" not found in C:\xamppp\htdocs\skill_owners\controllers\AgencyController.php:188
+Stack trace:
+#0 C:\xamppp\htdocs\skill_owners\dashboard\agency\agency_actions.php(34): AgencyController->applyToAgency('3', 1)
+#1 {main}
+  thrown in C:\xamppp\htdocs\skill_owners\controllers\AgencyController.php on line 188
+[15-Feb-2026 12:52:54 UTC] PHP Fatal error:  Uncaught Error: Class "User" not found in C:\xamppp\htdocs\skill_owners\controllers\AgencyController.php:188
+Stack trace:
+#0 C:\xamppp\htdocs\skill_owners\dashboard\agency\agency_actions.php(34): AgencyController->applyToAgency('3', 1)
+#1 {main}
+  thrown in C:\xamppp\htdocs\skill_owners\controllers\AgencyController.php on line 188
+[15-Feb-2026 12:53:09 UTC] PHP Fatal error:  Uncaught Error: Class "User" not found in C:\xamppp\htdocs\skill_owners\controllers\AgencyController.php:188
+Stack trace:
+#0 C:\xamppp\htdocs\skill_owners\dashboard\agency\agency_actions.php(34): AgencyController->applyToAgency('3', 1)
+#1 {main}
+  thrown in C:\xamppp\htdocs\skill_owners\controllers\AgencyController.php on line 188
+[15-Feb-2026 13:00:31 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[HY093]: Invalid parameter number in C:\xamppp\htdocs\skill_owners\models\User.php:104
+Stack trace:
+#0 C:\xamppp\htdocs\skill_owners\models\User.php(104): PDOStatement->execute(Array)
+#1 C:\xamppp\htdocs\skill_owners\gig_api.php(16): User->searchWithPagination('freelancer', 's', 1, 12)
+#2 {main}
+  thrown in C:\xamppp\htdocs\skill_owners\models\User.php on line 104
+[15-Feb-2026 13:17:18 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'professional_title' in 'field list' in C:\xamppp\htdocs\skill_owners\models\User.php:68
+Stack trace:
+#0 C:\xamppp\htdocs\skill_owners\models\User.php(68): PDO->prepare('UPDATE users SE...')
+#1 C:\xamppp\htdocs\skill_owners\dashboard\update_profile.php(65): User->update(1, Array)
+#2 {main}
+  thrown in C:\xamppp\htdocs\skill_owners\models\User.php on line 68
+[15-Feb-2026 13:23:56 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'professional_title' in 'field list' in C:\xamppp\htdocs\skill_owners\models\User.php:68
+Stack trace:
+#0 C:\xamppp\htdocs\skill_owners\models\User.php(68): PDO->prepare('UPDATE users SE...')
+#1 C:\xamppp\htdocs\skill_owners\dashboard\update_profile.php(65): User->update(1, Array)
+#2 {main}
+  thrown in C:\xamppp\htdocs\skill_owners\models\User.php on line 68
+[15-Feb-2026 15:56:44 UTC] PHP Fatal error:  Uncaught Error: Call to undefined method AgencyInvitation::approveApplication() in C:\xamppp\htdocs\skill_owners\controllers\AgencyController.php:243
+Stack trace:
+#0 C:\xamppp\htdocs\skill_owners\dashboard\agency\agency_actions.php(45): AgencyController->approveApplication('3', '3', 3)
+#1 {main}
+  thrown in C:\xamppp\htdocs\skill_owners\controllers\AgencyController.php on line 243
+[15-Feb-2026 15:59:39 UTC] PHP Fatal error:  Uncaught Error: Call to undefined method AgencyInvitation::rejectApplication() in C:\xamppp\htdocs\skill_owners\controllers\AgencyController.php:253
+Stack trace:
+#0 C:\xamppp\htdocs\skill_owners\dashboard\agency\agency_actions.php(55): AgencyController->rejectApplication('3', '3', 3)
+#1 {main}
+  thrown in C:\xamppp\htdocs\skill_owners\controllers\AgencyController.php on line 253
+[15-Feb-2026 16:03:00 UTC] PHP Fatal error:  Uncaught Error: Call to undefined method AgencyInvitation::approveApplication() in C:\xamppp\htdocs\skill_owners\controllers\AgencyController.php:243
+Stack trace:
+#0 C:\xamppp\htdocs\skill_owners\dashboard\agency\agency_actions.php(45): AgencyController->approveApplication('3', '3', 3)
+#1 {main}
+  thrown in C:\xamppp\htdocs\skill_owners\controllers\AgencyController.php on line 243
+[15-Feb-2026 16:42:05 UTC] MailHelper Error: SMTP credentials not configured.
+[15-Feb-2026 16:47:23 UTC] Attempting to send reset email to alphathewebdeveloper@gmail.com
+[15-Feb-2026 16:47:23 UTC] MailHelper Error: SMTP credentials not configured.
+[15-Feb-2026 16:47:23 UTC] Failed to send reset email to alphathewebdeveloper@gmail.com
+[15-Feb-2026 16:51:58 UTC] Sending OTP 300369 to test@example.com
+[15-Feb-2026 16:51:58 UTC] MailHelper Error: SMTP credentials not configured.
+[15-Feb-2026 16:52:24 UTC] Sending OTP 456499 to test@example.com
+[15-Feb-2026 16:52:24 UTC] MailHelper Error: SMTP credentials not configured.
+[15-Feb-2026 16:52:48 UTC] Sending OTP 614648 to test@example.com
+[15-Feb-2026 16:52:48 UTC] MailHelper Error: SMTP credentials not configured.
+[15-Feb-2026 16:53:19 UTC] Sending OTP 258242 to test@example.com
+[15-Feb-2026 16:53:19 UTC] MailHelper Error: SMTP credentials not configured.
+[15-Feb-2026 16:53:19 UTC] VerifyOTP: Input='258242', Stored=''
+[15-Feb-2026 16:54:20 UTC] Sending OTP 661058 to test@example.com
+[15-Feb-2026 16:54:20 UTC] MailHelper Error: SMTP credentials not configured.
+[15-Feb-2026 16:54:20 UTC] VerifyOTP: Input='661058', Stored='661058'
+[15-Feb-2026 16:54:20 UTC] VerifyOTP: Input='661058', Stored='661058'
+[15-Feb-2026 16:55:24 UTC] Sending OTP 917608 to alphathewebdeveloper@gmail.com
+[15-Feb-2026 16:55:24 UTC] MailHelper Error: SMTP credentials not configured.
+[15-Feb-2026 16:57:12 UTC] SMTP: SERVER: 220 smtp.gmail.com ESMTP ffacd0b85a97d-43796a6a5f0sm20246379f8f.11 - gsmtp
+[15-Feb-2026 16:57:12 UTC] SMTP: CLIENT: EHLO DESKTOP-AL8RE7Q
+[15-Feb-2026 16:57:12 UTC] SMTP: SERVER: 250-smtp.gmail.com at your service, [2404:3100:1431:7ad3:2993:652d:fed5:f0a1]
+250-SIZE 35882577
+250-8BITMIME
+250-STARTTLS
+250-ENHANCEDSTATUSCODES
+250-PIPELINING
+250-CHUNKING
+250 SMTPUTF8
+[15-Feb-2026 16:57:12 UTC] SMTP: CLIENT: STARTTLS
+[15-Feb-2026 16:57:12 UTC] SMTP: SERVER: 220 2.0.0 Ready to start TLS
+[15-Feb-2026 16:57:13 UTC] SMTP: CLIENT: EHLO DESKTOP-AL8RE7Q
+[15-Feb-2026 16:57:13 UTC] SMTP: SERVER: 250-smtp.gmail.com at your service, [2404:3100:1431:7ad3:2993:652d:fed5:f0a1]
+250-SIZE 35882577
+250-8BITMIME
+250-AUTH LOGIN PLAIN XOAUTH2 PLAIN-CLIENTTOKEN OAUTHBEARER XOAUTH
+250-ENHANCEDSTATUSCODES
+250-PIPELINING
+250-CHUNKING
+250 SMTPUTF8
+[15-Feb-2026 16:57:13 UTC] SMTP: CLIENT: AUTH LOGIN
+[15-Feb-2026 16:57:13 UTC] SMTP: SERVER: 334 VXNlcm5hbWU6
+[15-Feb-2026 16:57:13 UTC] SMTP: CLIENT:
+[15-Feb-2026 16:57:14 UTC] SMTP: SERVER: 334 UGFzc3dvcmQ6
+[15-Feb-2026 16:57:14 UTC] SMTP: CLIENT:
+[15-Feb-2026 16:57:14 UTC] SMTP: SERVER: 535-5.7.8 Username and Password not accepted. For more information, go to
+535 5.7.8  https://support.google.com/mail/?p=BadCredentials ffacd0b85a97d-43796a6a5f0sm20246379f8f.11 - gsmtp
+[15-Feb-2026 16:57:14 UTC] SMTP: ERROR: SMTP Error: Expected 235, got 535. Response: 535-5.7.8 Username and Password not accepted. For more information, go to
+535 5.7.8  https://support.google.com/mail/?p=BadCredentials ffacd0b85a97d-43796a6a5f0sm20246379f8f.11 - gsmtp
+[15-Feb-2026 16:57:55 UTC] VerifyOTP: Input='657645', Stored='917608'
+[15-Feb-2026 17:09:37 UTC] VerifyOTP: Input='273722', Stored='917608'
+[15-Feb-2026 17:12:46 UTC] Attempting to verify OTP for alphathewebdeveloper@gmail.com
+[15-Feb-2026 17:12:46 UTC] VerifyOTP: Input='ee', Stored=''
+[15-Feb-2026 17:12:57 UTC] Attempting to verify OTP for alphathewebdeveloper@gmail.com
+[15-Feb-2026 17:12:57 UTC] VerifyOTP: Input='ee', Stored=''
+[15-Feb-2026 17:13:02 UTC] Attempting to verify OTP for alphathewebdeveloper@gmail.com
+[15-Feb-2026 17:13:02 UTC] VerifyOTP: Input='232323', Stored=''
+[15-Feb-2026 17:13:24 UTC] Attempting to verify OTP for alphathewebdeveloper@gmail.com
+[15-Feb-2026 17:13:24 UTC] VerifyOTP: Input='232323', Stored=''
+[15-Feb-2026 17:13:29 UTC] Attempting to verify OTP for alphathewebdeveloper@gmail.com
+[15-Feb-2026 17:13:29 UTC] VerifyOTP: Input='24343', Stored=''
+[15-Feb-2026 17:15:26 UTC] RESET_PASSWORD POST: Array
+(
+    [otp] => 87565
+    [verify_otp] => 
+)
+
+[15-Feb-2026 17:15:26 UTC] RESET_PASSWORD SESSION: Array
+(
+    [reset_step] => 2
+    [reset_email] => alphathewebdeveloper@gmail.com
+)
+
+[15-Feb-2026 17:15:26 UTC] Attempting to verify OTP for alphathewebdeveloper@gmail.com
+[15-Feb-2026 17:15:26 UTC] VerifyOTP: Input='87565', Stored=''
+[15-Feb-2026 17:15:42 UTC] RESET_PASSWORD POST: Array
+(
+    [otp] => 56786
+    [restart] => 
+)
+
+[15-Feb-2026 17:15:42 UTC] RESET_PASSWORD SESSION: Array
+(
+    [reset_step] => 2
+    [reset_email] => alphathewebdeveloper@gmail.com
+)
+
+[15-Feb-2026 17:15:49 UTC] RESET_PASSWORD POST: Array
+(
+    [email] => alphathewebdeveloper@gmail.com
+    [request_otp] => 
+)
+
+[15-Feb-2026 17:15:49 UTC] RESET_PASSWORD SESSION: Array
+(
+)
+
+[15-Feb-2026 17:15:49 UTC] Sending OTP 380715 to alphathewebdeveloper@gmail.com
+[15-Feb-2026 17:16:17 UTC] RESET_PASSWORD POST: Array
+(
+    [otp] => 380715
+    [verify_otp] => 
+)
+
+[15-Feb-2026 17:16:17 UTC] RESET_PASSWORD SESSION: Array
+(
+    [reset_step] => 2
+    [reset_email] => alphathewebdeveloper@gmail.com
+)
+
+[15-Feb-2026 17:16:17 UTC] Attempting to verify OTP for alphathewebdeveloper@gmail.com
+[15-Feb-2026 17:16:17 UTC] VerifyOTP: Input='380715', Stored='380715'
+[15-Feb-2026 17:17:25 UTC] RESET_PASSWORD POST: Array
+(
+    [password] => afridi000
+    [confirm_password] => afridi000
+    [set_password] => 
+)
+
+[15-Feb-2026 17:17:25 UTC] RESET_PASSWORD SESSION: Array
+(
+    [reset_step] => 3
+    [reset_email] => alphathewebdeveloper@gmail.com
+    [reset_otp] => 380715
+)
+
+[15-Feb-2026 17:17:25 UTC] VerifyOTP: Input='380715', Stored='380715'
+[15-Feb-2026 20:03:55 UTC] PHP Fatal error:  Uncaught Error: Call to undefined method User::findAll() in C:\xamppp\htdocs\skill_owners\dashboard\alpha\users.php:63
+Stack trace:
+#0 {main}
+  thrown in C:\xamppp\htdocs\skill_owners\dashboard\alpha\users.php on line 63
+[15-Feb-2026 20:04:26 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'skill_owners.categories' doesn't exist in C:\xamppp\htdocs\skill_owners\models\Category.php:13
+Stack trace:
+#0 C:\xamppp\htdocs\skill_owners\models\Category.php(13): PDO->prepare('SELECT * FROM c...')
+#1 C:\xamppp\htdocs\skill_owners\dashboard\alpha\categories.php(55): Category->findAll()
+#2 {main}
+  thrown in C:\xamppp\htdocs\skill_owners\models\Category.php on line 13
+[15-Feb-2026 20:08:33 UTC] PHP Fatal error:  Uncaught Error: Call to undefined method User::findAll() in C:\xamppp\htdocs\skill_owners\dashboard\alpha\users.php:63
+Stack trace:
+#0 {main}
+  thrown in C:\xamppp\htdocs\skill_owners\dashboard\alpha\users.php on line 63
+[15-Feb-2026 20:25:38 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'skill_owners.categories' doesn't exist in C:\xamppp\htdocs\skill_owners\models\Category.php:13
+Stack trace:
+#0 C:\xamppp\htdocs\skill_owners\models\Category.php(13): PDO->prepare('SELECT * FROM c...')
+#1 C:\xamppp\htdocs\skill_owners\dashboard\alpha\categories.php(55): Category->findAll()
+#2 {main}
+  thrown in C:\xamppp\htdocs\skill_owners\models\Category.php on line 13
+[15-Feb-2026 20:30:13 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'skill_owners.categories' doesn't exist in C:\xamppp\htdocs\skill_owners\models\Category.php:13
+Stack trace:
+#0 C:\xamppp\htdocs\skill_owners\models\Category.php(13): PDO->prepare('SELECT * FROM c...')
+#1 C:\xamppp\htdocs\skill_owners\dashboard\alpha\categories.php(55): Category->findAll()
+#2 {main}
+  thrown in C:\xamppp\htdocs\skill_owners\models\Category.php on line 13
+[15-Feb-2026 20:51:08 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'skill_owners.categories' doesn't exist in C:\xamppp\htdocs\skill_owners\models\Category.php:13
+Stack trace:
+#0 C:\xamppp\htdocs\skill_owners\models\Category.php(13): PDO->prepare('SELECT * FROM c...')
+#1 C:\xamppp\htdocs\skill_owners\dashboard\alpha\categories.php(55): Category->findAll()
+#2 {main}
+  thrown in C:\xamppp\htdocs\skill_owners\models\Category.php on line 13
+[15-Feb-2026 20:55:35 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'skill_owners.categories' doesn't exist in C:\xamppp\htdocs\skill_owners\models\Category.php:13
+Stack trace:
+#0 C:\xamppp\htdocs\skill_owners\models\Category.php(13): PDO->prepare('SELECT * FROM c...')
+#1 C:\xamppp\htdocs\skill_owners\dashboard\alpha\categories.php(49): Category->findAll()
+#2 {main}
+  thrown in C:\xamppp\htdocs\skill_owners\models\Category.php on line 13
+[15-Feb-2026 20:55:42 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'skill_owners.categories' doesn't exist in C:\xamppp\htdocs\skill_owners\models\Category.php:13
+Stack trace:
+#0 C:\xamppp\htdocs\skill_owners\models\Category.php(13): PDO->prepare('SELECT * FROM c...')
+#1 C:\xamppp\htdocs\skill_owners\dashboard\alpha\categories.php(49): Category->findAll()
+#2 {main}
+  thrown in C:\xamppp\htdocs\skill_owners\models\Category.php on line 13
+[15-Feb-2026 20:55:48 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'skill_owners.categories' doesn't exist in C:\xamppp\htdocs\skill_owners\models\Category.php:13
+Stack trace:
+#0 C:\xamppp\htdocs\skill_owners\models\Category.php(13): PDO->prepare('SELECT * FROM c...')
+#1 C:\xamppp\htdocs\skill_owners\dashboard\alpha\categories.php(49): Category->findAll()
+#2 {main}
+  thrown in C:\xamppp\htdocs\skill_owners\models\Category.php on line 13

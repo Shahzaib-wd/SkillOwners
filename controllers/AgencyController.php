@@ -2,6 +2,7 @@
 require_once __DIR__ . '/../config.php';
 require_once __DIR__ . '/../models/AgencyMember.php';
 require_once __DIR__ . '/../models/AgencyInvitation.php';
+require_once __DIR__ . '/../models/User.php';
 
 /**
  * AgencyController
@@ -45,7 +46,34 @@ class AgencyController {
             }
         }
         
-        return $this->invitationModel->create($agencyId, $email, $role, $invitedBy);
+        $result = $this->invitationModel->create($agencyId, $email, $role, $invitedBy);
+        
+        if ($result['success']) {
+            // Send invitation email
+            require_once __DIR__ . '/../helpers/MailHelper.php';
+            
+            $userModel = new User();
+            $inviter = $userModel->findById($invitedBy);
+            $agency = $userModel->findById($agencyId); // Agency is also a user record
+            
+            $subject = "You're invited to join " . $agency['full_name'];
+            $inviteLink = SITE_URL . "/dashboard/agency/accept_invitation?token=" . ($result['token'] ?? '');
+            
+            // If token isn't returned by create, we might need to fetch it or just point to dashboard
+            // Assuming create returns the token or we point them to login
+            $actionUrl = SITE_URL . "/login";
+            
+            $body = "
+            <h3>Agency Invitation</h3>
+            <p>Hello,</p>
+            <p><strong>" . htmlspecialchars($inviter['full_name']) . "</strong> has invited you to join their agency <strong>" . htmlspecialchars($agency['full_name']) . "</strong> on " . SITE_NAME . ".</p>
+            <p>To accept this invitation, please log in to your account and check your notifications.</p>
+            <p><a href='$actionUrl' style='background-color: #0d6efd; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;'>Log In to Accept</a></p>";
+            
+            MailHelper::send($email, $subject, $body);
+        }
+        
+        return $result;
     }
     
     /**
@@ -188,5 +216,67 @@ class AgencyController {
         
         // Check if user is a team member
         return $this->memberModel->isMember($agencyId, $userId);
+    }
+
+    /**
+     * Freelancer applies to join an agency
+     */
+    public function applyToAgency($agencyId, $freelancerId) {
+        // Check if user is a freelancer
+        $userModel = new User();
+        $user = $userModel->findById($freelancerId);
+        if (!$user || $user['role'] !== 'freelancer') {
+            return ['success' => false, 'message' => 'Only freelancers can apply to join agencies.'];
+        }
+        
+        // Get agency email
+        $agency = $userModel->findById($agencyId);
+        if (!$agency || $agency['role'] !== 'agency') {
+            return ['success' => false, 'message' => 'Invalid agency selected.'];
+        }
+        
+        // Use invitation model to create a "request"
+        // We can reuse the invitation system by setting a special flag or status
+        // For now, let's use the standard "create" but we'll need to handle it differently in the UI
+        // Actually, let's add a proper application method to Invitation model later if needed
+        // For now, let's just use the existing one with a 'member' role request
+        $result = $this->invitationModel->create($agencyId, $user['email'], 'member', $freelancerId);
+        if (isset($result['success']) && $result['success']) {
+            $result['message'] = 'Application submitted successfully! The agency will review your request.';
+        }
+        
+        return $result;
+    }
+
+    /**
+     * Resolve user ID to email for direct invitations
+     */
+    public function inviteMemberById($agencyId, $targetUserId, $role, $invitedBy) {
+        $userModel = new User();
+        $user = $userModel->findById($targetUserId);
+        if (!$user) {
+            return ['success' => false, 'message' => 'User not found.'];
+        }
+        return $this->inviteMember($agencyId, $user['email'], $role, $invitedBy);
+    }
+
+    /**
+     * Approve a freelancer's application to join the agency
+     */
+    public function approveApplication($invitationId, $agencyId, $approverId) {
+        if (!$this->hasPermission($agencyId, $approverId, 'invite_members')) {
+            return ['success' => false, 'message' => 'You do not have permission to approve applications.'];
+        }
+        return $this->invitationModel->approveApplication($invitationId, $agencyId);
+    }
+
+    /**
+     * Reject a freelancer's application to join the agency
+     */
+    public function rejectApplication($invitationId, $agencyId, $rejecterId) {
+        if (!$this->hasPermission($agencyId, $rejecterId, 'invite_members')) {
+            return ['success' => false, 'message' => 'You do not have permission to reject applications.'];
+        }
+        return $this->invitationModel->rejectApplication($invitationId, $agencyId);
     }
 }

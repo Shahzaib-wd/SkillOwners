@@ -8,7 +8,7 @@ require_once 'config.php';
 // Redirect if already logged in
 if (isLoggedIn()) {
     $role = getUserRole();
-    redirect('/dashboard/' . $role . '.php');
+    redirect('/dashboard/' . $role);
 }
 
 $error = getError();
@@ -35,7 +35,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         require_once 'controllers/AuthController.php';
         $authController = new AuthController();
-        $authController->register($fullName, $email, $password, $role);
+        if ($authController->register($fullName, $email, $password, $role)) {
+            // Send welcome email
+            require_once 'helpers/MailHelper.php';
+            MailHelper::sendWelcomeEmail($email, $fullName);
+            
+            showSuccess('Account created successfully! Please log in.');
+            redirect('/login');
+            return true;
+        } else {
+            showError('Registration failed. Please try again.');
+            return false;
+        }
     }
     
     $error = getError();
@@ -192,8 +203,8 @@ include 'views/partials/header.php';
             <div class="form-group">
                 <label style="font-size: 0.813rem; color: var(--muted-foreground);">
                     <input type="checkbox" required>
-                    I agree to the <a href="<?php echo SITE_URL; ?>/terms_conditions.php" style="color: var(--primary);">Terms & Conditions</a> 
-                    and <a href="<?php echo SITE_URL; ?>/privacy_policy.php" style="color: var(--primary);">Privacy Policy</a>
+                    I agree to the <a href="<?php echo SITE_URL; ?>/terms_conditions" style="color: var(--primary);">Terms & Conditions</a> 
+                    and <a href="<?php echo SITE_URL; ?>/privacy_policy" style="color: var(--primary);">Privacy Policy</a>
                 </label>
             </div>
             
@@ -203,7 +214,7 @@ include 'views/partials/header.php';
             
             <p class="text-center" style="font-size: 0.875rem; color: var(--muted-foreground);">
                 Already have an account? 
-                <a href="<?php echo SITE_URL; ?>/login.php" style="color: var(--primary); font-weight: 500;">Log in</a>
+                <a href="<?php echo SITE_URL; ?>/login" style="color: var(--primary); font-weight: 500;">Log in</a>
             </p>
         </form>
     </div>

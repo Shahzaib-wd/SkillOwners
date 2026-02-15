@@ -8,7 +8,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $token = $_POST['csrf_token'] ?? '';
     if (!verifyCSRFToken($token)) {
         showError("Invalid session. Please try again.");
-        redirect('/dashboard/' . getUserRole() . '/index.php');
+        redirect('/dashboard/' . getUserRole() . '/index');
     }
 
     $orderId = $_POST['order_id'] ?? 0;
@@ -19,13 +19,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (!$order) {
         showError("Order not found.");
-        redirect('/dashboard/' . getUserRole() . '/index.php');
+        redirect('/dashboard/' . getUserRole() . '/index');
     }
 
     // Security: Only buyer or seller can confirm
     if ($userId != $order['buyer_id'] && $userId != $order['seller_id']) {
         showError("Unauthorized action.");
-        redirect('/dashboard/' . getUserRole() . '/index.php');
+        redirect('/dashboard/' . getUserRole() . '/index');
     }
 
     if ($orderModel->confirmOrder($orderId, $userId)) {
@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         showError("Failed to record confirmation. Please try again.");
     }
 
-    redirect('/dashboard/' . getUserRole() . '/index.php');
+    redirect('/dashboard/' . getUserRole() . '/index');
 } else {
-    redirect('/index.php');
+    redirect('/index');
 }

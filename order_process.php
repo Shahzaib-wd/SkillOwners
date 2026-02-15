@@ -7,14 +7,14 @@ requireLogin();
 
 if (getUserRole() !== 'buyer') {
     showError("Only buyers can place orders.");
-    redirect('/index.php');
+    redirect('/index');
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $token = $_POST['csrf_token'] ?? '';
     if (!verifyCSRFToken($token)) {
         showError("Invalid session. Please try again.");
-        redirect('/index.php');
+        redirect('/index');
     }
 
     $gigId = $_POST['gig_id'] ?? 0;
@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (!$gig) {
         showError("Gig not found.");
-        redirect('/browse.php');
+        redirect('/browse');
     }
 
     $buyerId = $_SESSION['user_id'];
@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Safety check: Cannot order own gig
     if ($buyerId == $sellerId) {
         showError("You cannot order your own gig.");
-        redirect('/gig.php?id=' . $gigId);
+        redirect('/gig?id=' . $gigId);
     }
 
     $amount = $gig['price'];
@@ -49,12 +49,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     ];
 
     if ($orderModel->create($orderData)) {
+        // Send confirmation email
+        require_once 'helpers/MailHelper.php';
+        
+        $seller = (new User())->findById($sellerId);
+        $buyer = (new User())->findById($buyerId);
+        
+        $subject = "New Order Received - " . SITE_NAME;
+        $body = "
+        <h3>New Order Notification</h3>
+        <p>Hello " . htmlspecialchars($seller['full_name']) . ",</p>
+        <p>You have received a new order from <strong>" . htmlspecialchars($buyer['full_name']) . "</strong>.</p>
+        <p><strong>Gig:</strong> " . htmlspecialchars($gig['title']) . "</p>
+        <p><strong>Amount:</strong> $" . number_format($amount, 2) . "</p>
+        <p><strong>Expected Delivery:</strong> " . $deliveryDate . "</p>
+        <p>Please log in to your dashboard to view the order details and start working.</p>";
+        
+        MailHelper::send($seller['email'], $subject, $body);
+        
         showSuccess("Order placed successfully!");
-        redirect('/dashboard/buyer/index.php');
+        redirect('/dashboard/buyer/index');
     } else {
         showError("Something went wrong while processing your order. Please try again.");
-        redirect('/checkout.php?id=' . $gigId);
+        redirect('/checkout?id=' . $gigId);
     }
 } else {
-    redirect('/index.php');
+    redirect('/index');
 }

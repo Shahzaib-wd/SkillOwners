@@ -27,6 +27,13 @@ class User {
         ]);
     }
     
+    public function findAll() {
+        $sql = "SELECT * FROM users ORDER BY created_at DESC";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+    
     public function findByEmail($email) {
         $sql = "SELECT * FROM users WHERE email = :email AND is_active = 1";
         $stmt = $this->conn->prepare($sql);
@@ -49,7 +56,7 @@ class User {
     }
     
     public function update($id, $data) {
-        $allowedFields = ['full_name', 'bio', 'skills', 'portfolio_link', 'profile_image'];
+        $allowedFields = ['full_name', 'email', 'role', 'bio', 'skills', 'portfolio_link', 'profile_image', 'professional_title', 'location', 'phone', 'experience_years', 'linkedin_url', 'twitter_url', 'github_url', 'languages'];
         $updates = [];
         $params = ['id' => $id];
         
@@ -68,6 +75,18 @@ class User {
         $stmt = $this->conn->prepare($sql);
         return $stmt->execute($params);
     }
+
+    public function updateStatus($id, $isActive) {
+        $sql = "UPDATE users SET is_active = :is_active WHERE id = :id";
+        $stmt = $this->conn->prepare($sql);
+        return $stmt->execute(['id' => $id, 'is_active' => $isActive]);
+    }
+
+    public function delete($id) {
+        $sql = "DELETE FROM users WHERE id = :id";
+        $stmt = $this->conn->prepare($sql);
+        return $stmt->execute(['id' => $id]);
+    }
     
     public function getGigCount($userId) {
         $sql = "SELECT COUNT(*) as count FROM gigs WHERE user_id = :user_id AND is_active = 1";
@@ -85,21 +104,70 @@ class User {
         return $result['count'] ?? 0;
     }
     
-    public function searchFreelancers($query = '', $filters = []) {
-        $sql = "SELECT id, full_name, email, bio, skills, profile_image, created_at 
-                FROM users 
-                WHERE (role = 'freelancer' OR role = 'agency') AND is_active = 1";
-        $params = [];
+    public function searchWithPagination($role = 'freelancer', $query = '', $page = 1, $perPage = 12) {
+        $page = max(1, (int)$page);
+        $perPage = min(max(1, (int)$perPage), 50);
+        $offset = ($page - 1) * $perPage;
+        
+        $whereClause = "WHERE role = :role AND is_active = 1";
+        $params = ['role' => $role];
         
         if (!empty($query)) {
-            $sql .= " AND (full_name LIKE :query OR skills LIKE :query OR bio LIKE :query)";
+            $whereClause .= " AND (full_name LIKE :query OR skills LIKE :query OR bio LIKE :query)";
             $params['query'] = "%$query%";
         }
         
-        $sql .= " ORDER BY created_at DESC LIMIT 50";
+        // Get total count
+        $countSql = "SELECT COUNT(*) as total FROM users $whereClause";
+        $stmt = $this->conn->prepare($countSql);
+        $stmt->execute($params);
+        $totalResult = $stmt->fetch();
+        $totalItems = (int)$totalResult['total'];
+        $totalPages = ceil($totalItems / $perPage);
+        
+        // Get paginated results
+        $sql = "SELECT id, full_name, email, bio, skills, profile_image, created_at 
+                FROM users 
+                $whereClause 
+                ORDER BY created_at DESC 
+                LIMIT $perPage OFFSET $offset";
         
         $stmt = $this->conn->prepare($sql);
         $stmt->execute($params);
-        return $stmt->fetchAll();
+        $users = $stmt->fetchAll();
+        
+        return [
+            'users' => $users,
+            'pagination' => [
+                'current_page' => $page,
+                'per_page' => $perPage,
+                'total_items' => $totalItems,
+                'total_pages' => $totalPages,
+                'has_next' => $page < $totalPages,
+                'has_prev' => $page > 1
+            ]
+        ];
+    }
+    public function getStats() {
+        $stats = [
+            'total_users' => 0,
+            'freelancers' => 0,
+            'agencies' => 0,
+            'buyers' => 0,
+            'admins' => 0
+        ];
+        
+        $sql = "SELECT role, COUNT(*) as count FROM users WHERE is_active = 1 GROUP BY role";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute();
+        $results = $stmt->fetchAll(PDO::FETCH_KEY_PAIR);
+        
+        $stats['freelancers'] = $results['freelancer'] ?? 0;
+        $stats['agencies'] = $results['agency'] ?? 0;
+        $stats['buyers'] = $results['buyer'] ?? 0;
+        $stats['admins'] = $results['admin'] ?? 0;
+        $stats['total_users'] = array_sum($stats);
+        
+        return $stats;
     }
 }

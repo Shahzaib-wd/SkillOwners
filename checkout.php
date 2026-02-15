@@ -7,7 +7,7 @@ requireLogin();
 
 if (getUserRole() !== 'buyer') {
     showError("Only buyers can place orders.");
-    redirect('/index.php');
+    redirect('/index');
 }
 
 $gigId = $_GET['id'] ?? 0;
@@ -16,13 +16,13 @@ $gig = $gigModel->findById($gigId);
 
 if (!$gig) {
     showError("Gig not found.");
-    redirect('/browse.php');
+    redirect('/browse');
 }
 
 // Don't allow ordering own gig
 if ($gig['user_id'] == $_SESSION['user_id']) {
     showError("You cannot order your own gig.");
-    redirect('/gig.php?id=' . $gigId);
+    redirect('/gig?id=' . $gigId);
 }
 
 include 'views/partials/header.php';
@@ -74,7 +74,7 @@ include 'views/partials/header.php';
                         </div>
                     </div>
 
-                    <form action="<?php echo SITE_URL; ?>/order_process.php" method="POST">
+                    <form action="<?php echo SITE_URL; ?>/order_process" method="POST">
                         <input type="hidden" name="gig_id" value="<?php echo $gig['id']; ?>">
                         <input type="hidden" name="csrf_token" value="<?php echo generateCSRFToken(); ?>">
                         
@@ -85,7 +85,7 @@ include 'views/partials/header.php';
 
                         <div class="row align-items-center">
                             <div class="col-md-4 mb-3 mb-md-0">
-                                <a href="<?php echo SITE_URL; ?>/gig.php?id=<?php echo $gig['id']; ?>" class="btn btn-ghost w-100">
+                                <a href="<?php echo SITE_URL; ?>/gig?id=<?php echo $gig['id']; ?>" class="btn btn-ghost w-100">
                                     <i class="fas fa-arrow-left me-2"></i> Back to Gig
                                 </a>
                             </div>

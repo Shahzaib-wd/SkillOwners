@@ -15,26 +15,26 @@
                 <div class="footer-links">
                     <h4>For Buyers</h4>
                     <ul>
-                        <li><a href="<?php echo SITE_URL; ?>/browse.php">Browse Services</a></li>
-                        <li><a href="<?php echo SITE_URL; ?>/about.php">How It Works</a></li>
+                        <li><a href="<?php echo SITE_URL; ?>/browse">Browse Services</a></li>
+                        <li><a href="<?php echo SITE_URL; ?>/about">How It Works</a></li>
                     </ul>
                 </div>
                 
                 <div class="footer-links">
                     <h4>For Sellers</h4>
                     <ul>
-                        <li><a href="<?php echo SITE_URL; ?>/register.php?role=freelancer">Start Selling</a></li>
-                        <li><a href="<?php echo SITE_URL; ?>/register.php?role=agency">Create Agency</a></li>
+                        <li><a href="<?php echo SITE_URL; ?>/register?role=freelancer">Start Selling</a></li>
+                        <li><a href="<?php echo SITE_URL; ?>/register?role=agency">Create Agency</a></li>
                     </ul>
                 </div>
                 
                 <div class="footer-links">
                     <h4>Company</h4>
                     <ul>
-                        <li><a href="<?php echo SITE_URL; ?>/about.php">About</a></li>
-                        <li><a href="<?php echo SITE_URL; ?>/privacy_policy.php">Privacy</a></li>
-                        <li><a href="<?php echo SITE_URL; ?>/terms_conditions.php">Terms</a></li>
-                        <li><a href="<?php echo SITE_URL; ?>/contact.php">Contact</a></li>
+                        <li><a href="<?php echo SITE_URL; ?>/about">About</a></li>
+                        <li><a href="<?php echo SITE_URL; ?>/privacy_policy">Privacy</a></li>
+                        <li><a href="<?php echo SITE_URL; ?>/terms_conditions">Terms</a></li>
+                        <li><a href="<?php echo SITE_URL; ?>/contact">Contact</a></li>
                     </ul>
                 </div>
             </div>

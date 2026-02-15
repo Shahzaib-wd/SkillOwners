@@ -15,7 +15,7 @@
     <meta property="og:description" content="Connect with top freelancers and agencies worldwide. Browse verified professionals and get your projects done.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="<?php echo SITE_URL; ?>">
-    <meta property="og:image" content="<?php echo SITE_URL; ?>/assets/images/og-image.png">
+    <meta property="og:image" content="<?php echo SITE_URL; ?>/assets/images/og-image.svg">
     
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
@@ -27,7 +27,7 @@
     
     <!-- Stylesheets -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="<?php echo SITE_URL; ?>/assets/css/style.css">
+    <link rel="stylesheet" href="<?php echo SITE_URL; ?>/assets/css/style.css?v=<?php echo time(); ?>">
     
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -41,22 +41,30 @@
                 <span class="d-flex align-items-center">Skill<span style="color: #10b981;">Owners</span></span>
             </a>
             
+            <?php
+            $current_uri = $_SERVER['REQUEST_URI'];
+            $script_name = $_SERVER['SCRIPT_NAME'];
+            $is_browse = str_contains($script_name, 'browse');
+            $type_param = $_GET['type'] ?? '';
+            ?>
             <ul class="navbar-menu">
-                <li><a href="<?php echo SITE_URL; ?>/browse.php">Browse Services</a></li>
-                <li><a href="<?php echo SITE_URL; ?>/about.php">How It Works</a></li>
+                <li><a href="<?php echo SITE_URL; ?>/browse" class="<?php echo ($is_browse && empty($type_param)) ? 'active' : ''; ?>">Browse Services</a></li>
+                <li><a href="<?php echo SITE_URL; ?>/browse?type=freelancer" class="<?php echo ($is_browse && $type_param === 'freelancer') ? 'active' : ''; ?>">Find Freelancers</a></li>
+                <li><a href="<?php echo SITE_URL; ?>/browse?type=agency" class="<?php echo ($is_browse && $type_param === 'agency') ? 'active' : ''; ?>">Find Agencies</a></li>
+                <li><a href="<?php echo SITE_URL; ?>/about" class="<?php echo str_contains($script_name, 'about') ? 'active' : ''; ?>">How It Works</a></li>
             </ul>
             
             <div class="navbar-actions">
                 <?php if (isLoggedIn()): ?>
-                    <a href="<?php echo SITE_URL; ?>/dashboard/<?php echo getUserRole(); ?>.php" class="btn btn-ghost btn-sm">Dashboard</a>
+                    <a href="<?php echo SITE_URL; ?>/dashboard/<?php echo getUserRole(); ?>" class="btn btn-ghost btn-sm">Dashboard</a>
                     <a href="javascript:void(0);" onclick="scrollToMessages()" class="navbar-messages-icon" id="navbarMessagesIcon" title="Messages">
                         <i class="fas fa-envelope"></i>
                         <span class="navbar-unread-dot" id="navbarUnreadDot" style="display: none;"></span>
                     </a>
-                    <a href="<?php echo SITE_URL; ?>/logout.php" class="btn btn-outline btn-sm">Logout</a>
+                    <a href="<?php echo SITE_URL; ?>/logout" class="btn btn-outline btn-sm">Logout</a>
                 <?php else: ?>
-                    <a href="<?php echo SITE_URL; ?>/login.php" class="btn btn-ghost btn-sm">Log In</a>
-                    <a href="<?php echo SITE_URL; ?>/register.php" class="btn btn-primary btn-sm">Get Started</a>
+                    <a href="<?php echo SITE_URL; ?>/login" class="btn btn-ghost btn-sm">Log In</a>
+                    <a href="<?php echo SITE_URL; ?>/register" class="btn btn-primary btn-sm">Get Started</a>
                 <?php endif; ?>
             </div>
             
@@ -118,7 +126,7 @@
     <script>
     function scrollToMessages() {
         // Always navigate to dedicated inbox page
-        window.location.href = '<?php echo SITE_URL; ?>/inbox.php';
+        window.location.href = '<?php echo SITE_URL; ?>/inbox';
     }
     
     function toggleMobileMenu() {
@@ -132,7 +140,7 @@
     
     function updateNavbarUnreadIndicator() {
         if (typeof ajaxRequest === 'function') {
-            ajaxRequest('<?php echo SITE_URL; ?>/chat_api.php?action=get_unread_count&_=' + Date.now())
+            ajaxRequest('<?php echo SITE_URL; ?>/chat_api?action=get_unread_count&_=' + Date.now())
                 .then(data => {
                     if (data.success) {
                         const count = parseInt(data.unread_count) || 0;

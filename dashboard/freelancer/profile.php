@@ -3,7 +3,7 @@ require_once '../../config.php';
 requireLogin();
 
 if (getUserRole() !== 'freelancer') {
-    redirect('/dashboard/' . getUserRole() . '.php');
+    redirect('/dashboard/' . getUserRole());
 }
 
 require_once '../../models/User.php';
@@ -50,6 +50,12 @@ include '../../views/partials/header.php';
                                 <label class="form-label font-weight-600 mb-2">Full Name</label>
                                 <input type="text" name="full_name" class="form-control" value="<?php echo htmlspecialchars($user['full_name']); ?>" required>
                             </div>
+
+                            <div class="form-group mb-3">
+                                <label class="form-label font-weight-600 mb-2">Professional Title</label>
+                                <input type="text" name="professional_title" class="form-control" value="<?php echo htmlspecialchars($user['professional_title'] ?? ''); ?>" placeholder="e.g. Web Developer, Graphic Designer">
+                                <small class="text-muted">This will appear on your public profile as your primary headline.</small>
+                            </div>
                             
                             <div class="form-group mb-3">
                                 <label class="form-label font-weight-600 mb-2">Professional Bio</label>
@@ -58,16 +64,72 @@ include '../../views/partials/header.php';
                         </div>
 
                         <div class="mb-4">
-                            <h3 class="h6 font-weight-700 mb-3">Expertise & Links</h3>
-                            <div class="form-group mb-3">
-                                <label class="form-label font-weight-600 mb-2">Skills (comma separated)</label>
-                                <input type="text" name="skills" class="form-control" value="<?php echo htmlspecialchars($user['skills'] ?? ''); ?>" placeholder="PHP, JavaScript, Graphic Design...">
+                            <h3 class="h6 font-weight-700 mb-3">Expertise & Contact</h3>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group mb-3">
+                                        <label class="form-label font-weight-600 mb-2">Skills (comma separated)</label>
+                                        <input type="text" name="skills" class="form-control" value="<?php echo htmlspecialchars($user['skills'] ?? ''); ?>" placeholder="PHP, JavaScript, Graphic Design...">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group mb-3">
+                                        <label class="form-label font-weight-600 mb-2">Experience (Years)</label>
+                                        <input type="number" name="experience_years" class="form-control" value="<?php echo htmlspecialchars($user['experience_years'] ?? '0'); ?>">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group mb-3">
+                                        <label class="form-label font-weight-600 mb-2">Location</label>
+                                        <input type="text" name="location" class="form-control" value="<?php echo htmlspecialchars($user['location'] ?? ''); ?>" placeholder="City, Country">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group mb-3">
+                                        <label class="form-label font-weight-600 mb-2">Phone Number</label>
+                                        <input type="text" name="phone" class="form-control" value="<?php echo htmlspecialchars($user['phone'] ?? ''); ?>" placeholder="+1 234 567 890">
+                                    </div>
+                                </div>
                             </div>
                             
                             <div class="form-group mb-3">
                                 <label class="form-label font-weight-600 mb-2">Portfolio Website</label>
                                 <input type="url" name="portfolio_link" class="form-control" value="<?php echo htmlspecialchars($user['portfolio_link'] ?? ''); ?>" placeholder="https://yourportfolio.com">
-                                <small class="text-muted">A direct link to your personal portfolio or external showcase.</small>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <h3 class="h6 font-weight-700 mb-3">Social Presence</h3>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group mb-3">
+                                        <label class="form-label font-weight-600 mb-2">LinkedIn URL</label>
+                                        <input type="url" name="linkedin_url" class="form-control" value="<?php echo htmlspecialchars($user['linkedin_url'] ?? ''); ?>" placeholder="https://linkedin.com/in/...">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group mb-3">
+                                        <label class="form-label font-weight-600 mb-2">Twitter URL</label>
+                                        <input type="url" name="twitter_url" class="form-control" value="<?php echo htmlspecialchars($user['twitter_url'] ?? ''); ?>" placeholder="https://twitter.com/...">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group mb-3">
+                                        <label class="form-label font-weight-600 mb-2">GitHub URL</label>
+                                        <input type="url" name="github_url" class="form-control" value="<?php echo htmlspecialchars($user['github_url'] ?? ''); ?>" placeholder="https://github.com/...">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <h3 class="h6 font-weight-700 mb-3">Languages</h3>
+                            <div class="form-group mb-3">
+                                <label class="form-label font-weight-600 mb-2">Languages Spoken (comma separated)</label>
+                                <input type="text" name="languages" class="form-control" value="<?php echo htmlspecialchars($user['languages'] ?? ''); ?>" placeholder="English, Spanish, French...">
                             </div>
                         </div>
                         
@@ -89,7 +151,7 @@ include '../../views/partials/header.php';
                     </div>
                     <h4 class="h6 font-weight-700 mb-1"><?php echo htmlspecialchars($user['full_name']); ?></h4>
                     <p class="text-muted small mb-3"><?php echo htmlspecialchars($user['email']); ?></p>
-                    <a href="<?php echo SITE_URL; ?>/profile.php?id=<?php echo $userId; ?>" class="btn btn-outline btn-sm btn-block" target="_blank">
+                    <a href="<?php echo SITE_URL; ?>/profile?id=<?php echo $userId; ?>" class="btn btn-outline btn-sm btn-block" target="_blank">
                         Preview Public Profile
                     </a>
                 </div>

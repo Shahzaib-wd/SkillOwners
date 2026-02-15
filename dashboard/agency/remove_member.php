@@ -3,7 +3,7 @@ require_once '../../config.php';
 requireLogin();
 
 if (getUserRole() !== 'agency') {
-    redirect('/dashboard/agency.php');
+    redirect('/dashboard/agency');
 }
 
 require_once '../../models/AgencyMember.php';
@@ -16,7 +16,7 @@ $agencyController = new AgencyController();
 // Check permission
 if (!hasAgencyPermission($agencyId, 'remove_members')) {
     showError('You do not have permission to remove members.');
-    redirect('/dashboard/agency.php');
+    redirect('/dashboard/agency');
 }
 
 // Get member ID
@@ -24,7 +24,7 @@ $memberId = $_GET['id'] ?? 0;
 
 if (empty($memberId)) {
     showError('Invalid member ID.');
-    redirect('/dashboard/agency.php');
+    redirect('/dashboard/agency');
 }
 
 // Get member details
@@ -32,7 +32,7 @@ $member = $memberModel->getMemberById($memberId);
 
 if (!$member || $member['agency_id'] != $agencyId) {
     showError('Member not found.');
-    redirect('/dashboard/agency.php');
+    redirect('/dashboard/agency');
 }
 
 // Handle confirmation
@@ -51,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
     
-    redirect('/dashboard/agency.php#team');
+    redirect('/dashboard/agency#team');
 }
 
 include '../../views/partials/header.php';
@@ -138,7 +138,7 @@ include '../../views/partials/header.php';
                 <button type="submit" name="confirm" value="yes" class="btn btn-danger">
                     <i class="fas fa-trash"></i> Remove Member
                 </button>
-                <a href="<?php echo SITE_URL; ?>/dashboard/agency.php#team" class="btn btn-outline">
+                <a href="<?php echo SITE_URL; ?>/dashboard/agency#team" class="btn btn-outline">
                     Cancel
                 </a>
             </div>

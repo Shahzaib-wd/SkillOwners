@@ -3,7 +3,7 @@ require_once '../../config.php';
 requireLogin();
 
 if (getUserRole() !== 'agency') {
-    redirect('/dashboard/agency.php');
+    redirect('/dashboard/agency');
 }
 
 require_once '../../models/AgencyMember.php';
@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         if ($result['success']) {
             showSuccess($result['message']);
-            redirect('/dashboard/agency.php#invitations');
+            redirect('/dashboard/agency#invitations');
         } else {
             showError($result['message']);
         }
@@ -104,7 +104,7 @@ include '../../views/partials/header.php';
 <div class="page-container">
     <div class="container">
         <div class="mb-4">
-            <a href="<?php echo SITE_URL; ?>/dashboard/agency.php" class="btn btn-outline">
+            <a href="<?php echo SITE_URL; ?>/dashboard/agency" class="btn btn-outline">
                 <i class="fas fa-arrow-left"></i> Back to Dashboard
             </a>
         </div>
@@ -165,7 +165,7 @@ include '../../views/partials/header.php';
                     <button type="submit" class="btn btn-primary">
                         <i class="fas fa-paper-plane"></i> Send Invitation
                     </button>
-                    <a href="<?php echo SITE_URL; ?>/dashboard/agency.php" class="btn btn-outline">
+                    <a href="<?php echo SITE_URL; ?>/dashboard/agency" class="btn btn-outline">
                         Cancel
                     </a>
                 </div>

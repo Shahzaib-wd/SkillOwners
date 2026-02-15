@@ -3,7 +3,7 @@ require_once '../../config.php';
 requireLogin();
 
 if (getUserRole() !== 'buyer') {
-    redirect('/dashboard/' . getUserRole() . '.php');
+    redirect('/dashboard/' . getUserRole());
 }
 
 require_once '../../models/Order.php';
@@ -33,7 +33,7 @@ include '../../views/partials/header.php';
                     </div>
                     <h3>No Orders Yet</h3>
                     <p class="text-muted">You haven't placed any orders yet. Browse services to get started.</p>
-                    <a href="<?php echo SITE_URL; ?>/browse.php" class="btn btn-primary mt-3">Browse Services</a>
+                    <a href="<?php echo SITE_URL; ?>/browse" class="btn btn-primary mt-3">Browse Services</a>
                 </div>
             <?php else: ?>
                 <div class="data-table-container">
@@ -80,7 +80,7 @@ include '../../views/partials/header.php';
 
                                             <?php if ($order['status'] !== 'completed' && $order['status'] !== 'cancelled'): ?>
                                                 <?php if (!$order['buyer_confirmed']): ?>
-                                                    <form action="<?php echo SITE_URL; ?>/dashboard/update_order_status.php" method="POST" class="d-inline">
+                                                    <form action="<?php echo SITE_URL; ?>/dashboard/update_order_status" method="POST" class="d-inline">
                                                         <input type="hidden" name="order_id" value="<?php echo $order['id']; ?>">
                                                         <input type="hidden" name="csrf_token" value="<?php echo generateCSRFToken(); ?>">
                                                         <button type="submit" class="btn btn-sm btn-primary">
@@ -93,7 +93,7 @@ include '../../views/partials/header.php';
                                                     </span>
                                                 <?php endif; ?>
                                             <?php endif; ?>
-                                            <a href="<?php echo SITE_URL; ?>/chat.php?receiver_id=<?php echo $order['seller_id']; ?>" class="btn btn-sm btn-outline">
+                                            <a href="<?php echo SITE_URL; ?>/chat?receiver_id=<?php echo $order['seller_id']; ?>" class="btn btn-sm btn-outline">
                                                 <i class="fas fa-comment"></i> Contact
                                             </a>
                                         </div>
@@ -118,7 +118,7 @@ include '../../views/partials/header.php';
                 <h5 class="modal-title font-weight-700">Leave a Review</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="<?php echo SITE_URL; ?>/submit_review.php" method="POST">
+            <form action="<?php echo SITE_URL; ?>/submit_review" method="POST">
                 <div class="modal-body p-4">
                     <input type="hidden" name="order_id" id="modalOrderId">
                     <input type="hidden" name="csrf_token" value="<?php echo generateCSRFToken(); ?>">

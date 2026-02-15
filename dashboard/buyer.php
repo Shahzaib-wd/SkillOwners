@@ -2,6 +2,6 @@
 require_once '../config.php';
 requireLogin();
 if (getUserRole() !== 'buyer') {
-    redirect('/dashboard/' . getUserRole() . '.php');
+    redirect('/dashboard/' . getUserRole());
 }
-redirect('/dashboard/buyer/index.php');
+redirect('/dashboard/buyer/index');

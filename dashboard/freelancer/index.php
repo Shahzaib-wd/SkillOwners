@@ -26,6 +26,12 @@ $gigCount = count($gigs);
 $projectCount = count($projects);
 $orderCount = count($orders);
 
+// Analytics & Earnings
+$userGigStats = $gigModel->getUserStats($userId);
+$totalEarnings = $orderModel->getSellerEarnings($userId);
+$totalImpressions = $userGigStats['total_impressions'] ?? 0;
+$totalClicks = $userGigStats['total_clicks'] ?? 0;
+
 include '../../views/partials/header.php';
 ?>
 
@@ -48,39 +54,49 @@ include '../../views/partials/header.php';
                         <h5 class="mb-1">Agency Invitations</h5>
                         <p class="mb-0 text-muted">You have <?php echo count($pendingInvitations); ?> pending invitations to join agencies.</p>
                     </div>
-                    <a href="agencies.php" class="btn btn-primary btn-sm ml-auto">View Invitations</a>
+                    <a href="agencies" class="btn btn-primary btn-sm ml-auto">View Invitations</a>
                 </div>
             </div>
         <?php endif; ?>
 
         <div class="stats-grid">
             <div class="stat-card">
-                <div class="stat-icon primary">
-                    <i class="fas fa-briefcase"></i>
-                </div>
-                <div class="stat-data">
-                    <span class="stat-value"><?php echo $gigCount; ?></span>
-                    <span class="stat-label">Active Gigs</span>
-                </div>
-            </div>
-            
-            <div class="stat-card">
                 <div class="stat-icon success">
-                    <i class="fas fa-folder-open"></i>
+                    <i class="fas fa-wallet"></i>
                 </div>
                 <div class="stat-data">
-                    <span class="stat-value"><?php echo $projectCount; ?></span>
-                    <span class="stat-label">Portfolio Projects</span>
+                    <span class="stat-value">$<?php echo number_format($totalEarnings, 2); ?></span>
+                    <span class="stat-label">Total Earnings</span>
                 </div>
             </div>
-            
+
+            <div class="stat-card">
+                <div class="stat-icon primary">
+                    <i class="fas fa-eye"></i>
+                </div>
+                <div class="stat-data">
+                    <span class="stat-value"><?php echo number_format($totalImpressions); ?></span>
+                    <span class="stat-label">Impressions</span>
+                </div>
+            </div>
+
             <div class="stat-card">
                 <div class="stat-icon info">
+                    <i class="fas fa-mouse-pointer"></i>
+                </div>
+                <div class="stat-data">
+                    <span class="stat-value"><?php echo number_format($totalClicks); ?></span>
+                    <span class="stat-label">Gig Clicks</span>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon warning">
                     <i class="fas fa-shopping-cart"></i>
                 </div>
                 <div class="stat-data">
                     <span class="stat-value"><?php echo $orderCount; ?></span>
-                    <span class="stat-label">Total Orders</span>
+                    <span class="stat-label">Completed Orders</span>
                 </div>
             </div>
         </div>
@@ -90,7 +106,7 @@ include '../../views/partials/header.php';
                 <div class="dashboard-card mb-4">
                     <div class="d-flex justify-content-between align-items-center mb-4">
                         <h3 class="h5 mb-0">Recent Orders</h3>
-                        <a href="orders.php" class="btn btn-link btn-sm">View All</a>
+                        <a href="orders" class="btn btn-link btn-sm">View All</a>
                     </div>
                     
                     <?php if (empty($orders)): ?>
@@ -139,7 +155,7 @@ include '../../views/partials/header.php';
                             <i class="fas fa-folder-plus"></i> Add Portfolio Project
                         </a>
                         <hr>
-                        <a href="<?php echo SITE_URL; ?>/profile.php?id=<?php echo $userId; ?>" class="btn btn-outline btn-block" target="_blank">
+                        <a href="<?php echo SITE_URL; ?>/profile?id=<?php echo $userId; ?>" class="btn btn-outline btn-block" target="_blank">
                             <i class="fas fa-external-link-alt"></i> View Public Profile
                         </a>
                     </div>

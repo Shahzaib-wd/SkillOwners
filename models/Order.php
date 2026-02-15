@@ -19,6 +19,21 @@ class Order {
         $stmt = $this->conn->prepare($sql);
         return $stmt->execute($data);
     }
+
+    public function findAll() {
+        $sql = "SELECT o.*, 
+                       g.title as gig_title, 
+                       u1.full_name as buyer_name,
+                       u2.full_name as seller_name
+                FROM orders o
+                JOIN gigs g ON o.gig_id = g.id
+                JOIN users u1 ON o.buyer_id = u1.id
+                JOIN users u2 ON o.seller_id = u2.id
+                ORDER BY o.created_at DESC";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
     
     public function findById($id) {
         $sql = "SELECT o.*, 
@@ -147,5 +162,36 @@ class Order {
             $this->conn->rollBack();
             return false;
         }
+    }
+    public function getSellerEarnings($userId) {
+        $sql = "SELECT SUM(amount) as total FROM orders WHERE seller_id = :user_id AND status = 'completed'";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute(['user_id' => $userId]);
+        return (float)($stmt->fetchColumn() ?: 0);
+    }
+
+    public function getStats() {
+        $stats = [
+            'total_orders' => 0,
+            'pending_orders' => 0,
+            'completed_orders' => 0
+        ];
+        
+        $sql = "SELECT COUNT(*) as total FROM orders";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->fetch();
+        
+        $stats['total_orders'] = $result['total'] ?? 0;
+        
+        $sql = "SELECT status, COUNT(*) as count FROM orders GROUP BY status";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute();
+        $statuses = $stmt->fetchAll(PDO::FETCH_KEY_PAIR);
+        
+        $stats['pending_orders'] = $statuses['pending'] ?? 0;
+        $stats['completed_orders'] = $statuses['completed'] ?? 0;
+        
+        return $stats;
     }
 }

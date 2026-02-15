@@ -2,8 +2,9 @@
 require_once '../config.php';
 requireLogin();
 
-if (getUserRole() !== 'freelancer') {
-    redirect('/dashboard/' . getUserRole() . '.php');
+$userRole = getUserRole();
+if ($userRole !== 'freelancer' && $userRole !== 'agency') {
+    redirect('/dashboard/' . $userRole);
 }
 
 require_once '../models/Gig.php';
@@ -15,7 +16,7 @@ $userId = $_SESSION['user_id'];
 $gigs = $gigModel->findByUserId($userId);
 if (count($gigs) >= MAX_GIGS) {
     showError('You have reached the maximum number of gigs allowed.');
-    redirect('/dashboard/freelancer.php');
+    redirect('/dashboard/freelancer');
 }
 
 $errors = [];
@@ -75,7 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if ($gigModel->create($data)) {
             showSuccess('Gig created successfully!');
-            redirect('/dashboard/freelancer.php');
+            redirect('/dashboard/freelancer');
         } else {
             $errors[] = 'Failed to create gig. Please try again.';
         }
@@ -208,7 +209,7 @@ include '../views/partials/header.php';
 
                 <div class="d-flex gap-2">
                     <button type="submit" class="btn btn-primary">Create Gig</button>
-                    <a href="<?php echo SITE_URL; ?>/dashboard/freelancer.php" class="btn btn-secondary">Cancel</a>
+                    <a href="<?php echo SITE_URL; ?>/dashboard/freelancer" class="btn btn-secondary">Cancel</a>
                 </div>
             </form>
         </div>

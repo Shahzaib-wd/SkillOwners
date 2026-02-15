@@ -45,7 +45,7 @@ include 'views/partials/header.php';
                     <li>Spam or fraudulent content</li>
                     <li>Violation of intellectual property</li>
                     <li>Harassment or abusive behavior</li>
-                    <li>Circumventing platform fees</li>
+                    <li>Sharing harmful or malicious software</li>
                 </ul>
             </div>
         </div>

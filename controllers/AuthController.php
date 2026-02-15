@@ -23,7 +23,7 @@ class AuthController {
         // Create user
         if ($this->userModel->create($fullName, $email, $password, $role)) {
             showSuccess('Account created successfully! Please log in.');
-            redirect('/login.php');
+            redirect('/login');
             return true;
         } else {
             showError('Registration failed. Please try again.');
@@ -52,14 +52,20 @@ class AuthController {
         $_SESSION['user_image'] = $user['profile_image'];
         $_SESSION['login_time'] = time();
         
-        // Redirect to dashboard
-        redirect('/dashboard/' . $user['role'] . '.php');
+        // Redirect buyers to browse.php, others to their dashboard
+        if ($user['role'] === 'buyer') {
+            redirect('/browse');
+        } elseif ($user['role'] === 'admin') {
+            redirect('/dashboard/alpha');
+        } else {
+            redirect('/dashboard/' . $user['role']);
+        }
         return true;
     }
     
     public function logout() {
         session_destroy();
-        redirect('/login.php');
+        redirect('/login');
     }
     
     public function requestPasswordReset($email) {
@@ -68,40 +74,56 @@ class AuthController {
             return false;
         }
         
-        // Generate reset token
-        $token = bin2hex(random_bytes(32));
-        $expiresAt = date('Y-m-d H:i:s', time() + PASSWORD_RESET_EXPIRY);
+        // Generate 6-digit OTP
+        $otp = rand(100000, 999999);
+        // OTP expires in 15 minutes
+        $expiresAt = date('Y-m-d H:i:s', time() + 900); 
         
-        // Save token to database
+        // Delete any existing tokens for this email to keep it clean
         $conn = getDBConnection();
+        $sql = "DELETE FROM password_resets WHERE email = :email";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute(['email' => $email]);
+
+        // Save OTP to database
         $sql = "INSERT INTO password_resets (email, token, expires_at) VALUES (:email, :token, :expires_at)";
         $stmt = $conn->prepare($sql);
         $stmt->execute([
             'email' => $email,
-            'token' => $token,
+            'token' => $otp,
             'expires_at' => $expiresAt
         ]);
         
-        // Send reset email
-        $this->sendPasswordResetEmail($email, $token);
+        // Send OTP email
+        $this->sendPasswordResetEmail($email, $otp);
         
-        showSuccess('Password reset link has been sent to your email');
         return true;
     }
     
-    public function resetPassword($token, $newPassword) {
+    public function verifyOTP($email, $otp) {
         $conn = getDBConnection();
-        
-        // Check if token is valid and not expired
-        $sql = "SELECT * FROM password_resets WHERE token = :token AND expires_at > NOW() ORDER BY created_at DESC LIMIT 1";
+        $sql = "SELECT token FROM password_resets WHERE email = :email AND expires_at > NOW()"; // Get token for email
         $stmt = $conn->prepare($sql);
-        $stmt->execute(['token' => $token]);
-        $reset = $stmt->fetch();
+        $stmt->execute(['email' => $email]);
         
-        if (!$reset) {
-            showError('Invalid or expired reset token');
+        $storedToken = $stmt->fetchColumn();
+        
+        // Debug
+        error_log("VerifyOTP: Input='$otp', Stored='$storedToken'");
+        
+        if ($storedToken && (string)$storedToken === (string)trim($otp)) {
+            return true;
+        }
+        return false;
+    }
+
+    public function resetPassword($email, $otp, $newPassword) {
+        if (!$this->verifyOTP($email, $otp)) {
+            showError('Invalid or expired OTP');
             return false;
         }
+
+        $conn = getDBConnection();
         
         // Update password
         $hashedPassword = password_hash($newPassword, PASSWORD_BCRYPT);
@@ -109,46 +131,33 @@ class AuthController {
         $stmt = $conn->prepare($sql);
         $stmt->execute([
             'password' => $hashedPassword,
-            'email' => $reset['email']
+            'email' => $email
         ]);
         
-        // Delete used token
-        $sql = "DELETE FROM password_resets WHERE token = :token";
+        // Delete used OTP
+        $sql = "DELETE FROM password_resets WHERE email = :email";
         $stmt = $conn->prepare($sql);
-        $stmt->execute(['token' => $token]);
+        $stmt->execute(['email' => $email]);
         
         showSuccess('Password reset successful! Please log in with your new password.');
         return true;
     }
     
-    private function sendPasswordResetEmail($email, $token) {
-        // Using PHPMailer (must be installed via Composer)
-        // For now, return true (implement PHPMailer integration separately)
-        $resetLink = SITE_URL . '/reset_password.php?token=' . $token;
+    private function sendPasswordResetEmail($email, $otp) {
+        require_once __DIR__ . '/../helpers/MailHelper.php';
         
-        // Log the reset link for development
-        error_log("Password reset link for $email: $resetLink");
+        $subject = 'Password Reset OTP - ' . SITE_NAME;
+        $body = "
+        <div style='font-family: Arial, sans-serif; line-height: 1.6; color: #333;'>
+            <h2>Password Reset Request</h2>
+            <p>Your One-Time Password (OTP) to reset your password is:</p>
+            <h1 style='background-color: #f3f4f6; padding: 10px; display: inline-block; letter-spacing: 5px; border-radius: 5px;'>$otp</h1>
+            <p>This code will expire in 15 minutes.</p>
+            <p>If you did not request this change, please ignore this email.</p>
+        </div>";
         
-        // TODO: Implement PHPMailer
-        /*
-        require 'vendor/autoload.php';
-        $mail = new PHPMailer\PHPMailer\PHPMailer();
-        $mail->isSMTP();
-        $mail->Host = SMTP_HOST;
-        $mail->SMTPAuth = true;
-        $mail->Username = SMTP_USER;
-        $mail->Password = SMTP_PASS;
-        $mail->SMTPSecure = PHPMailer\PHPMailer\PHPMailer::ENCRYPTION_STARTTLS;
-        $mail->Port = SMTP_PORT;
+        error_log("Sending OTP $otp to $email");
         
-        $mail->setFrom(SMTP_FROM, SMTP_FROM_NAME);
-        $mail->addAddress($email);
-        $mail->Subject = 'Password Reset - Skill Owners';
-        $mail->Body = "Click here to reset your password: $resetLink";
-        
-        $mail->send();
-        */
-        
-        return true;
+        return MailHelper::send($email, $subject, $body);
     }
 }

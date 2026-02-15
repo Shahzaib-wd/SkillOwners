@@ -13,7 +13,7 @@ $token = $_GET['token'] ?? '';
 
 if (empty($token)) {
     showError('Invalid invitation link.');
-    redirect('/dashboard/freelancer.php');
+    redirect('/dashboard/freelancer');
 }
 
 // Get invitation details
@@ -21,13 +21,13 @@ $invitation = $invitationModel->getByToken($token);
 
 if (!$invitation) {
     showError('Invitation not found.');
-    redirect('/dashboard/freelancer.php');
+    redirect('/dashboard/freelancer');
 }
 
 // Check if invitation is valid
 if ($invitation['status'] !== 'pending') {
     showError('This invitation is no longer valid.');
-    redirect('/dashboard/freelancer.php');
+    redirect('/dashboard/freelancer');
 }
 
 if (strtotime($invitation['expires_at']) < time()) {
@@ -37,9 +37,9 @@ if (strtotime($invitation['expires_at']) < time()) {
 
 // Verify user is a freelancer
 if (!isLoggedIn() || getUserRole() !== 'freelancer') {
-    $_SESSION['redirect_after_login'] = SITE_URL . '/dashboard/agency/accept_invitation.php?token=' . $token;
+    $_SESSION['redirect_after_login'] = SITE_URL . '/dashboard/agency/accept_invitation?token=' . $token;
     showError('Please log in as a freelancer to accept this invitation.');
-    redirect('/login.php');
+    redirect('/login');
 }
 
 // Verify email matches
@@ -63,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
             showError($result['message']);
         }
-        redirect('/dashboard/freelancer.php');
+        redirect('/dashboard/freelancer');
         
     } elseif ($action === 'reject') {
         $result = $invitationModel->reject($token, $_SESSION['user_id']);
@@ -205,7 +205,7 @@ include '../../views/partials/header.php';
         
         <p class="text-muted mt-4">
             <small>
-                Not the right account? <a href="<?php echo SITE_URL; ?>/logout.php">Log out</a> and try again.
+                Not the right account? <a href="<?php echo SITE_URL; ?>/logout">Log out</a> and try again.
             </small>
         </p>
     </div>

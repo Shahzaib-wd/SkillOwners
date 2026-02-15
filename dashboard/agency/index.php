@@ -10,12 +10,14 @@ require_once '../../models/Order.php';
 require_once '../../models/AgencyMember.php';
 require_once '../../models/AgencyInvitation.php';
 require_once '../../models/Message.php';
+require_once '../../models/Gig.php';
 
 $agencyId = $_SESSION['user_id'];
 $orderModel = new Order();
 $memberModel = new AgencyMember();
 $invitationModel = new AgencyInvitation();
 $messageModel = new Message();
+$gigModel = new Gig();
 
 $agencyConversationId = $messageModel->getOrCreateAgencyConversation($agencyId);
 $orders = $orderModel->findByBuyerId($agencyId);
@@ -24,6 +26,16 @@ $invitations = $invitationModel->getAgencyInvitations($agencyId);
 $pendingInvitationsCount = count(array_filter($invitations, function($inv) {
     return $inv['status'] === 'pending' && strtotime($inv['expires_at']) > time();
 }));
+$agencyGigs = $gigModel->getAgencyGigs($agencyId);
+$servicesCount = count(array_filter($agencyGigs, fn($g) => $g['contribution_status'] === 'approved'));
+$pendingServicesCount = count(array_filter($agencyGigs, fn($g) => $g['contribution_status'] === 'pending'));
+
+// Analytics & Earnings
+$userGigStats = $gigModel->getUserStats($agencyId);
+$totalEarnings = $orderModel->getSellerEarnings($agencyId);
+$totalImpressions = $userGigStats['total_impressions'] ?? 0;
+$totalClicks = $userGigStats['total_clicks'] ?? 0;
+
 
 include '../../views/partials/header.php';
 ?>
@@ -53,7 +65,37 @@ include '../../views/partials/header.php';
 
         <div class="stats-grid">
             <div class="stat-card">
+                <div class="stat-icon success">
+                    <i class="fas fa-wallet"></i>
+                </div>
+                <div class="stat-data">
+                    <span class="stat-value">$<?php echo number_format($totalEarnings, 2); ?></span>
+                    <span class="stat-label">Total Earnings</span>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon primary">
+                    <i class="fas fa-eye"></i>
+                </div>
+                <div class="stat-data">
+                    <span class="stat-value"><?php echo number_format($totalImpressions); ?></span>
+                    <span class="stat-label">Impressions</span>
+                </div>
+            </div>
+
+            <div class="stat-card">
                 <div class="stat-icon info">
+                    <i class="fas fa-mouse-pointer"></i>
+                </div>
+                <div class="stat-data">
+                    <span class="stat-value"><?php echo number_format($totalClicks); ?></span>
+                    <span class="stat-label">Clicks</span>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon info" style="background: #e0f2fe; color: #0ea5e9;">
                     <i class="fas fa-users"></i>
                 </div>
                 <div class="stat-data">
@@ -61,34 +103,14 @@ include '../../views/partials/header.php';
                     <span class="stat-label">Team Members</span>
                 </div>
             </div>
-            
+
             <div class="stat-card">
-                <div class="stat-icon primary">
-                    <i class="fas fa-user-shield"></i>
+                <div class="stat-icon" style="background: #fae8ff; color: #a855f7;">
+                    <i class="fas fa-concierge-bell"></i>
                 </div>
                 <div class="stat-data">
-                    <span class="stat-value"><?php echo $teamStats['admins'] ?? 0; ?></span>
-                    <span class="stat-label">Admins</span>
-                </div>
-            </div>
-            
-            <div class="stat-card">
-                <div class="stat-icon warning">
-                    <i class="fas fa-paper-plane"></i>
-                </div>
-                <div class="stat-data">
-                    <span class="stat-value"><?php echo $pendingInvitationsCount; ?></span>
-                    <span class="stat-label">Pending Invites</span>
-                </div>
-            </div>
-            
-            <div class="stat-card">
-                <div class="stat-icon success">
-                    <i class="fas fa-shopping-cart"></i>
-                </div>
-                <div class="stat-data">
-                    <span class="stat-value"><?php echo count($orders); ?></span>
-                    <span class="stat-label">Total Orders</span>
+                    <span class="stat-value"><?php echo $servicesCount; ?></span>
+                    <span class="stat-label">Agency Services</span>
                 </div>
             </div>
         </div>
@@ -127,14 +149,17 @@ include '../../views/partials/header.php';
                 <div class="dashboard-card mb-4">
                     <h3 class="h5 mb-4">Agency Actions</h3>
                     <div class="d-grid gap-2">
-                        <a href="team.php?action=invite" class="btn btn-primary">
+                        <a href="services" class="btn btn-primary">
+                            <i class="fas fa-concierge-bell"></i> View Agency Services
+                        </a>
+                        <a href="team.php?action=invite" class="btn btn-outline">
                             <i class="fas fa-user-plus"></i> Invite Team Member
                         </a>
-                        <a href="team.php" class="btn btn-outline">
+                        <a href="team" class="btn btn-outline">
                             <i class="fas fa-users-cog"></i> Manage All Members
                         </a>
                         <hr>
-                        <a href="invitations.php" class="btn btn-outline">
+                        <a href="invitations" class="btn btn-outline">
                             <i class="fas fa-history"></i> Invitation History
                         </a>
                     </div>

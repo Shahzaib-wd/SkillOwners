@@ -2,6 +2,6 @@
 require_once '../config.php';
 requireLogin();
 if (getUserRole() !== 'agency') {
-    redirect('/dashboard/' . getUserRole() . '.php');
+    redirect('/dashboard/' . getUserRole());
 }
-redirect('/dashboard/agency/index.php');
+redirect('/dashboard/agency/index');

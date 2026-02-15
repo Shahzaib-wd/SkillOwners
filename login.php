@@ -8,7 +8,11 @@ require_once 'config.php';
 // Redirect if already logged in
 if (isLoggedIn()) {
     $role = getUserRole();
-    redirect('/dashboard/' . $role . '.php');
+    if ($role === 'admin') {
+        redirect('/dashboard/alpha');
+    } else {
+        redirect('/dashboard/' . $role);
+    }
 }
 
 $error = getError();
@@ -96,7 +100,7 @@ include 'views/partials/header.php';
                     <input type="checkbox" id="remember" name="remember">
                     <label for="remember" style="font-size: 0.875rem; margin-left: 0.25rem;">Remember me</label>
                 </div>
-                <a href="<?php echo SITE_URL; ?>/reset_password.php" style="font-size: 0.875rem; color: var(--primary);">Forgot password?</a>
+                <a href="<?php echo SITE_URL; ?>/reset_password" style="font-size: 0.875rem; color: var(--primary);">Forgot password?</a>
             </div>
             
             <button type="submit" class="btn btn-primary" style="width: 100%; margin-bottom: 1rem;">
@@ -105,7 +109,7 @@ include 'views/partials/header.php';
             
             <p class="text-center" style="font-size: 0.875rem; color: var(--muted-foreground);">
                 Don't have an account? 
-                <a href="<?php echo SITE_URL; ?>/register.php" style="color: var(--primary); font-weight: 500;">Sign up</a>
+                <a href="<?php echo SITE_URL; ?>/register" style="color: var(--primary); font-weight: 500;">Sign up</a>
             </p>
         </form>
     </div>

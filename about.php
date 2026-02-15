@@ -26,7 +26,7 @@ include 'views/partials/header.php';
                 <h2 class="h3 mb-3">How It Works</h2>
                 <ol>
                     <li><strong>Find Talent:</strong> Browse thousands of verified freelancers and agencies</li>
-                    <li><strong>Hire Securely:</strong> Review portfolios and place orders with confidence</li>
+                    <li><strong>Connect Directly:</strong> Message experts to discuss terms, budget, and payment</li>
                     <li><strong>Get Results:</strong> Receive quality deliveries on time</li>
                 </ol>
             </div>

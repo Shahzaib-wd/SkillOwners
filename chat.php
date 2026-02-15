@@ -80,38 +80,68 @@ include 'views/partials/header.php';
 }
 .chat-messages {
     flex: 1;
-    padding: 1rem;
+    padding: 1.5rem;
     overflow-y: auto;
+    background: #f8fafc;
 }
-.message {
-    margin-bottom: 1rem;
-    max-width: 70%;
+.message-wrapper {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+    max-width: 80%;
 }
-.message-sent {
+.message-sent-wrapper {
     margin-left: auto;
-    text-align: right;
+    flex-direction: row-reverse;
+}
+.message-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--primary);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 0.8rem;
+    flex-shrink: 0;
+    overflow: hidden;
+}
+.message-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.message-body {
+    display: flex;
+    flex-direction: column;
+}
+.message-sent-wrapper .message-body {
+    align-items: flex-end;
 }
 .message-content {
-    display: inline-block;
     padding: 0.75rem 1rem;
-    border-radius: var(--radius);
+    border-radius: 12px;
+    background: white;
+    color: var(--foreground);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    border: 1px solid var(--border);
+    position: relative;
+}
+.message-sent .message-content {
     background: var(--primary);
     color: var(--primary-foreground);
-}
-.message-received .message-content {
-    background: var(--muted);
-    color: var(--foreground);
+    border: none;
 }
 .message-sender {
     font-size: 0.75rem;
     font-weight: 700;
-    color: var(--primary);
-    margin-bottom: 2px;
-    display: block;
+    color: var(--muted-foreground);
+    margin-bottom: 4px;
 }
 .message-sent .message-sender {
-    text-align: right;
-    color: var(--muted-foreground);
+    display: none; /* Hide sender name for self on sent messages */
 }
 .role-tag {
     font-size: 0.6rem;
@@ -148,17 +178,23 @@ include 'views/partials/header.php';
     font-size: 0.75rem;
     font-weight: 500;
 }
+
+    .report-link {
+        font-size: 0.7rem;
+        color: #ef4444; /* Red color */
+        margin-left: 8px;
+        text-decoration: underline;
+        cursor: pointer;
+        display: inline-block;
+    }
+    .report-link:hover {
+        color: #dc2626;
+    }
 </style>
 
 <div class="chat-container">
     <div class="container">
-        <div class="row mb-3">
-            <div class="col">
-                <a href="<?php echo getUserRole() === 'agency' ? '/dashboard/agency.php' : '/dashboard/' . getUserRole() . '.php'; ?>" class="btn btn-outline">
-                    <i class="fas fa-arrow-left"></i> Back to Dashboard
-                </a>
-            </div>
-        </div>
+
         
         <div class="chat-box">
             <div class="chat-header">
@@ -200,6 +236,7 @@ let conversationLastSignature = null;
 let conversationIsFetching = false;
 let conversationIsSending = false;
 let conversationPollInterval = null;
+let currentUserRole = '<?php echo getUserRole(); ?>';
 
 // Local definitions to ensure no caching issues or loading order issues
 function displayMessagesLocally(messages) {
@@ -208,8 +245,8 @@ function displayMessagesLocally(messages) {
 
     container.innerHTML = '';
     messages.forEach(msg => {
-        const messageDiv = document.createElement('div');
-        messageDiv.className = msg.is_sender ? 'message message-sent' : 'message message-received';
+        const messageWrapper = document.createElement('div');
+        messageWrapper.className = msg.is_sender ? 'message-wrapper message-sent-wrapper message-sent' : 'message-wrapper message-received';
         
         let roleTag = '';
         if (msg.sender_role) {
@@ -217,15 +254,33 @@ function displayMessagesLocally(messages) {
             roleTag = `<span class="role-tag ${roleClass}">${escapeHtml(msg.sender_role)}</span>`;
         }
 
-        messageDiv.innerHTML = `
-            <div class="message-sender">
-                ${escapeHtml(msg.sender_name || 'Unknown')}
-                ${roleTag}
+        let avatar = '';
+        if (msg.sender_image) {
+            avatar = `<img src="<?php echo SITE_URL; ?>/uploads/${escapeHtml(msg.sender_image)}" alt="${escapeHtml(msg.sender_name)}">`;
+        } else {
+            avatar = (msg.sender_name || 'U').charAt(0).toUpperCase();
+        }
+
+        let reportLink = '';
+        if (currentUserRole === 'buyer' && msg.is_abusive && !msg.is_sender) {
+            reportLink = `<span class="report-link" onclick="reportMessage(${msg.id}, ${msg.sender_id})">Report</span>`;
+        }
+
+        messageWrapper.innerHTML = `
+            <div class="message-avatar">${avatar}</div>
+            <div class="message-body">
+                <div class="message-sender">
+                    ${escapeHtml(msg.sender_name || 'Unknown')}
+                    ${roleTag}
+                </div>
+                <div class="message-content">
+                    ${escapeHtml(msg.message)}
+                    ${reportLink}
+                </div>
+                <div class="message-time">${formatTime(msg.created_at)}</div>
             </div>
-            <div class="message-content">${escapeHtml(msg.message)}</div>
-            <div class="message-time">${formatTime(msg.created_at)}</div>
         `;
-        container.appendChild(messageDiv);
+        container.appendChild(messageWrapper);
     });
 }
 
@@ -250,7 +305,7 @@ function sendMessageConversation(conversationId, message) {
     conversationIsSending = true;
     if (button) button.disabled = true;
 
-    ajaxRequest('chat_api.php', 'POST', {
+    ajaxRequest('chat_api', 'POST', {
         action: 'send_message',
         conversation_id: conversationId,
         message: message
@@ -278,7 +333,7 @@ function loadConversationMessages(conversationId) {
     const container = document.getElementById('chatMessages');
     const wasNearBottom = container ? isNearBottom(container, 80) : true;
 
-    const url = `chat_api.php?action=get_messages&conversation_id=${conversationId}&_=${Date.now()}`;
+    const url = `chat_api?action=get_messages&conversation_id=${conversationId}&_=${Date.now()}`;
 
     ajaxRequest(url)
         .then(data => {
@@ -314,6 +369,32 @@ function startConversationPolling(conversationId) {
     conversationPollInterval = setInterval(() => {
         loadConversationMessages(conversationId);
     }, 3000); // Poll every 3 seconds
+}
+
+function reportMessage(messageId, reportedId) {
+    if (!confirm('Are you sure you want to report this message as abusive? This action cannot be undone.')) {
+        return;
+    }
+
+    const reason = prompt('Please provide a reason for reporting (optional):', 'Abusive language');
+    if (reason === null) return; // Cancelled
+
+    ajaxRequest('chat_api', 'POST', {
+        action: 'submit_report',
+        conversation_id: currentConversationId,
+        message_id: messageId,
+        reported_id: reportedId,
+        reason: reason || 'Abusive language'
+    }).then(data => {
+        if (data.success) {
+            alert(data.message);
+        } else {
+            alert('Failed to submit report: ' + data.message);
+        }
+    }).catch(error => {
+        console.error('Error reporting message:', error);
+        alert('An error occurred while reporting the message.');
+    });
 }
 
 document.addEventListener('DOMContentLoaded', function() {

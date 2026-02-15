@@ -140,7 +140,7 @@
             <i class="fas fa-inbox"></i> Messages
             <span id="inboxUnreadBadge" class="unread-badge" style="display: none;">0</span>
         </h3>
-        <a href="<?php echo SITE_URL; ?>/browse.php" class="btn btn-sm btn-outline">
+        <a href="<?php echo SITE_URL; ?>/browse" class="btn btn-sm btn-outline">
             <i class="fas fa-search"></i> Find Someone
         </a>
     </div>
@@ -164,7 +164,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function loadInbox() {
-    ajaxRequest('<?php echo SITE_URL; ?>/chat_api.php?action=get_inbox&_=' + Date.now())
+    ajaxRequest('<?php echo SITE_URL; ?>/chat_api?action=get_inbox&_=' + Date.now())
         .then(data => {
             if (data.success) {
                 renderInbox(data.conversations);
@@ -221,14 +221,13 @@ function renderInbox(conversations) {
         const lastMessage = escapeHtml(conv.last_message || 'No messages');
         const unreadCount = parseInt(conv.unread_count) || 0;
         const timeStr = formatTimeAgo(conv.last_message_time);
-        const conversationUrl = `<?php echo SITE_URL; ?>/chat.php?conversation_id=${conv.id}`;
+        const conversationUrl = `<?php echo SITE_URL; ?>/chat?conversation_id=${conv.id}`;
         
         // Determine avatar
-        let avatar = '';
-        if (conv.type === 'agency_internal') {
+        if (conv.display_image) {
+            avatar = `<img src="<?php echo SITE_URL; ?>/uploads/${escapeHtml(conv.display_image)}" alt="${displayName}">`;
+        } else if (conv.type === 'agency_internal') {
             avatar = '<i class="fas fa-users"></i>';
-        } else if (conv.display_image) {
-            avatar = `<img src="${escapeHtml(conv.display_image)}" alt="${displayName}">`;
         } else {
             avatar = displayName.charAt(0).toUpperCase();
         }
@@ -262,7 +261,7 @@ function renderInbox(conversations) {
 }
 
 function updateUnreadBadge() {
-    ajaxRequest('<?php echo SITE_URL; ?>/chat_api.php?action=get_unread_count&_=' + Date.now())
+    ajaxRequest('<?php echo SITE_URL; ?>/chat_api?action=get_unread_count&_=' + Date.now())
         .then(data => {
             if (data.success) {
                 const badge = document.getElementById('inboxUnreadBadge');

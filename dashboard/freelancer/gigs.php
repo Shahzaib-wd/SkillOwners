@@ -81,7 +81,7 @@ include '../../views/partials/header.php';
                                     </td>
                                     <td class="text-right">
                                         <div class="d-flex justify-content-end gap-2">
-                                            <a href="<?php echo SITE_URL; ?>/gig.php?id=<?php echo $gig['id']; ?>" class="btn btn-sm btn-outline" title="View Public Page">
+                                            <a href="<?php echo SITE_URL; ?>/gig?id=<?php echo $gig['id']; ?>" class="btn btn-sm btn-outline" title="View Public Page">
                                                 <i class="fas fa-eye"></i>
                                             </a>
                                             <a href="<?php echo SITE_URL; ?>/dashboard/edit_gig.php?id=<?php echo $gig['id']; ?>" class="btn btn-sm btn-outline" title="Edit Gig">
@@ -105,7 +105,7 @@ include '../../views/partials/header.php';
 <script>
 function confirmDelete(id) {
     if (confirm('Are you sure you want to delete this gig? This action cannot be undone.')) {
-        window.location.href = '<?php echo SITE_URL; ?>/dashboard/delete_gig.php?id=' + id;
+        window.location.href = '<?php echo SITE_URL; ?>/dashboard/delete_gig?id=' + id;
     }
 }
 </script>

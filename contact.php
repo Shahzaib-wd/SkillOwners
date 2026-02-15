@@ -12,11 +12,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($name) || empty($email) || empty($message)) {
         showError('All fields are required');
     } else {
-        // In a real app, you would send an email or save to DB here
-        // For now, we simulate success
+        require_once 'models/ContactMessage.php';
+        $contactModel = new ContactMessage();
+        $contactModel->create($name, $email, $subject, $message);
+
+        require_once 'helpers/MailHelper.php';
+        
+        $to = ADMIN_EMAIL;
+        $fullSubject = "Contact Form: $subject";
+        $body = "
+        <h3>New Contact Form Submission</h3>
+        <p><strong>Name:</strong> $name</p>
+        <p><strong>Email:</strong> $email</p>
+        <p><strong>Subject:</strong> $subject</p>
+        <p><strong>Message:</strong><br>" . nl2br($message) . "</p>";
+        
+        MailHelper::send($to, $fullSubject, $body);
         showSuccess('Message sent successfully! Our team will get back to you within 24 hours.');
     }
-    header("Location: contact.php");
+    redirect("/contact");
     exit;
 }
 

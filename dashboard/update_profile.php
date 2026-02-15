@@ -13,7 +13,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'full_name' => sanitizeInput($_POST['full_name'] ?? ''),
         'bio' => sanitizeInput($_POST['bio'] ?? ''),
         'skills' => sanitizeInput($_POST['skills'] ?? ''),
-        'portfolio_link' => sanitizeInput($_POST['portfolio_link'] ?? '')
+        'portfolio_link' => sanitizeInput($_POST['portfolio_link'] ?? ''),
+        'professional_title' => sanitizeInput($_POST['professional_title'] ?? ''),
+        'location' => sanitizeInput($_POST['location'] ?? ''),
+        'phone' => sanitizeInput($_POST['phone'] ?? ''),
+        'experience_years' => (int)($_POST['experience_years'] ?? 0),
+        'linkedin_url' => sanitizeInput($_POST['linkedin_url'] ?? ''),
+        'twitter_url' => sanitizeInput($_POST['twitter_url'] ?? ''),
+        'github_url' => sanitizeInput($_POST['github_url'] ?? ''),
+        'languages' => sanitizeInput($_POST['languages'] ?? '')
     ];
 
     // Handle Profile Image Upload
@@ -33,12 +41,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if ($fileSize > $maxSize) {
             showError("Profile image must be less than 500kb.");
-            redirect('/dashboard/' . getUserRole() . '/profile.php');
+            redirect('/dashboard/' . getUserRole() . '/profile');
         }
 
         if (!in_array($fileExt, $allowedExt) || !in_array($fileType, $allowedType)) {
             showError("Only WebP images are allowed for profile pictures.");
-            redirect('/dashboard/' . getUserRole() . '/profile.php');
+            redirect('/dashboard/' . getUserRole() . '/profile');
         }
 
         // Generate unique filename
@@ -57,7 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['user_image'] = $newFileName;
         } else {
             showError("Failed to upload image. Please try again.");
-            redirect('/dashboard/' . getUserRole() . '/profile.php');
+            redirect('/dashboard/' . getUserRole() . '/profile');
         }
     }
 
@@ -67,7 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         showError("Failed to update profile information.");
     }
 
-    redirect('/dashboard/' . getUserRole() . '/profile.php');
+    redirect('/dashboard/' . getUserRole() . '/profile');
 }
 
-redirect('/dashboard/' . getUserRole() . '/profile.php');
+redirect('/dashboard/' . getUserRole() . '/profile');

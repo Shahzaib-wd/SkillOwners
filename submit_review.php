@@ -9,7 +9,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $token = $_POST['csrf_token'] ?? '';
     if (!verifyCSRFToken($token)) {
         showError("Invalid session. Please try again.");
-        redirect('/dashboard/buyer/orders.php');
+        redirect('/dashboard/buyer/orders');
     }
 
     $orderId = $_POST['order_id'] ?? 0;
@@ -19,18 +19,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Basic Validation
     if ($rating < 1 || $rating > 5) {
         showError("Please provide a rating between 1 and 5.");
-        redirect('/dashboard/buyer/orders.php');
+        redirect('/dashboard/buyer/orders');
     }
 
     if (empty($comment)) {
         showError("Please provide a comment for your review.");
-        redirect('/dashboard/buyer/orders.php');
+        redirect('/dashboard/buyer/orders');
     }
 
     // Profanity Filter
     if (containsProfanity($comment)) {
         showError("Your review contains inappropriate language. Please keep it professional.");
-        redirect('/dashboard/buyer/orders.php');
+        redirect('/dashboard/buyer/orders');
     }
 
     $orderModel = new Order();
@@ -38,18 +38,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (!$order || $order['buyer_id'] != $_SESSION['user_id']) {
         showError("Unauthorized order review.");
-        redirect('/dashboard/buyer/orders.php');
+        redirect('/dashboard/buyer/orders');
     }
 
     if ($order['status'] !== 'completed') {
         showError("You can only review completed orders.");
-        redirect('/dashboard/buyer/orders.php');
+        redirect('/dashboard/buyer/orders');
     }
 
     $reviewModel = new Review();
     if ($reviewModel->hasReviewed($orderId)) {
         showError("You have already reviewed this order.");
-        redirect('/dashboard/buyer/orders.php');
+        redirect('/dashboard/buyer/orders');
     }
 
     $reviewData = [
@@ -66,7 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         showError("Failed to submit review. Please try again.");
     }
 
-    redirect('/dashboard/buyer/orders.php');
+    redirect('/dashboard/buyer/orders');
 } else {
-    redirect('/index.php');
+    redirect('/index');
 }

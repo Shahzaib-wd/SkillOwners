@@ -3,7 +3,7 @@ require_once '../../config.php';
 requireLogin();
 
 if (getUserRole() !== 'buyer') {
-    redirect('/dashboard/' . getUserRole() . '.php');
+    redirect('/dashboard/' . getUserRole());
 }
 
 require_once '../../models/User.php';
@@ -50,6 +50,21 @@ include '../../views/partials/header.php';
                                 <label class="form-label font-weight-600 mb-2">Full Name</label>
                                 <input type="text" name="full_name" class="form-control" value="<?php echo htmlspecialchars($user['full_name']); ?>" required>
                             </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group mb-3">
+                                        <label class="form-label font-weight-600 mb-2">Location</label>
+                                        <input type="text" name="location" class="form-control" value="<?php echo htmlspecialchars($user['location'] ?? ''); ?>" placeholder="City, Country">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group mb-3">
+                                        <label class="form-label font-weight-600 mb-2">Phone Number</label>
+                                        <input type="text" name="phone" class="form-control" value="<?php echo htmlspecialchars($user['phone'] ?? ''); ?>" placeholder="+1 234 567 890">
+                                    </div>
+                                </div>
+                            </div>
                             
                             <div class="form-group mb-3">
                                 <label class="form-label font-weight-600 mb-2">About You</label>
@@ -75,7 +90,7 @@ include '../../views/partials/header.php';
                     </div>
                     <h4 class="h6 font-weight-700 mb-1"><?php echo htmlspecialchars($user['full_name']); ?></h4>
                     <p class="text-muted small mb-3"><?php echo htmlspecialchars($user['email']); ?></p>
-                    <a href="<?php echo SITE_URL; ?>/profile.php?id=<?php echo $userId; ?>" class="btn btn-outline btn-sm btn-block" target="_blank">
+                    <a href="<?php echo SITE_URL; ?>/profile?id=<?php echo $userId; ?>" class="btn btn-outline btn-sm btn-block" target="_blank">
                         Preview Public Profile
                     </a>
                 </div>

@@ -31,7 +31,7 @@ include '../../views/partials/header.php';
                     </div>
                     <h3>No Orders Yet</h3>
                     <p class="text-muted">When you hire freelancers or purchase services, they will appear here.</p>
-                    <a href="<?php echo SITE_URL; ?>/browse.php" class="btn btn-primary mt-3">Browse Services</a>
+                    <a href="<?php echo SITE_URL; ?>/browse" class="btn btn-primary mt-3">Browse Services</a>
                 </div>
             <?php else: ?>
                 <div class="data-table-container">

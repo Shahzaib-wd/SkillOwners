@@ -291,4 +291,72 @@ class AgencyInvitation {
         $stmt = $this->conn->prepare($sql);
         return $stmt->execute();
     }
+
+    /**
+     * Approve an application (move to members)
+     */
+    public function approveApplication($invitationId, $agencyId) {
+        $sql = "SELECT * FROM agency_invitations WHERE id = :id AND agency_id = :agency_id";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute(['id' => $invitationId, 'agency_id' => $agencyId]);
+        $invitation = $stmt->fetch();
+
+        if (!$invitation) {
+            return ['success' => false, 'message' => 'Application not found.'];
+        }
+
+        if ($invitation['status'] !== 'pending') {
+            return ['success' => false, 'message' => 'This application is already ' . $invitation['status'] . '.'];
+        }
+
+        // Get freelancer ID from the invitation (it's in invited_by for applications)
+        $freelancerId = $invitation['invited_by'];
+        
+        $this->conn->beginTransaction();
+        try {
+            // Check if already a member
+            $checkSql = "SELECT id FROM agency_members WHERE agency_id = :agency_id AND freelancer_id = :freelancer_id";
+            $checkStmt = $this->conn->prepare($checkSql);
+            $checkStmt->execute(['agency_id' => $agencyId, 'freelancer_id' => $freelancerId]);
+            
+            if (!$checkStmt->fetch()) {
+                // Add to agency_members
+                $memberSql = "INSERT INTO agency_members (agency_id, freelancer_id, agency_role, status) 
+                             VALUES (:agency_id, :freelancer_id, :agency_role, 'active')";
+                $memberStmt = $this->conn->prepare($memberSql);
+                $memberStmt->execute([
+                    'agency_id' => $agencyId,
+                    'freelancer_id' => $freelancerId,
+                    'agency_role' => $invitation['agency_role']
+                ]);
+            }
+
+            // Update invitation status
+            $updateSql = "UPDATE agency_invitations SET status = 'accepted', accepted_at = NOW() WHERE id = :id";
+            $updateStmt = $this->conn->prepare($updateSql);
+            $updateStmt->execute(['id' => $invitationId]);
+
+            $this->conn->commit();
+            return ['success' => true, 'message' => 'Application approved successfully!'];
+        } catch (Exception $e) {
+            $this->conn->rollBack();
+            return ['success' => false, 'message' => 'Database error: ' . $e->getMessage()];
+        }
+    }
+
+    /**
+     * Reject an application
+     */
+    public function rejectApplication($invitationId, $agencyId) {
+        $sql = "UPDATE agency_invitations 
+                SET status = 'rejected' 
+                WHERE id = :id AND agency_id = :agency_id AND status = 'pending'";
+        
+        $stmt = $this->conn->prepare($sql);
+        if ($stmt->execute(['id' => $invitationId, 'agency_id' => $agencyId])) {
+            return ['success' => true, 'message' => 'Application rejected successfully.'];
+        }
+        
+        return ['success' => false, 'message' => 'Failed to reject application.'];
+    }
 }

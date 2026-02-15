@@ -23,7 +23,7 @@ include '../../views/partials/header.php';
                 <h1 class="page-title">Team Management</h1>
                 <p class="text-muted">Manage your agency members and their permissions</p>
             </div>
-            <a href="<?php echo SITE_URL; ?>/dashboard/agency/invite_member.php" class="btn btn-primary">
+                    <a href="<?php echo SITE_URL; ?>/dashboard/agency/invite_member" class="btn btn-primary">
                 <i class="fas fa-user-plus"></i> Invite New Member
             </a>
         </div>

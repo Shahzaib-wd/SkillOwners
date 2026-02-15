@@ -1,0 +1,3 @@
+ALTER TABLE gigs 
+ADD COLUMN impressions INT DEFAULT 0,
+ADD COLUMN clicks INT DEFAULT 0;

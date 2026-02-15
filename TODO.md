@@ -1,11 +1,22 @@
-# Fix Chat System
+# TODO: Agency System Improvements
 
-## Tasks
-- [x] Add error handling in assets/js/main.js for API failures
-- [x] Add logging in chat_api.php for debugging
-- [ ] Import database.sql into MySQL database
-- [ ] Test chat functionality
+## Task: Allow agencies to upload gigs and improve public profile display
 
-## Progress
-- Started: [Current Date/Time]
-- Completed error handling and logging additions
+### Changes to implement:
+
+1. [ ] Modify `dashboard/create_gig.php` - Allow agencies to create gigs
+   - Change role check from 'freelancer' to include 'agency'
+   - Update redirect after gig creation
+
+2. [ ] Modify `views/partials/sidebar.php` - Add "My Gigs" link for agencies
+   - Add navigation link for agencies to access their gigs
+
+3. [ ] Create `dashboard/agency/gigs.php` - New page for agencies to manage gigs
+   - List agency's gigs
+   - Create new gig
+   - Edit existing gig
+   - Delete gig
+
+4. [ ] Test the changes
+
+## Status: In Progress

@@ -48,7 +48,7 @@ include '../../views/partials/header.php';
         <div class="dashboard-card mb-4">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h3 class="h5 mb-0">Recent Orders</h3>
-                <a href="<?php echo SITE_URL; ?>/dashboard/buyer/orders.php" class="btn btn-outline btn-sm">View All Orders</a>
+                <a href="<?php echo SITE_URL; ?>/dashboard/buyer/orders" class="btn btn-outline btn-sm">View All Orders</a>
             </div>
             
             <?php 

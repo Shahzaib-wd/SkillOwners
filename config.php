@@ -60,9 +60,9 @@ define('ALLOWED_EXTENSIONS', ['jpg', 'jpeg', 'png', 'gif', 'webp']);
 // SMTP Configuration for PHPMailer
 define('SMTP_HOST', getenv('SMTP_HOST') ?: 'smtp.gmail.com');
 define('SMTP_PORT', getenv('SMTP_PORT') ?: 587);
-define('SMTP_USER', getenv('SMTP_USER') ?: '');
-define('SMTP_PASS', getenv('SMTP_PASS') ?: '');
-define('SMTP_FROM', getenv('SMTP_FROM') ?: 'noreply@skillowners.com');
+define('SMTP_USER', getenv('SMTP_USER') ?: 'alphathewebdeveloper@gmail.com');
+define('SMTP_PASS', getenv('SMTP_PASS') ?: 'zbasvvbaeqngopbj');
+define('SMTP_FROM', getenv('SMTP_FROM') ?: 'alphathewebdeveloper@gmail.com');
 define('SMTP_FROM_NAME', getenv('SMTP_FROM_NAME') ?: 'Skill Owners');
 
 // Error Reporting
@@ -91,6 +91,7 @@ function getDBConnection() {
                     PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
                     PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
                     PDO::ATTR_EMULATE_PREPARES => false,
+                    PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8mb4; SET time_zone = '+00:00'",
                 ]
             );
         } catch(PDOException $e) {
@@ -116,7 +117,7 @@ function isLoggedIn() {
 
 function requireLogin() {
     if (!isLoggedIn()) {
-        header('Location: ' . SITE_URL . '/login.php');
+        header('Location: ' . SITE_URL . '/login');
         exit();
     }
 }

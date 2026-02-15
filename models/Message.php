@@ -233,6 +233,9 @@ class Message {
                             WHERE cp.conversation_id = c.id AND cp.user_id != :user_id_2
                             LIMIT 1
                         )
+                        WHEN c.type = 'agency_internal' THEN (
+                            SELECT u.profile_image FROM users u WHERE u.id = c.agency_id
+                        )
                         ELSE NULL
                     END as display_image,
                     CASE 

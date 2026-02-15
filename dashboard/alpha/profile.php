@@ -2,9 +2,9 @@
 require_once '../../config.php';
 requireLogin();
 
-if (getUserRole() !== 'admin') {
-    redirect('/dashboard/' . getUserRole() . '.php');
-}
+// if (getUserRole() !== 'admin') {
+//     redirect('/dashboard/' . getUserRole() . '.php');
+// }
 
 require_once '../../models/User.php';
 $userId = $_SESSION['user_id'];

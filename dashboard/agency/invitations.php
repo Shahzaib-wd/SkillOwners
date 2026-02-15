@@ -23,7 +23,7 @@ include '../../views/partials/header.php';
                 <h1 class="page-title">Invitations History</h1>
                 <p class="text-muted">Track outbound invitations sent to freelancers</p>
             </div>
-            <a href="<?php echo SITE_URL; ?>/dashboard/agency/invite_member.php" class="btn btn-primary">
+            <a href="<?php echo SITE_URL; ?>/dashboard/agency/invite_member" class="btn btn-primary">
                 <i class="fas fa-paper-plane"></i> Send New Invitation
             </a>
         </div>

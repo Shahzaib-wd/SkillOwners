@@ -1,0 +1,33 @@
+# Skill Owners - Security and Friendly URLs
+# ===============================================
+
+# 1. Basic Security
+Options -Indexes
+ServerSignature Off
+
+# 2. Security Headers
+<IfModule mod_headers.c>
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set X-XSS-Protection "1; mode=block"
+    Header set X-Content-Type-Options "nosniff"
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+# 3. URL Rewriting (PHP Hiding)
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /skill_owners/
+    
+    # Redirect /page.php to /page (handling query strings, GET only)
+    RewriteCond %{REQUEST_METHOD} GET
+    RewriteCond %{THE_REQUEST} ^[A-Z]{3,9}\ /skill_owners/([^?\ ]+)\.php[?\ ]
+    RewriteRule ^([^.]+)\.php$ /skill_owners/$1 [R=301,L,QSA]
+    
+    # Internal rewrite /page to /page.php
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME}\.php -f
+    RewriteRule ^(.*)$ $1.php [L]
+</IfModule>
+
+# 4. Error Handling (Optional but professional)
+ErrorDocument 404 /skill_owners/index
