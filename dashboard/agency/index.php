@@ -49,14 +49,14 @@ include '../../views/partials/header.php';
             <p class="text-muted">Manage your agency team and collaborative projects</p>
         </div>
 
-        <div class="dashboard-card mb-4" style="background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%); border: none;">
-            <div class="card-body py-4">
+        <div class="dashboard-card mb-4" style="border-left: 3px solid #6366f1; background: #f9faff;">
+            <div class="card-body py-1">
                 <div class="d-flex justify-content-between align-items-center">
-                    <div style="color: white;">
-                        <h2 class="h4 font-weight-700 mb-1"><i class="fas fa-comments"></i> Team Chat</h2>
-                        <p class="mb-0 opacity-75">Connect with your agency members in real-time</p>
+                    <div>
+                        <h2 class="h5 font-weight-600 mb-1" style="color: #4f46e5;"><i class="fas fa-comments"></i> Team Chat</h2>
+                        <p class="mb-0 text-muted small">Connect with your agency members in real-time</p>
                     </div>
-                    <a href="<?php echo SITE_URL; ?>/chat.php?conversation_id=<?php echo $agencyConversationId; ?>" class="btn btn-white px-4" style="background: white; color: #6366f1; font-weight: 700;">
+                    <a href="<?php echo SITE_URL; ?>/chat.php?conversation_id=<?php echo $agencyConversationId; ?>" class="btn btn-primary btn-sm px-4">
                         Open Team Chat
                     </a>
                 </div>
@@ -161,6 +161,10 @@ include '../../views/partials/header.php';
                         <hr>
                         <a href="invitations" class="btn btn-outline">
                             <i class="fas fa-history"></i> Invitation History
+                        </a>
+                        <hr>
+                        <a href="<?php echo SITE_URL; ?>/profile?id=<?php echo $agencyId; ?>" class="btn btn-outline btn-block">
+                            <i class="fas fa-external-link-alt"></i> View Public Profile
                         </a>
                     </div>
                 </div>

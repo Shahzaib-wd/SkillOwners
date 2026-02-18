@@ -23,7 +23,15 @@
     <meta name="twitter:description" content="Connect with top freelancers and agencies worldwide.">
     
     <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="<?php echo SITE_URL; ?>/assets/images/favicon.svg">
+    <?php
+    // Fetch official agency logo for favicon
+    $db = getDBConnection();
+    $logoStmt = $db->query("SELECT profile_image FROM users WHERE is_official = 1 LIMIT 1");
+    $officialLogo = $logoStmt->fetchColumn();
+    $faviconUrl = ($officialLogo ? SITE_URL . '/uploads/' . $officialLogo : SITE_URL . '/assets/images/favicon.svg') . '?v=' . time();
+    $faviconType = (strpos($faviconUrl, '.svg') !== false) ? 'image/svg+xml' : 'image/x-icon';
+    ?>
+    <link rel="icon" type="<?php echo $faviconType; ?>" href="<?php echo $faviconUrl; ?>">
     
     <!-- Stylesheets -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -56,12 +64,25 @@
             
             <div class="navbar-actions">
                 <?php if (isLoggedIn()): ?>
-                    <a href="<?php echo SITE_URL; ?>/dashboard/<?php echo getUserRole(); ?>" class="btn btn-ghost btn-sm">Dashboard</a>
+                    <?php 
+                    $currentRole = getUserRole();
+                    $switchLabel = ($currentRole === 'buyer') ? 'Switch to Selling' : 'Switch to Buying';
+                    $canSwitch = ($currentRole === 'buyer' || $currentRole === 'freelancer');
+                    ?>
+                    
+                    <?php if ($canSwitch): ?>
+                        <a href="<?php echo SITE_URL; ?>/switch_role" class="btn btn-ghost btn-sm text-primary fw-700">
+                            <i class="fas fa-random me-1"></i> <?php echo $switchLabel; ?>
+                        </a>
+                    <?php endif; ?>
+
+                    <a href="<?php echo SITE_URL; ?>/dashboard/<?php echo $currentRole; ?>" class="btn btn-ghost btn-sm">Dashboard</a>
                     <a href="javascript:void(0);" onclick="scrollToMessages()" class="navbar-messages-icon" id="navbarMessagesIcon" title="Messages">
                         <i class="fas fa-envelope"></i>
                         <span class="navbar-unread-dot" id="navbarUnreadDot" style="display: none;"></span>
                     </a>
                     <a href="<?php echo SITE_URL; ?>/logout" class="btn btn-outline btn-sm">Logout</a>
+
                 <?php else: ?>
                     <a href="<?php echo SITE_URL; ?>/login" class="btn btn-ghost btn-sm">Log In</a>
                     <a href="<?php echo SITE_URL; ?>/register" class="btn btn-primary btn-sm">Get Started</a>
@@ -242,7 +263,7 @@
     </script>
 </nav>
 
-<div class="container" style="margin-top: 2rem;">
+<div class="container mt-3">
     <?php if ($error = getError()): ?>
         <div class="alert alert-danger alert-dismissible fade show shadow-sm border-0 rounded-lg py-3 px-4 mb-0" role="alert" style="background: #fef2f2; border-left: 4px solid #ef4444 !important; color: #991b1b;">
             <div class="d-flex align-items-center gap-3">

@@ -377,8 +377,57 @@ include 'views/partials/header.php';
     font-size: 0.9rem;
 }
 
-.clear-search:hover {
-    text-decoration: underline;
+.filter-bar {
+    background: #fff;
+    padding: 1rem;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    margin-bottom: 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: flex-end;
+}
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+.filter-group label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #4b5563;
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+}
+.filter-input {
+    padding: 0.5rem 0.75rem;
+    border-radius: 8px;
+    border: 1px solid #d1d5db;
+    font-size: 0.875rem;
+    color: #1f2937;
+    min-width: 120px;
+    background: #f9fafb;
+}
+.filter-input:focus {
+    outline: none;
+    border-color: #22c55e;
+    box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.1);
+}
+.filter-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    font-size: 0.875rem;
+    color: #4b5563;
+    user-select: none;
+    height: 38px;
+}
+.filter-checkbox input {
+    width: 1rem;
+    height: 1rem;
+    cursor: pointer;
 }
 </style>
 
@@ -404,51 +453,124 @@ include 'views/partials/header.php';
             </div>
         </div>
         
-        <?php if (!empty($query) || !empty($category)): ?>
+        <?php if ($type === 'freelancer'): ?>
+        <div class="filter-bar">
+            <div class="filter-group">
+                <label>Location</label>
+                <input type="text" id="filterLocation" class="filter-input" placeholder="City or Country">
+            </div>
+            <div class="filter-group">
+                <label>Experience (Years)</label>
+                <input type="number" id="filterExperience" class="filter-input" placeholder="0+">
+            </div>
+            <div class="filter-group">
+                <label>Language</label>
+                <input type="text" id="filterLanguage" class="filter-input" placeholder="English, etc.">
+            </div>
+            <div class="filter-group">
+                <label>Min Rating</label>
+                <select id="filterRating" class="filter-input">
+                    <option value="">Any</option>
+                    <option value="4.5">4.5+ ★</option>
+                    <option value="4">4.0+ ★</option>
+                    <option value="3">3.0+ ★</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label class="filter-checkbox">
+                    <input type="checkbox" id="filterOfficial"> Official Only
+                </label>
+            </div>
+            
+            <button id="applyFilters" class="btn btn-primary" style="height: 38px;">Apply Filters</button>
+        </div>
+        <?php endif; ?>
+
+        <?php if (!empty($query) || !empty($category) || $type === 'freelancer'): ?>
             <div class="search-info">
-                <span class="results-count">
-                    <?php echo $pagination['total_items']; ?> service<?php echo $pagination['total_items'] != 1 ? 's' : ''; ?> found
+                <span id="resultsCount" class="results-count">
+                    <?php echo $pagination['total_items']; ?> <?php echo $type === 'gig' ? 'service' : ($type === 'freelancer' ? 'freelancer' : 'agency'); ?><?php echo $pagination['total_items'] != 1 ? 's' : ''; ?> found
                     <?php if (!empty($query)): ?>
                         for "<?php echo htmlspecialchars($query); ?>"
                     <?php endif; ?>
                 </span>
-                <a href="<?php echo SITE_URL; ?>/browse" class="clear-search">Clear filters</a>
+                <a href="<?php echo SITE_URL; ?>/browse?type=<?php echo $type; ?>" class="clear-search">Clear all filters</a>
             </div>
         <?php endif; ?>
         
-        <div id="gigGrid" class="gig-grid">
+        <div id="gigGrid" class="<?php echo ($type === 'freelancer') ? 'user-list-container' : 'gig-grid'; ?>">
             <?php if (empty($items)): ?>
                 <div class="alert alert-info w-100">No results found. Try a different search.</div>
             <?php else: ?>
                 <?php foreach ($items as $item): ?>
-                    <?php if ($type === 'freelancer' || $type === 'agency'): ?>
-                        <div class="gig-card user-discovery-card">
-                            <div class="gig-image-wrapper">
-                                <img src="<?php echo $item['profile_image'] ? SITE_URL . '/uploads/' . $item['profile_image'] : 'https://ui-avatars.com/api/?name=' . urlencode($item['full_name']) . '&size=280&background=10b981&color=fff'; ?>" alt="<?php echo htmlspecialchars($item['full_name']); ?>" class="user-discovery-image">
-                                <span class="gig-card-badge"><?php echo ucfirst($type); ?></span>
+                    <?php if ($type === 'freelancer'): ?>
+                        <div class="user-list-item">
+                            <div class="user-list-info">
+                                <?php if ($item['profile_image']): ?>
+                                    <img src="<?php echo SITE_URL; ?>/uploads/<?php echo $item['profile_image']; ?>" class="user-list-avatar" alt="<?php echo htmlspecialchars($item['full_name']); ?>">
+                                <?php else: ?>
+                                    <div class="user-list-avatar-fallback">
+                                        <?php echo strtoupper(substr($item['full_name'], 0, 1)); ?>
+                                    </div>
+                                <?php endif; ?>
+                                <div class="user-list-details">
+                                    <h4 class="user-list-name">
+                                        <?php echo htmlspecialchars($item['full_name']); ?>
+                                        <?php if ($item['is_official']): ?>
+                                            <i class="fas fa-check-circle official-badge-icon" title="Official Agency"></i>
+                                        <?php endif; ?>
+                                    </h4>
+                                    <p class="user-list-title"><?php echo htmlspecialchars($item['professional_title'] ?: 'Freelancer'); ?></p>
+                                    <div class="user-list-rating" style="font-size: 0.85rem; color: #f59e0b; display: flex; align-items: center; gap: 4px; margin-top: 4px;">
+                                        <i class="fas fa-star"></i>
+                                        <span style="font-weight: 700; color: #1f2937;"><?php echo $item['avg_rating'] > 0 ? round($item['avg_rating'], 1) : 'New'; ?></span>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="gig-content">
-                                <h3 class="gig-title"><?php echo htmlspecialchars($item['full_name']); ?></h3>
-                                <div class="user-skills mb-2">
-                                    <?php 
-                                    $skills = array_slice(explode(',', $item['skills']), 0, 3);
-                                    foreach ($skills as $skill): ?>
-                                        <span class="badge bg-light text-dark mb-1" style="font-size: 0.7rem;"><?php echo htmlspecialchars(trim($skill)); ?></span>
-                                    <?php endforeach; ?>
-                                </div>
-                                <p class="text-muted small mb-3" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; height: 2.5rem;">
-                                    <?php echo htmlspecialchars($item['bio'] ?: 'No bio available.'); ?>
-                                </p>
-                                <div class="gig-footer">
-                                    <a href="<?php echo SITE_URL; ?>/profile?id=<?php echo $item['id']; ?>" class="btn btn-sm btn-outline">View Profile</a>
-                                    <?php if ($type === 'freelancer'): ?>
-                                        <button class="btn btn-sm btn-primary invite-btn" onclick="inviteFreelancer(<?php echo $item['id']; ?>)">Invite</button>
-                                    <?php elseif ($type === 'agency'): ?>
-                                        <button class="btn btn-sm btn-primary apply-btn" onclick="applyToAgency(<?php echo $item['id']; ?>)">Apply</button>
-                                    <?php endif; ?>
-                                </div>
+                            <div class="user-list-actions">
+                                <a href="<?php echo SITE_URL; ?>/profile?id=<?php echo $item['id']; ?>" class="btn btn-sm btn-outline">View Profile</a>
+                                <button class="btn btn-sm btn-primary invite-btn" onclick="inviteFreelancer(<?php echo $item['id']; ?>)">Invite</button>
                             </div>
                         </div>
+                    <?php elseif ($type === 'agency'): ?>
+                        <a href="<?php echo SITE_URL; ?>/profile?id=<?php echo $item['id']; ?>" class="gig-card">
+                            <div class="gig-image-wrapper">
+                                <img src="<?php echo $item['profile_image'] ? SITE_URL . '/uploads/' . $item['profile_image'] : 'https://via.placeholder.com/280x200?text=' . urlencode($item['full_name']); ?>" alt="<?php echo htmlspecialchars($item['full_name']); ?>" class="gig-image">
+                                <?php if ($item['is_official']): ?>
+                                    <span class="gig-card-badge">Official Agency</span>
+                                <?php endif; ?>
+                            </div>
+                            <div class="gig-content">
+                                <h3 class="gig-title">
+                                    <?php echo htmlspecialchars($item['full_name']); ?>
+                                </h3>
+                                <div class="gig-seller-info">
+                                    <?php if ($item['profile_image']): ?>
+                                        <img src="<?php echo SITE_URL; ?>/uploads/<?php echo $item['profile_image']; ?>" 
+                                             alt="<?php echo htmlspecialchars($item['full_name']); ?>"
+                                             class="seller-avatar">
+                                    <?php else: ?>
+                                        <div class="seller-avatar-fallback">
+                                            <?php echo strtoupper(substr($item['full_name'], 0, 1)); ?>
+                                        </div>
+                                    <?php endif; ?>
+                                    <div class="gig-seller"><?php echo htmlspecialchars($item['professional_title'] ?: 'Verified Agency'); ?></div>
+                                </div>
+                                <div class="gig-rating">
+                                    <span class="rating-value">
+                                        <i class="fas fa-star"></i> 
+                                        <?php echo $item['avg_rating'] > 0 ? round($item['avg_rating'], 1) : 'New'; ?>
+                                    </span>
+                                    <span class="review-count">(<?php echo $item['review_count']; ?> reviews)</span>
+                                </div>
+                                <div class="gig-footer">
+                                    <span class="gig-price-label">Status</span>
+                                    <span class="gig-price" style="font-size: 0.95rem; color: <?php echo $item['is_official'] ? '#10b981' : 'inherit'; ?>;">
+                                        <?php echo $item['is_official'] ? 'Official Partner' : 'Verified Agency'; ?>
+                                    </span>
+                                </div>
+                            </div>
+                        </a>
                     <?php else: ?>
                         <a href="<?php echo SITE_URL; ?>/gig?id=<?php echo $item['id']; ?>" class="gig-card">
                             <div class="gig-image-wrapper">
@@ -527,7 +649,7 @@ include 'views/partials/header.php';
         </div>
         
         <div class="pagination-info" <?php echo ($pagination['total_pages'] <= 1) ? 'style="display: none;"' : ''; ?>>
-            Page <?php echo $pagination['current_page']; ?> of <?php echo $pagination['total_pages']; ?> (<?php echo $pagination['total_items']; ?> total services)
+            Page <?php echo $pagination['current_page']; ?> of <?php echo $pagination['total_pages']; ?> (<?php echo $pagination['total_items']; ?> total <?php echo $type === 'gig' ? 'services' : ($type === 'freelancer' ? 'freelancers' : 'agencies'); ?>)
         </div>
     </div>
 </div>
@@ -535,21 +657,37 @@ include 'views/partials/header.php';
 <script>
 const skeletonTemplate = (count = 8) => {
     let html = '';
+    const isList = '<?php echo $type; ?>' === 'freelancer';
+    
     for (let i = 0; i < count; i++) {
-        html += `
-            <div class="skeleton-card">
-                <div class="skeleton-image skeleton"></div>
-                <div class="skeleton-content">
-                    <div class="skeleton-title skeleton"></div>
-                    <div class="skeleton-seller skeleton"></div>
-                    <div class="skeleton-rating skeleton"></div>
-                    <div class="skeleton-footer">
-                        <div class="skeleton-badge skeleton"></div>
-                        <div class="skeleton-price skeleton"></div>
+        if (isList) {
+            html += `
+                <div class="user-list-item skeleton-list-item">
+                    <div style="display: flex; align-items: center; gap: 1rem; flex: 1;">
+                        <div class="skeleton-avatar skeleton" style="width: 48px; height: 48px; border-radius: 50%;"></div>
+                        <div style="flex: 1;">
+                            <div class="skeleton-line skeleton" style="width: 150px; height: 16px; margin-bottom: 8px;"></div>
+                            <div class="skeleton-line skeleton" style="width: 100px; height: 12px;"></div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        `;
+            `;
+        } else {
+            html += `
+                <div class="skeleton-card">
+                    <div class="skeleton-image skeleton"></div>
+                    <div class="skeleton-content">
+                        <div class="skeleton-title skeleton"></div>
+                        <div class="skeleton-seller skeleton"></div>
+                        <div class="skeleton-rating skeleton"></div>
+                        <div class="skeleton-footer">
+                            <div class="skeleton-badge skeleton"></div>
+                            <div class="skeleton-price skeleton"></div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
     }
     return html;
 };
@@ -576,18 +714,30 @@ document.addEventListener('DOMContentLoaded', function() {
         gigGrid.innerHTML = skeletonTemplate(8);
     };
 
-    const fetchGigs = (page = 1, query = '', category = '') => {
+    const fetchGigs = (page = 1) => {
         if (isLoading) return;
         isLoading = true;
         
         showSkeleton();
         
-        if (searchBtn) {
-            searchBtn.disabled = true;
-            searchBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
-        }
-        
-        const url = `gig_api?type=${encodeURIComponent(currentType)}&q=${encodeURIComponent(query)}&category=${encodeURIComponent(category)}&page=${page}`;
+        const filters = {
+            type: currentType,
+            q: searchInput.value.trim(),
+            page: page
+        };
+
+        if (document.getElementById('filterCategory')) filters.category = document.getElementById('filterCategory').value;
+        if (document.getElementById('filterMinPrice')) filters.min_price = document.getElementById('filterMinPrice').value;
+        if (document.getElementById('filterMaxPrice')) filters.max_price = document.getElementById('filterMaxPrice').value;
+        if (document.getElementById('filterDelivery')) filters.delivery_time = document.getElementById('filterDelivery').value;
+        if (document.getElementById('filterLocation')) filters.location = document.getElementById('filterLocation').value;
+        if (document.getElementById('filterExperience')) filters.min_experience = document.getElementById('filterExperience').value;
+        if (document.getElementById('filterLanguage')) filters.language = document.getElementById('filterLanguage').value;
+        if (document.getElementById('filterOfficial')) filters.is_official = document.getElementById('filterOfficial').checked ? 1 : '';
+        if (document.getElementById('filterRating')) filters.min_rating = document.getElementById('filterRating').value;
+
+        const queryString = new URLSearchParams(filters).toString();
+        const url = `gig_api.php?${queryString}`;
         
         fetch(url)
             .then(response => response.text())
@@ -610,6 +760,18 @@ document.addEventListener('DOMContentLoaded', function() {
                     totalPages = paginationData.total_pages;
                     currentPage = paginationData.current_page;
                     updatePagination(paginationData);
+                    
+                    const resultsCount = document.getElementById('resultsCount');
+                    if (resultsCount) {
+                        const count = paginationData.total_items;
+                        const itemType = currentType === 'gig' ? 'service' : (currentType === 'freelancer' ? 'freelancer' : 'agency');
+                        const plural = count != 1 ? 's' : '';
+                        let countText = `${count} ${itemType}${plural} found`;
+                        if (searchInput.value.trim()) {
+                            countText += ` for "${searchInput.value.trim()}"`;
+                        }
+                        resultsCount.textContent = countText;
+                    }
                 } else {
                     // Hide pagination if no data returned
                     totalPages = 1;
@@ -627,22 +789,19 @@ document.addEventListener('DOMContentLoaded', function() {
                 isLoading = false;
                 
                 const newUrl = new URL(window.location);
-                if (query) {
-                    newUrl.searchParams.set('q', query);
-                } else {
-                    newUrl.searchParams.delete('q');
-                }
-                if (category) {
-                    newUrl.searchParams.set('category', category);
-                } else {
-                    newUrl.searchParams.delete('category');
-                }
-                newUrl.searchParams.set('page', page);
+                Object.keys(filters).forEach(key => {
+                    if (filters[key]) {
+                        newUrl.searchParams.set(key, filters[key]);
+                    } else {
+                        newUrl.searchParams.delete(key);
+                    }
+                });
                 window.history.replaceState({}, '', newUrl);
                 
                 const title = document.querySelector('h1');
-                if (query) {
-                    title.textContent = `Search results for ${currentType === 'gig' ? 'Services' : (currentType === 'freelancer' ? 'Freelancers' : 'Agencies')}: ${query}`;
+                const searchQuery = searchInput.value.trim();
+                if (searchQuery) {
+                    title.textContent = `Search results for ${currentType === 'gig' ? 'Services' : (currentType === 'freelancer' ? 'Freelancers' : 'Agencies')}: ${searchQuery}`;
                 } else {
                     title.textContent = currentType === 'gig' ? 'Browse Services' : (currentType === 'freelancer' ? 'Find Freelancers' : 'Find Agencies');
                 }
@@ -725,18 +884,21 @@ document.addEventListener('DOMContentLoaded', function() {
                 e.preventDefault();
                 const page = parseInt(e.target.dataset.page);
                 if (page && page !== currentPage) {
-                    fetchGigs(page, currentQuery, currentCategory);
+                    fetchGigs(page);
                 }
             });
         });
     };
 
     const performSearch = () => {
-        currentQuery = searchInput.value.trim();
-        currentCategory = new URLSearchParams(window.location.search).get('category') || '';
         currentPage = 1;
-        fetchGigs(currentPage, currentQuery, currentCategory);
+        fetchGigs(currentPage);
     };
+
+    const applyFiltersBtn = document.getElementById('applyFilters');
+    if (applyFiltersBtn) {
+        applyFiltersBtn.addEventListener('click', performSearch);
+    }
 
     if (searchBtn) {
         searchBtn.addEventListener('click', performSearch);
@@ -753,7 +915,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (prevBtn) {
         prevBtn.addEventListener('click', () => {
             if (currentPage > 1 && !isLoading) {
-                fetchGigs(currentPage - 1, currentQuery, currentCategory);
+                fetchGigs(currentPage - 1);
             }
         });
     }
@@ -761,7 +923,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (nextBtn) {
         nextBtn.addEventListener('click', () => {
             if (currentPage < totalPages && !isLoading) {
-                fetchGigs(currentPage + 1, currentQuery, currentCategory);
+                fetchGigs(currentPage + 1);
             }
         });
     }

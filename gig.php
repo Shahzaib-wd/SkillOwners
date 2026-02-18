@@ -186,19 +186,19 @@ include 'views/partials/header.php';
                     
                     <?php if (isLoggedIn()): ?>
                         <?php if ($gig['user_id'] == $_SESSION['user_id']): ?>
-                            <a href="<?php echo SITE_URL; ?>/dashboard/<?php echo getUserRole(); ?>/gigs" class="btn btn-primary order-btn">
-                                <i class="fas fa-edit"></i> Manage This Gig
+                            <a href="<?php echo SITE_URL; ?>/dashboard/edit_gig.php?id=<?php echo $gig['id']; ?>" class="btn btn-primary order-btn">
+                                <i class="fas fa-edit"></i> Edit This Gig
                             </a>
                         <?php elseif (getUserRole() === 'buyer'): ?>
                             <a href="<?php echo SITE_URL; ?>/checkout?id=<?php echo $gig['id']; ?>" class="btn btn-primary order-btn mb-2">
                                 <i class="fas fa-shopping-cart"></i> Order Now
                             </a>
                             <a href="<?php echo SITE_URL; ?>/chat?seller_id=<?php echo $gig['user_id']; ?>" class="btn btn-outline btn-block mb-3">
-                                <i class="fas fa-comments"></i> Contact Seller
+                                <i class="fas fa-comments"></i> <?php echo ($gig['role'] ?? '') === 'agency' ? 'Contact Us' : 'Contact Me'; ?>
                             </a>
                         <?php else: ?>
                             <a href="<?php echo SITE_URL; ?>/chat?seller_id=<?php echo $gig['user_id']; ?>" class="btn btn-primary order-btn">
-                                <i class="fas fa-comments"></i> Contact Seller
+                                <i class="fas fa-comments"></i> <?php echo ($gig['role'] ?? '') === 'agency' ? 'Contact Us' : 'Contact Me'; ?>
                             </a>
                         <?php endif; ?>
                     <?php else: ?>

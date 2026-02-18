@@ -60,7 +60,7 @@ include '../../views/partials/header.php';
                                             <div class="avatar-circle" style="width: 36px; height: 36px; font-size: 0.9rem;">
                                                 <?php echo strtoupper(substr($member['full_name'], 0, 1)); ?>
                                             </div>
-                                            <span class="font-weight-600"><?php echo htmlspecialchars($member['full_name']); ?></span>
+                                            <span class="font-weight-500"><?php echo htmlspecialchars($member['full_name']); ?></span>
                                         </div>
                                     </td>
                                     <td><?php echo htmlspecialchars($member['email']); ?></td>

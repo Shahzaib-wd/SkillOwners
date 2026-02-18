@@ -153,6 +153,7 @@ include 'views/partials/header.php';
 }
 .role-owner { background: #fefce8; color: #a16207; border: 1px solid #fef3c7; }
 .role-admin { background: #f0fdf4; color: #15803d; border: 1px solid #dcfce7; }
+.role-official { background: #10b981; color: #ffffff; border: 1px solid #059669; font-weight: 700; letter-spacing: 0.05em; }
 .role-manager { background: #eff6ff; color: #1d4ed8; border: 1px solid #dbeafe; }
 .role-member { background: #f9fafb; color: #4b5563; border: 1px solid #f3f4f6; }
 .message-time {

@@ -4,10 +4,11 @@
  * Database and site configuration
  */
 
-// Force PHP to tell us what is wrong
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
+// Error handling — log errors but never show to visitors in production
+ini_set('display_errors', 0);
+ini_set('display_startup_errors', 0);
 error_reporting(E_ALL);
+ini_set('log_errors', 1);
 
 $envFile = __DIR__ . '/.env';
 
@@ -34,14 +35,15 @@ if (file_exists($envFile)) {
 
 // Database Configuration
 define('DB_HOST', getenv('DB_HOST') ?: 'localhost');
-define('DB_NAME', getenv('DB_NAME') ?: 'skill_owners');
-define('DB_USER', getenv('DB_USER') ?: 'root');
-define('DB_PASS', getenv('DB_PASS') ?: '');
+define('DB_NAME', getenv('DB_NAME') ?: 'u382083643_skillowners');
+define('DB_USER', getenv('DB_USER') ?: 'u382083643_info');
+define('DB_PASS', getenv('DB_PASS') ?: 'HackerAlpha000@');
 
 // Site Configuration
 define('SITE_NAME', 'Skill Owners');
-define('SITE_URL', getenv('SITE_URL') ?: 'http://localhost/skill_owners');
-define('ADMIN_EMAIL', getenv('ADMIN_EMAIL') ?: 'admin@skillowners.com');
+define('SITE_URL', getenv('SITE_URL') ?: 'https://skillowners.com');
+define('ADMIN_EMAIL', getenv('ADMIN_EMAIL') ?: 'info@skillowners.com');
+define('GOOGLE_CLIENT_ID', '704228248228-g4sarvdedobjju91ncaqcn8q1abvvgqm.apps.googleusercontent.com');
 
 // Security
 define('SESSION_LIFETIME', 3600); // 1 hour
@@ -58,11 +60,11 @@ define('MAX_FILE_SIZE', 5242880); // 5MB
 define('ALLOWED_EXTENSIONS', ['jpg', 'jpeg', 'png', 'gif', 'webp']);
 
 // SMTP Configuration for PHPMailer
-define('SMTP_HOST', getenv('SMTP_HOST') ?: 'smtp.gmail.com');
-define('SMTP_PORT', getenv('SMTP_PORT') ?: 587);
-define('SMTP_USER', getenv('SMTP_USER') ?: 'alphathewebdeveloper@gmail.com');
-define('SMTP_PASS', getenv('SMTP_PASS') ?: 'zbasvvbaeqngopbj');
-define('SMTP_FROM', getenv('SMTP_FROM') ?: 'alphathewebdeveloper@gmail.com');
+define('SMTP_HOST', getenv('SMTP_HOST') ?: 'ssl://smtp.hostinger.com');
+define('SMTP_PORT', getenv('SMTP_PORT') ?: 465);
+define('SMTP_USER', getenv('SMTP_USER') ?: 'info@skillowners.com');
+define('SMTP_PASS', getenv('SMTP_PASS') ?: 'HackerAlpha000@');
+define('SMTP_FROM', getenv('SMTP_FROM') ?: 'info@skillowners.com');
 define('SMTP_FROM_NAME', getenv('SMTP_FROM_NAME') ?: 'Skill Owners');
 
 // Error Reporting

@@ -22,7 +22,15 @@ if ($role === 'agency') {
 }
 ?>
 
-<div class="dashboard-sidebar">
+<!-- Mobile Sidebar Toggle -->
+<button id="sidebarToggle" class="mobile-sidebar-toggle" aria-label="Toggle Menu">
+    <i class="fas fa-bars"></i>
+</button>
+
+<!-- Sidebar Overlay -->
+<div id="sidebarOverlay" class="sidebar-overlay"></div>
+
+<div class="dashboard-sidebar" id="dashboardSidebar">
     <div class="sidebar-header">
         <div class="user-info">
             <?php if (!empty($_SESSION['user_image'])): ?>
@@ -112,11 +120,17 @@ if ($role === 'agency') {
 
         <div class="nav-section">
             <span class="section-title">Account</span>
+            <?php if ($role !== 'admin'): ?>
+                <a href="<?php echo SITE_URL; ?>/profile?id=<?php echo $userId; ?>" class="nav-item">
+                    <i class="fas fa-user"></i> Profile
+                </a>
+            <?php endif; ?>
+
             <?php 
             $profileLink = ($role === 'admin') ? SITE_URL . '/dashboard/alpha/profile' : SITE_URL . '/dashboard/' . $role . '/profile';
             ?>
             <a href="<?php echo $profileLink; ?>" class="nav-item <?php echo $current_page === 'profile' ? 'active' : ''; ?>">
-                <i class="fas fa-user-circle"></i> Profile Settings
+                <i class="fas fa-user-edit"></i> Edit Profile
             </a>
             <a href="<?php echo SITE_URL; ?>/logout" class="nav-item text-danger">
                 <i class="fas fa-sign-out-alt"></i> Logout
@@ -294,4 +308,57 @@ if ($role === 'agency') {
         left: 0;
     }
 }
+    .dashboard-sidebar.active {
+        left: 0;
+    }
+}
 </style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const toggleBtn = document.getElementById('sidebarToggle');
+    const sidebar = document.getElementById('dashboardSidebar'); // Use ID selector
+    const overlay = document.getElementById('sidebarOverlay');
+    
+    // Safety check - if ID didn't match, try class
+    const sidebarEl = sidebar || document.querySelector('.dashboard-sidebar');
+
+    function toggleSidebar() {
+        sidebarEl.classList.toggle('active');
+        overlay.classList.toggle('active');
+        
+        // Toggle icon
+        const icon = toggleBtn.querySelector('i');
+        if (sidebarEl.classList.contains('active')) {
+            icon.classList.remove('fa-bars');
+            icon.classList.add('fa-times');
+        } else {
+            icon.classList.remove('fa-times');
+            icon.classList.add('fa-bars');
+        }
+    }
+
+    if (toggleBtn) {
+        toggleBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            toggleSidebar();
+        });
+    }
+
+    if (overlay) {
+        overlay.addEventListener('click', toggleSidebar);
+    }
+
+    // Close on route change (for single page apps, but good practice here too)
+    // or when clicking a link in mobile
+    const navLinks = document.querySelectorAll('.nav-item');
+    navLinks.forEach(link => {
+        link.addEventListener('click', function() {
+            if (window.innerWidth < 992) {
+                sidebarEl.classList.remove('active');
+                overlay.classList.remove('active');
+            }
+        });
+    });
+});
+</script>

@@ -48,7 +48,7 @@ include '../../views/partials/header.php';
                             <div class="dashboard-card" style="border-left: 4px solid var(--primary);">
                                 <div class="d-flex justify-content-between align-items-start mb-3">
                                     <div>
-                                        <h3 class="h6 font-weight-700 mb-1"><?php echo htmlspecialchars($invitation['agency_name']); ?></h3>
+                                        <h3 class="h6 font-weight-500 mb-1"><?php echo htmlspecialchars($invitation['agency_name']); ?></h3>
                                         <p class="text-muted small mb-0">Role Offered: <strong><?php echo ucfirst($invitation['agency_role']); ?></strong></p>
                                     </div>
                                     <span class="badge-warning user-role">Pending</span>
@@ -84,7 +84,7 @@ include '../../views/partials/header.php';
                                         <?php echo strtoupper(substr($agency['agency_name'], 0, 1)); ?>
                                     </div>
                                     <div>
-                                        <h3 class="h6 font-weight-700 mb-0"><?php echo htmlspecialchars($agency['agency_name']); ?></h3>
+                                        <h3 class="h6 font-weight-500 mb-0"><?php echo htmlspecialchars($agency['agency_name']); ?></h3>
                                         <span class="text-muted small">Joined <?php echo date('M Y', strtotime($agency['joined_at'])); ?></span>
                                     </div>
                                 </div>
@@ -98,10 +98,10 @@ include '../../views/partials/header.php';
                                         <div class="d-flex align-items-center gap-2 mb-2">
                                             <?php if ($contribution['status'] === 'approved'): ?>
                                                 <i class="fas fa-check-circle text-success"></i>
-                                                <span class="font-weight-600" style="font-size: 0.85rem;">Approved — Active in Agency</span>
+                                                <span class="font-weight-500" style="font-size: 0.85rem;">Approved — Active in Agency</span>
                                             <?php elseif ($contribution['status'] === 'pending'): ?>
                                                 <i class="fas fa-clock" style="color: #f59e0b;"></i>
-                                                <span class="font-weight-600" style="font-size: 0.85rem;">Pending Agency Approval</span>
+                                                <span class="font-weight-500" style="font-size: 0.85rem;">Pending Agency Approval</span>
                                             <?php endif; ?>
                                         </div>
                                         <div class="contributed-gig-info">
@@ -121,7 +121,7 @@ include '../../views/partials/header.php';
                                         <div class="contribution-form">
                                             <div class="d-flex align-items-center gap-2 mb-2">
                                                 <i class="fas fa-gift text-primary"></i>
-                                                <span class="font-weight-600" style="font-size: 0.85rem;">Contribute a Gig</span>
+                                                <span class="font-weight-500" style="font-size: 0.85rem;">Contribute a Gig</span>
                                             </div>
                                             <form method="POST" action="<?php echo SITE_URL; ?>/dashboard/freelancer/submit_agency_gig">
                                                 <input type="hidden" name="agency_id" value="<?php echo $agency['agency_id']; ?>">

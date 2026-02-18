@@ -75,7 +75,7 @@ include '../../views/partials/header.php';
                                                 <i class="fas fa-user-circle fa-2x opacity-25"></i>
                                             </div>
                                             <div>
-                                                <div class="font-weight-600"><?php echo htmlspecialchars($app['freelancer_name']); ?></div>
+                                                <div class="font-weight-500"><?php echo htmlspecialchars($app['freelancer_name']); ?></div>
                                                 <div class="text-muted small"><?php echo htmlspecialchars($app['email']); ?></div>
                                             </div>
                                         </div>

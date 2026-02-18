@@ -225,61 +225,148 @@ include 'views/partials/header.php';
         </div>
         
         <div class="agency-grid">
+            <!-- Agency 1 -->
             <div class="agency-card reveal-up" style="animation-delay: 0.1s;">
-                <div class="agency-badge">
-                    <i class="fas fa-check-shield"></i> Top Rated
+                <div class="agency-card-cover">
+                    <img src="https://images.unsplash.com/photo-1600607686527-6fb886090705?auto=format&fit=crop&w=800&q=80" alt="Cover">
+                    <div class="agency-badge">
+                        <i class="fas fa-check-shield"></i> Top Rated
+                    </div>
                 </div>
-                <div class="agency-card-logo">
-                    <img src="https://images.unsplash.com/photo-1560179707-f14e90ef3623?auto=format&fit=crop&w=200&q=80" alt="Pixel Perfect">
+                
+                <div class="agency-content">
+                    <div class="agency-card-logo">
+                        <img src="https://images.unsplash.com/photo-1560179707-f14e90ef3623?auto=format&fit=crop&w=200&q=80" alt="Pixel Perfect">
+                    </div>
+                    
+                    <h3 class="agency-name">Pixel Perfect Std</h3>
+                    <div class="agency-tagline">Crafting Digital Experiences</div>
+                    
+                    <div class="agency-rating">
+                        <i class="fas fa-star"></i> 4.9 (240+ Reviews)
+                    </div>
+                    
+                    <p class="agency-bio">
+                        Award-winning design studio specializing in high-conversion UI/UX and brand identity for tech startups.
+                    </p>
+                    
+                    <div class="agency-stats-row">
+                        <div class="agency-stat">
+                            <span class="agency-stat-value">350+</span>
+                            <span class="agency-stat-label">Projects</span>
+                        </div>
+                        <div class="agency-stat">
+                            <span class="agency-stat-value">15</span>
+                            <span class="agency-stat-label">Team Size</span>
+                        </div>
+                        <div class="agency-stat">
+                            <span class="agency-stat-value">London</span>
+                            <span class="agency-stat-label">Location</span>
+                        </div>
+                    </div>
+
+                    <div class="agency-services">
+                        <span class="agency-service-tag">UI/UX Design</span>
+                        <span class="agency-service-tag">Branding</span>
+                        <span class="agency-service-tag">Webflow</span>
+                    </div>
+                    
+                    <a href="<?php echo SITE_URL; ?>/browse.php?q=Pixel+Perfect" class="btn agency-btn">View Profile</a>
                 </div>
-                <h3 class="agency-name">Pixel Perfect Std</h3>
-                <div class="agency-rating">
-                    <i class="fas fa-star"></i> 4.9 (240+ Reviews)
-                </div>
-                <div class="agency-services">
-                    <span class="agency-service-tag">UI/UX Design</span>
-                    <span class="agency-service-tag">Branding</span>
-                    <span class="agency-service-tag">Webflow</span>
-                </div>
-                <a href="<?php echo SITE_URL; ?>/browse?type=agency" class="btn agency-btn">Explore Services</a>
             </div>
 
+            <!-- Agency 2 -->
             <div class="agency-card reveal-up" style="animation-delay: 0.2s;">
-                <div class="agency-badge">
-                    <i class="fas fa-check-shield"></i> Verified
+                <div class="agency-card-cover">
+                    <img src="https://images.unsplash.com/photo-1504384308090-c54be3855833?auto=format&fit=crop&w=800&q=80" alt="Cover">
                 </div>
-                <div class="agency-card-logo">
-                    <img src="https://images.unsplash.com/photo-1549923746-c502d488b3ea?auto=format&fit=crop&w=200&q=80" alt="DevFlow">
+                
+                <div class="agency-content">
+                    <div class="agency-card-logo">
+                        <img src="https://images.unsplash.com/photo-1549923746-c502d488b3ea?auto=format&fit=crop&w=200&q=80" alt="DevFlow">
+                    </div>
+                    
+                    <h3 class="agency-name">DevFlow Systems</h3>
+                    <div class="agency-tagline">Enterprise Scalability</div>
+                    
+                    <div class="agency-rating">
+                        <i class="fas fa-star"></i> 5.0 (180+ Reviews)
+                    </div>
+                    
+                    <p class="agency-bio">
+                        We build robust, scalable web applications for Fortune 500 companies using modern tech stacks.
+                    </p>
+                    
+                    <div class="agency-stats-row">
+                        <div class="agency-stat">
+                            <span class="agency-stat-value">200+</span>
+                            <span class="agency-stat-label">Projects</span>
+                        </div>
+                        <div class="agency-stat">
+                            <span class="agency-stat-value">24</span>
+                            <span class="agency-stat-label">Team Size</span>
+                        </div>
+                        <div class="agency-stat">
+                            <span class="agency-stat-value">Berlin</span>
+                            <span class="agency-stat-label">Location</span>
+                        </div>
+                    </div>
+
+                    <div class="agency-services">
+                        <span class="agency-service-tag">Laravel</span>
+                        <span class="agency-service-tag">React</span>
+                        <span class="agency-service-tag">Cloud</span>
+                    </div>
+                    
+                    <a href="<?php echo SITE_URL; ?>/browse.php?q=DevFlow" class="btn agency-btn">View Profile</a>
                 </div>
-                <h3 class="agency-name">DevFlow Systems</h3>
-                <div class="agency-rating">
-                    <i class="fas fa-star"></i> 5.0 (180+ Reviews)
-                </div>
-                <div class="agency-services">
-                    <span class="agency-service-tag">Laravel</span>
-                    <span class="agency-service-tag">React</span>
-                    <span class="agency-service-tag">App Dev</span>
-                </div>
-                <a href="<?php echo SITE_URL; ?>/browse?type=agency" class="btn agency-btn">Explore Services</a>
             </div>
 
+            <!-- Agency 3 -->
             <div class="agency-card reveal-up" style="animation-delay: 0.3s;">
-                <div class="agency-badge">
-                    <i class="fas fa-check-shield"></i> Enterprise
+                <div class="agency-card-cover">
+                    <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=800&q=80" alt="Cover">
                 </div>
-                <div class="agency-card-logo">
-                    <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=200&q=80" alt="GrowthMasters">
+                
+                <div class="agency-content">
+                    <div class="agency-card-logo">
+                        <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=200&q=80" alt="GrowthMasters">
+                    </div>
+                    
+                    <h3 class="agency-name">GrowthMasters HQ</h3>
+                    <div class="agency-tagline">Data-Driven Marketing</div>
+                    
+                    <div class="agency-rating">
+                        <i class="fas fa-star"></i> 4.8 (310+ Reviews)
+                    </div>
+                    
+                    <p class="agency-bio">
+                        Full-stack digital marketing agency focused on ROI. We turn traffic into paying customers.
+                    </p>
+                    
+                    <div class="agency-stats-row">
+                        <div class="agency-stat">
+                            <span class="agency-stat-value">500+</span>
+                            <span class="agency-stat-label">Campaigns</span>
+                        </div>
+                        <div class="agency-stat">
+                            <span class="agency-stat-value">40</span>
+                            <span class="agency-stat-label">Team Size</span>
+                        </div>
+                        <div class="agency-stat">
+                            <span class="agency-stat-value">New York</span>
+                            <span class="agency-stat-label">Location</span>
+                        </div>
+                    </div>
+
+                    <div class="agency-services">
+                        <span class="agency-service-tag">SEO</span>
+                        <span class="agency-service-tag">PPC</span>
+                        <span class="agency-service-tag">Content</span>
+                    </div>
+                    
+                    <a href="<?php echo SITE_URL; ?>/browse.php?q=GrowthMasters" class="btn agency-btn">View Profile</a>
                 </div>
-                <h3 class="agency-name">GrowthMasters HQ</h3>
-                <div class="agency-rating">
-                    <i class="fas fa-star"></i> 4.8 (310+ Reviews)
-                </div>
-                <div class="agency-services">
-                    <span class="agency-service-tag">SEO</span>
-                    <span class="agency-service-tag">PPC</span>
-                    <span class="agency-service-tag">Copywriting</span>
-                </div>
-                <a href="<?php echo SITE_URL; ?>/browse?type=agency" class="btn agency-btn">Explore Services</a>
             </div>
         </div>
     </div>

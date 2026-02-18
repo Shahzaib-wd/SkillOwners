@@ -65,7 +65,7 @@ include '../../views/partials/header.php';
                                 </div>
                             </div>
                             <div class="p-4">
-                                <h3 class="h6 font-weight-700 mb-2"><?php echo htmlspecialchars($project['title']); ?></h3>
+                                <h3 class="h6 font-weight-500 mb-2"><?php echo htmlspecialchars($project['title']); ?></h3>
                                 <p class="text-muted small mb-0"><?php echo htmlspecialchars(substr($project['description'], 0, 80)); ?>...</p>
                             </div>
                         </div>

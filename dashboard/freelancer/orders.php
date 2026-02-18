@@ -49,10 +49,10 @@ include '../../views/partials/header.php';
                             <tbody>
                                 <?php foreach ($orders as $order): ?>
                                     <tr>
-                                        <td><span class="font-weight-600 text-primary">#<?php echo $order['id']; ?></span></td>
+                                        <td><span class="font-weight-500 text-primary">#<?php echo $order['id']; ?></span></td>
                                         <td><?php echo htmlspecialchars($order['gig_title']); ?></td>
                                         <td><?php echo htmlspecialchars($order['buyer_name']); ?></td>
-                                        <td><span class="font-weight-700">$<?php echo number_format($order['amount'], 2); ?></span></td>
+                                        <td><span class="font-weight-500">$<?php echo number_format($order['amount'], 2); ?></span></td>
                                         <td>
                                             <span class="badge-<?php echo $order['status'] === 'completed' ? 'success' : 'primary'; ?> user-role">
                                                 <?php echo ucfirst($order['status']); ?>

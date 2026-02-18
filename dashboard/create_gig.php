@@ -23,6 +23,7 @@ $errors = [];
 $success = false;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    requireCSRF();
     $title = sanitizeInput($_POST['title'] ?? '');
     $description = sanitizeInput($_POST['description'] ?? '');
     $category = sanitizeInput($_POST['category'] ?? '');
@@ -34,6 +35,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Validation
     if (empty($title)) $errors[] = 'Title is required';
     if (empty($description)) $errors[] = 'Description is required';
+    
+    // Handle Custom Category
+    if ($category === 'other') {
+        $custom_category = sanitizeInput($_POST['custom_category'] ?? '');
+        if (empty($custom_category)) {
+            $errors[] = 'Please specify your custom category';
+        } else {
+            $category = $custom_category; // Use the custom name
+        }
+    }
+
     if (empty($category)) $errors[] = 'Category is required';
     if (!is_numeric($price) || $price <= 0) $errors[] = 'Valid price is required';
     if (!is_numeric($delivery_time) || $delivery_time <= 0) $errors[] = 'Valid delivery time is required';
@@ -163,6 +175,7 @@ include '../views/partials/header.php';
             <?php endif; ?>
 
             <form method="POST" enctype="multipart/form-data">
+                <input type="hidden" name="csrf_token" value="<?php echo generateCSRFToken(); ?>">
                 <div class="form-group">
                     <label class="form-label">Gig Title *</label>
                     <input type="text" name="title" class="form-control" value="<?php echo htmlspecialchars($_POST['title'] ?? ''); ?>" required>
@@ -175,7 +188,7 @@ include '../views/partials/header.php';
 
                 <div class="form-group">
                     <label class="form-label">Category *</label>
-                    <select name="category" class="form-control" required>
+                    <select name="category" id="categorySelect" class="form-control" required>
                         <option value="">Select Category</option>
                         <option value="web-development" <?php echo ($_POST['category'] ?? '') === 'web-development' ? 'selected' : ''; ?>>Web Development</option>
                         <option value="mobile-development" <?php echo ($_POST['category'] ?? '') === 'mobile-development' ? 'selected' : ''; ?>>Mobile Development</option>
@@ -185,6 +198,32 @@ include '../views/partials/header.php';
                         <option value="other" <?php echo ($_POST['category'] ?? '') === 'other' ? 'selected' : ''; ?>>Other</option>
                     </select>
                 </div>
+
+                <div class="form-group" id="customCategoryGroup" style="display: none;">
+                    <label class="form-label">Custom Category Name *</label>
+                    <input type="text" name="custom_category" class="form-control" placeholder="e.g. Video Editing, Data Science" value="<?php echo htmlspecialchars($_POST['custom_category'] ?? ''); ?>">
+                </div>
+
+                <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    const categorySelect = document.getElementById('categorySelect');
+                    const customGroup = document.getElementById('customCategoryGroup');
+                    const customInput = customGroup.querySelector('input');
+
+                    function toggleCustomCategory() {
+                        if (categorySelect.value === 'other') {
+                            customGroup.style.display = 'block';
+                            customInput.required = true;
+                        } else {
+                            customGroup.style.display = 'none';
+                            customInput.required = false;
+                        }
+                    }
+
+                    categorySelect.addEventListener('change', toggleCustomCategory);
+                    toggleCustomCategory(); // Run on load in case of validation return
+                });
+                </script>
 
                 <div class="form-group">
                     <label class="form-label">Price (USD) *</label>

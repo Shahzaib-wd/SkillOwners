@@ -52,10 +52,10 @@ include '../../views/partials/header.php';
                         <tbody>
                             <?php foreach ($orders as $order): ?>
                                 <tr>
-                                    <td><span class="font-weight-600 text-primary">#<?php echo $order['id']; ?></span></td>
+                                    <td><span class="font-weight-500 text-primary">#<?php echo $order['id']; ?></span></td>
                                     <td><?php echo htmlspecialchars($order['gig_title']); ?></td>
                                     <td><?php echo htmlspecialchars($order['seller_name']); ?></td>
-                                    <td><span class="font-weight-700">$<?php echo number_format($order['amount'], 2); ?></span></td>
+                                    <td><span class="font-weight-500">$<?php echo number_format($order['amount'], 2); ?></span></td>
                                     <td>
                                         <span class="badge-<?php echo $order['status'] === 'completed' ? 'success' : 'primary'; ?> user-role">
                                             <?php echo ucfirst($order['status']); ?>
@@ -115,7 +115,7 @@ include '../../views/partials/header.php';
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border-0 shadow-lg">
             <div class="modal-header bg-light border-0 py-3">
-                <h5 class="modal-title font-weight-700">Leave a Review</h5>
+                <h5 class="modal-title font-weight-500">Leave a Review</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form action="<?php echo SITE_URL; ?>/submit_review" method="POST">
@@ -124,12 +124,12 @@ include '../../views/partials/header.php';
                     <input type="hidden" name="csrf_token" value="<?php echo generateCSRFToken(); ?>">
                     
                     <div class="mb-4">
-                        <label class="form-label text-muted small font-weight-700 text-uppercase mb-2">Gig Title</label>
-                        <p id="modalGigTitle" class="font-weight-600 mb-0"></p>
+                        <label class="form-label text-muted small font-weight-500 text-uppercase mb-2">Gig Title</label>
+                        <p id="modalGigTitle" class="font-weight-500 mb-0"></p>
                     </div>
 
                     <div class="mb-4">
-                        <label class="form-label text-muted small font-weight-700 text-uppercase mb-3">Your Rating</label>
+                        <label class="form-label text-muted small font-weight-500 text-uppercase mb-3">Your Rating</label>
                         <div class="star-rating d-flex gap-2">
                             <?php for($i=1; $i<=5; $i++): ?>
                                 <input type="radio" name="rating" value="<?php echo $i; ?>" id="star<?php echo $i; ?>" class="d-none" required>
@@ -141,7 +141,7 @@ include '../../views/partials/header.php';
                     </div>
 
                     <div class="mb-0">
-                        <label class="form-label text-muted small font-weight-700 text-uppercase mb-2">Detailed Feedback</label>
+                        <label class="form-label text-muted small font-weight-500 text-uppercase mb-2">Detailed Feedback</label>
                         <textarea name="comment" class="form-control" rows="4" placeholder="Share your experience working with this seller..." required></textarea>
                     </div>
                 </div>

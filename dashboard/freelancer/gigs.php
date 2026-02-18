@@ -51,12 +51,17 @@ include '../../views/partials/header.php';
                                 <th>Gig</th>
                                 <th>Category</th>
                                 <th>Price</th>
+                                <th>Impressions</th>
+                                <th>Clicks</th>
+                                <th>CTR</th>
                                 <th>Status</th>
                                 <th class="text-right">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <?php foreach ($gigs as $gig): ?>
+                            <?php foreach ($gigs as $gig): 
+                                $stats = $gigModel->getGigStats($gig['id']);
+                            ?>
                                 <tr>
                                     <td>
                                         <div class="d-flex align-items-center gap-3">
@@ -67,11 +72,14 @@ include '../../views/partials/header.php';
                                                     <i class="fas fa-image text-muted"></i>
                                                 </div>
                                             <?php endif; ?>
-                                            <span class="font-weight-600"><?php echo htmlspecialchars($gig['title']); ?></span>
+                                            <span class="font-weight-500"><?php echo htmlspecialchars($gig['title']); ?></span>
                                         </div>
                                     </td>
                                     <td><?php echo htmlspecialchars($gig['category']); ?></td>
-                                    <td><span class="font-weight-700">$<?php echo number_format($gig['price'], 2); ?></span></td>
+                                    <td><span class="font-weight-500">$<?php echo number_format($gig['price'], 2); ?></span></td>
+                                    <td><span class="badge-light user-role"><i class="fas fa-eye me-1"></i> <?php echo number_format($stats['impressions']); ?></span></td>
+                                    <td><span class="badge-light user-role"><i class="fas fa-mouse-pointer me-1"></i> <?php echo number_format($stats['clicks']); ?></span></td>
+                                    <td><span class="badge-light user-role"><i class="fas fa-chart-line me-1"></i> <?php echo $stats['ctr']; ?>%</span></td>
                                     <td>
                                         <?php if ($gig['is_active']): ?>
                                             <span class="badge-success user-role">Active</span>

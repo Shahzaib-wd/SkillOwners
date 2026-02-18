@@ -91,15 +91,24 @@ try {
                 $isSender = ((int)$msg['sender_id'] === (int)$_SESSION['user_id']);
                 $isAbusive = !$isSender && ChatHelper::isAbusive($msg['message']);
                 
+                $isAdmin = ($msg['global_role'] ?? '') === 'admin';
+                $senderName = (!empty($msg['sender_name']) ? $msg['sender_name'] : 'User ' . $msg['sender_id']);
+                $senderRole = $msg['sender_role'] ?? null;
+
+                if ($isAdmin) {
+                    $senderName = 'SkillOwners';
+                    $senderRole = 'Official';
+                }
+
                 $formattedMessages[] = [
                     'id' => $msg['id'], // Ensure message ID is passed
                     'message' => $msg['message'],
                     'created_at' => $msg['created_at'],
                     'is_sender' => $isSender,
                     'sender_id' => $msg['sender_id'],
-                    'sender_name' => (!empty($msg['sender_name']) ? $msg['sender_name'] : 'User ' . $msg['sender_id']),
+                    'sender_name' => $senderName,
                     'sender_image' => $msg['sender_image'] ?? null,
-                    'sender_role' => $msg['sender_role'] ?? null,
+                    'sender_role' => $senderRole,
                     'is_abusive' => $isAbusive
                 ];
             }

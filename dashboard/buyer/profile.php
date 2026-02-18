@@ -27,8 +27,9 @@ include '../../views/partials/header.php';
             <div class="col-lg-8">
                 <div class="dashboard-card">
                     <form method="POST" action="<?php echo SITE_URL; ?>/dashboard/update_profile.php" enctype="multipart/form-data">
+                        <input type="hidden" name="csrf_token" value="<?php echo generateCSRFToken(); ?>">
                         <div class="mb-4">
-                            <h3 class="h6 font-weight-700 mb-3">Profile Picture</h3>
+                            <h3 class="h6 font-weight-500 mb-3">Profile Picture</h3>
                             <div class="d-flex align-items-center gap-4 mb-3">
                                 <div class="avatar-circle" style="width: 80px; height: 80px; font-size: 2rem; overflow: hidden; background: var(--secondary);">
                                     <?php if ($user['profile_image']): ?>
@@ -45,29 +46,29 @@ include '../../views/partials/header.php';
                         </div>
 
                         <div class="mb-4">
-                            <h3 class="h6 font-weight-700 mb-3">Basic Information</h3>
+                            <h3 class="h6 font-weight-500 mb-3">Basic Information</h3>
                             <div class="form-group mb-3">
-                                <label class="form-label font-weight-600 mb-2">Full Name</label>
+                                <label class="form-label font-weight-500 mb-2">Full Name</label>
                                 <input type="text" name="full_name" class="form-control" value="<?php echo htmlspecialchars($user['full_name']); ?>" required>
                             </div>
 
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group mb-3">
-                                        <label class="form-label font-weight-600 mb-2">Location</label>
+                                        <label class="form-label font-weight-500 mb-2">Location</label>
                                         <input type="text" name="location" class="form-control" value="<?php echo htmlspecialchars($user['location'] ?? ''); ?>" placeholder="City, Country">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group mb-3">
-                                        <label class="form-label font-weight-600 mb-2">Phone Number</label>
+                                        <label class="form-label font-weight-500 mb-2">Phone Number</label>
                                         <input type="text" name="phone" class="form-control" value="<?php echo htmlspecialchars($user['phone'] ?? ''); ?>" placeholder="+1 234 567 890">
                                     </div>
                                 </div>
                             </div>
                             
                             <div class="form-group mb-3">
-                                <label class="form-label font-weight-600 mb-2">About You</label>
+                                <label class="form-label font-weight-500 mb-2">About You</label>
                                 <textarea name="bio" class="form-control" rows="5" placeholder="Tell us a bit about yourself..."><?php echo htmlspecialchars($user['bio'] ?? ''); ?></textarea>
                             </div>
                         </div>
@@ -88,7 +89,7 @@ include '../../views/partials/header.php';
                             <?php echo strtoupper(substr($user['full_name'], 0, 1)); ?>
                         <?php endif; ?>
                     </div>
-                    <h4 class="h6 font-weight-700 mb-1"><?php echo htmlspecialchars($user['full_name']); ?></h4>
+                    <h4 class="h6 font-weight-500 mb-1"><?php echo htmlspecialchars($user['full_name']); ?></h4>
                     <p class="text-muted small mb-3"><?php echo htmlspecialchars($user['email']); ?></p>
                     <a href="<?php echo SITE_URL; ?>/profile?id=<?php echo $userId; ?>" class="btn btn-outline btn-sm btn-block" target="_blank">
                         Preview Public Profile

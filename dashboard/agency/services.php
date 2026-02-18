@@ -125,7 +125,7 @@ include '../../views/partials/header.php';
                     <div class="stat-icon primary mb-3 mx-auto" style="width: 80px; height: 80px; font-size: 2rem;">
                         <i class="fas fa-concierge-bell"></i>
                     </div>
-                    <h3 class="h4 font-weight-700 mb-2">No Active Services</h3>
+                    <h3 class="h4 font-weight-500 mb-2">No Active Services</h3>
                     <p class="text-muted mb-4" style="max-width: 500px; margin: 0 auto;">
                         <?php if ($pendingCount > 0): ?>
                             You have <?php echo $pendingCount; ?> pending request<?php echo $pendingCount > 1 ? 's' : ''; ?> waiting for your approval above.

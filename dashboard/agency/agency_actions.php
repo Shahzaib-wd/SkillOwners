@@ -9,6 +9,8 @@ if (!isLoggedIn()) {
     exit;
 }
 
+requireCSRF();
+
 $action = $_POST['action'] ?? '';
 $targetId = $_POST['target_id'] ?? 0;
 $userId = $_SESSION['user_id'];

@@ -131,7 +131,7 @@ include '../../views/partials/header.php';
                     <div class="mb-3 text-muted" style="font-size: 3rem;">
                         <i class="far fa-envelope-open"></i>
                     </div>
-                    <h3 class="h5 font-weight-700">Inbox is empty</h3>
+                    <h3 class="h5 font-weight-500">Inbox is empty</h3>
                     <p class="text-muted px-4">New inquiries from the contact form will appear here.</p>
                 </div>
             <?php else: ?>
@@ -150,11 +150,11 @@ include '../../views/partials/header.php';
                             <?php foreach ($messages as $msg): ?>
                                 <tr>
                                     <td>
-                                        <div class="font-weight-700 text-dark"><?php echo htmlspecialchars($msg['name']); ?></div>
+                                        <div class="font-weight-500 text-dark"><?php echo htmlspecialchars($msg['name']); ?></div>
                                         <div class="small text-muted font-weight-500"><?php echo htmlspecialchars($msg['email']); ?></div>
                                     </td>
                                     <td>
-                                        <div class="text-dark font-weight-600"><?php echo htmlspecialchars($msg['subject']); ?></div>
+                                        <div class="text-dark font-weight-500"><?php echo htmlspecialchars($msg['subject']); ?></div>
                                     </td>
                                     <td class="small text-muted font-weight-500">
                                         <?php echo date('M d, Y', strtotime($msg['created_at'])); ?>
@@ -208,7 +208,7 @@ include '../../views/partials/header.php';
                                                             <?php echo strtoupper(substr($msg['name'], 0, 1)); ?>
                                                         </div>
                                                         <div>
-                                                            <div class="font-weight-700 h6 mb-0"><?php echo htmlspecialchars($msg['name']); ?></div>
+                                                            <div class="font-weight-500 h6 mb-0"><?php echo htmlspecialchars($msg['name']); ?></div>
                                                             <div class="small text-muted"><?php echo htmlspecialchars($msg['email']); ?></div>
                                                         </div>
                                                     </div>
@@ -216,7 +216,7 @@ include '../../views/partials/header.php';
 
                                                 <div class="mb-4">
                                                     <label class="small text-muted text-uppercase tracking-wider font-weight-800 mb-1 d-block">Subject</label>
-                                                    <div class="font-weight-700 h6 text-dark"><?php echo htmlspecialchars($msg['subject']); ?></div>
+                                                    <div class="font-weight-500 h6 text-dark"><?php echo htmlspecialchars($msg['subject']); ?></div>
                                                 </div>
 
                                                 <div class="mb-4">

@@ -84,12 +84,11 @@ class Gig {
      * @param int $perPage Items per page
      * @return array Array containing 'gigs' and 'pagination' info
      */
-    public function searchWithPagination($query = '', $category = '', $page = 1, $perPage = 12) {
+    public function searchWithPagination($query = '', $category = '', $page = 1, $perPage = 12, $filters = []) {
         $page = max(1, (int)$page);
-        $perPage = min(max(1, (int)$perPage), 50); // Limit to 50 items max
+        $perPage = min(max(1, (int)$perPage), 50);
         $offset = ($page - 1) * $perPage;
         
-        // Base WHERE clause
         $whereClause = "WHERE g.is_active = 1";
         $params = [];
         
@@ -104,14 +103,42 @@ class Gig {
             $whereClause .= " AND g.category = ?";
             $params[] = $category;
         }
+
+        // Advanced Filters
+        if (!empty($filters['min_price'])) {
+            $whereClause .= " AND g.price >= ?";
+            $params[] = (float)$filters['min_price'];
+        }
+        if (!empty($filters['max_price'])) {
+            $whereClause .= " AND g.price <= ?";
+            $params[] = (float)$filters['max_price'];
+        }
+        if (!empty($filters['delivery_time'])) {
+            $whereClause .= " AND g.delivery_time <= ?";
+            $params[] = (int)$filters['delivery_time'];
+        }
+
+        // Rating filter needs a HAVING clause since it's an aggregate
+        $havingClause = "";
+        $havingParams = [];
+        if (!empty($filters['min_rating'])) {
+            $havingClause = "HAVING avg_rating >= ?";
+            $havingParams[] = (float)$filters['min_rating'];
+        }
         
-        // Get total count
-        $countSql = "SELECT COUNT(DISTINCT g.id) as total 
-                      FROM gigs g 
-                      JOIN users u ON g.user_id = u.id 
-                      $whereClause";
+        // Get total count (using a subquery for accuracy with GROUP BY and HAVING)
+        $countSql = "SELECT COUNT(*) as total FROM (
+                        SELECT g.id, COALESCE(AVG(r.rating), 0) as avg_rating
+                        FROM gigs g 
+                        JOIN users u ON g.user_id = u.id 
+                        LEFT JOIN reviews r ON g.id = r.gig_id
+                        $whereClause
+                        GROUP BY g.id
+                        $havingClause
+                    ) as filtered_gigs";
+        
         $stmt = $this->conn->prepare($countSql);
-        $stmt->execute($params);
+        $stmt->execute(array_merge($params, $havingParams));
         $totalResult = $stmt->fetch();
         $totalItems = (int)$totalResult['total'];
         $totalPages = ceil($totalItems / $perPage);
@@ -125,11 +152,12 @@ class Gig {
                 LEFT JOIN reviews r ON g.id = r.gig_id
                 $whereClause
                 GROUP BY g.id 
+                $havingClause
                 ORDER BY g.created_at DESC 
                 LIMIT $perPage OFFSET $offset";
         
         $stmt = $this->conn->prepare($sql);
-        $stmt->execute($params);
+        $stmt->execute(array_merge($params, $havingParams));
         $gigs = $stmt->fetchAll();
         
         return [
@@ -331,28 +359,111 @@ class Gig {
     }
     public function incrementImpressions($ids) {
         if (empty($ids)) return false;
-        $placeholders = implode(',', array_fill(0, count($ids), '?'));
-        $sql = "UPDATE gigs SET impressions = impressions + 1 WHERE id IN ($placeholders)";
-        $stmt = $this->conn->prepare($sql);
-        return $stmt->execute(array_values($ids));
+        
+        $userId = $_SESSION['user_id'] ?? null;
+        $ip = $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0';
+        
+        $sql = "INSERT IGNORE INTO gig_analytics (gig_id, user_id, ip_address, type) 
+                SELECT id, :user_id, :ip, 'impression' FROM gigs 
+                WHERE id IN (" . implode(',', array_fill(0, count($ids), '?')) . ")
+                AND NOT EXISTS (
+                    SELECT 1 FROM gig_analytics 
+                    WHERE gig_id = gigs.id 
+                    AND type = 'impression' 
+                    AND (
+                        (:user_id_check IS NOT NULL AND user_id = :user_id_check2)
+                        OR (ip_address = :ip_check)
+                    )
+                )";
+        
+        // This logic is slightly complex for a single query with IN. 
+        // Let's simplify: loop through and check each.
+        $count = 0;
+        foreach ($ids as $id) {
+            if ($this->recordAnalytics($id, 'impression')) {
+                $count++;
+            }
+        }
+        return $count > 0;
     }
 
     public function incrementClick($id) {
-        $sql = "UPDATE gigs SET clicks = clicks + 1 WHERE id = :id";
+        return $this->recordAnalytics($id, 'click');
+    }
+
+    private function recordAnalytics($gigId, $type) {
+        $userId = $_SESSION['user_id'] ?? null;
+        $ip = $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0';
+
+        // Check for existing entry
+        $checkSql = "SELECT id FROM gig_analytics 
+                    WHERE gig_id = :gig_id AND type = :type 
+                    AND (";
+        $params = ['gig_id' => $gigId, 'type' => $type];
+        
+        if ($userId) {
+            $checkSql .= "user_id = :user_id";
+            $params['user_id'] = $userId;
+        } else {
+            $checkSql .= "ip_address = :ip AND user_id IS NULL";
+            $params['ip'] = $ip;
+        }
+        $checkSql .= ")";
+
+        $stmt = $this->conn->prepare($checkSql);
+        $stmt->execute($params);
+        if ($stmt->fetch()) {
+            return false; // Already recorded
+        }
+
+        // Insert new record
+        $insertSql = "INSERT INTO gig_analytics (gig_id, user_id, ip_address, type) 
+                     VALUES (:gig_id, :user_id, :ip, :type)";
+        $istmt = $this->conn->prepare($insertSql);
+        return $istmt->execute([
+            'gig_id' => $gigId,
+            'user_id' => $userId,
+            'ip' => $ip,
+            'type' => $type
+        ]);
+    }
+
+    public function getGigStats($gigId) {
+        $sql = "SELECT 
+                    SUM(CASE WHEN type = 'impression' THEN 1 ELSE 0 END) as impressions,
+                    SUM(CASE WHEN type = 'click' THEN 1 ELSE 0 END) as clicks
+                FROM gig_analytics 
+                WHERE gig_id = :gig_id";
         $stmt = $this->conn->prepare($sql);
-        return $stmt->execute(['id' => $id]);
+        $stmt->execute(['gig_id' => $gigId]);
+        $stats = $stmt->fetch();
+        
+        $stats['impressions'] = (int)($stats['impressions'] ?? 0);
+        $stats['clicks'] = (int)($stats['clicks'] ?? 0);
+        $stats['ctr'] = $stats['impressions'] > 0 ? round(($stats['clicks'] / $stats['impressions']) * 100, 2) : 0;
+        
+        return $stats;
     }
 
     public function getUserStats($userId) {
         $sql = "SELECT 
-                    SUM(impressions) as total_impressions, 
-                    SUM(clicks) as total_clicks,
-                    COUNT(*) as total_gigs
-                FROM gigs 
-                WHERE user_id = :user_id";
+                    COUNT(DISTINCT a.id) as total_interactions,
+                    (SELECT COUNT(*) FROM gigs WHERE user_id = :user_id) as total_gigs,
+                    SUM(CASE WHEN a.type = 'impression' THEN 1 ELSE 0 END) as total_impressions,
+                    SUM(CASE WHEN a.type = 'click' THEN 1 ELSE 0 END) as total_clicks
+                FROM gigs g
+                LEFT JOIN gig_analytics a ON g.id = a.gig_id
+                WHERE g.user_id = :user_id_main";
+        
         $stmt = $this->conn->prepare($sql);
-        $stmt->execute(['user_id' => $userId]);
-        return $stmt->fetch();
+        $stmt->execute(['user_id' => $userId, 'user_id_main' => $userId]);
+        $res = $stmt->fetch();
+        
+        return [
+            'total_impressions' => (int)($res['total_impressions'] ?? 0),
+            'total_clicks' => (int)($res['total_clicks'] ?? 0),
+            'total_gigs' => (int)($res['total_gigs'] ?? 0)
+        ];
     }
 
     public function getStats() {

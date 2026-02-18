@@ -14,13 +14,13 @@ $gigModel = new Gig();
 
 $user = $userModel->findById($userId);
 
-if (!$user || ($user['role'] !== 'freelancer' && $user['role'] !== 'agency')) {
+if (!$user) {
     include 'views/partials/header.php';
     echo '<div class="container py-5 text-center">
             <div class="dashboard-card py-5">
                 <i class="fas fa-user-slash fa-4x text-muted mb-4"></i>
                 <h1 class="h3 font-weight-700">User Not Found</h1>
-                <p class="text-muted">The profile you are looking for does not exist or is not a professional profile.</p>
+                <p class="text-muted">The profile you are looking for does not exist.</p>
                 <a href="' . SITE_URL . '/browse" class="btn btn-primary mt-3">Browse Services</a>
             </div>
           </div>';
@@ -28,7 +28,9 @@ if (!$user || ($user['role'] !== 'freelancer' && $user['role'] !== 'agency')) {
     exit;
 }
 
-$gigs = $gigModel->findByUserId($userId);
+$isProfessional = ($user['role'] === 'freelancer' || $user['role'] === 'agency');
+
+$gigs = $isProfessional ? $gigModel->findByUserId($userId) : [];
 
 // For agency profiles, also get contributed gigs from team members
 $agencyGigs = [];
@@ -40,6 +42,7 @@ $allGigs = $user['role'] === 'agency' ? $agencyGigs : $gigs;
 $gigCount = count($allGigs);
 
 include 'views/partials/header.php';
+
 ?>
 
 <div class="profile-hero">
@@ -67,7 +70,14 @@ include 'views/partials/header.php';
                 $headline = !empty($user['professional_title']) ? $user['professional_title'] : ucfirst($user['role']);
                 ?>
                 <div class="col-md profile-info-main">
-                    <h1 class="mb-1"><?php echo htmlspecialchars($user['full_name']); ?></h1>
+                    <div class="d-flex align-items-center flex-wrap gap-2 mb-1">
+                        <h1 class="mb-0">
+                            <?php echo htmlspecialchars($user['full_name']); ?>
+                            <?php if ($user['is_official']): ?>
+                                <i class="fas fa-check-circle official-badge-icon" title="Official Agency"></i>
+                            <?php endif; ?>
+                        </h1>
+                    </div>
                     <div class="d-flex align-items-center gap-2 mb-3">
                         <span class="text-primary fw-700 h5 mb-0"><?php echo htmlspecialchars($headline); ?></span>
                         <span class="badge <?php echo ($user['role'] ?? '') === 'agency' ? 'bg-indigo' : 'bg-success'; ?> text-white text-uppercase" style="font-size: 0.6rem; padding: 0.3rem 0.6rem;">
@@ -82,10 +92,20 @@ include 'views/partials/header.php';
                 </div>
                 <div class="col-md-auto pb-3">
                     <div class="d-flex gap-2">
-                        <button class="btn btn-primary px-4" onclick="alert('Messaging system coming soon!')">
-                            <i class="fas fa-paper-plane me-2"></i> Contact Me
-                        </button>
-                        <button class="btn btn-outline" onclick="navigator.clipboard.writeText(window.location.href); alert('Profile link copied!')">
+                        <?php if (isLoggedIn() && $_SESSION['user_id'] == $user['id']): ?>
+                            <?php 
+                            $editProfileLink = ($user['role'] === 'admin') ? SITE_URL . '/dashboard/alpha/profile' : SITE_URL . '/dashboard/' . $user['role'] . '/profile';
+                            ?>
+                            <button class="btn btn-primary px-4" onclick="location.href='<?php echo $editProfileLink; ?>'">
+                                <i class="fas fa-user-edit me-2"></i> Edit Profile
+                            </button>
+                        <?php else: ?>
+                            <button class="btn btn-primary px-4" onclick="location.href='<?php echo SITE_URL; ?>/chat?receiver_id=<?php echo $user['id']; ?>'">
+                                <i class="fas fa-paper-plane me-2"></i> <?php echo ($user['role'] ?? '') === 'agency' ? 'Contact Us' : 'Contact Me'; ?>
+                            </button>
+                        <?php endif; ?>
+                        
+                        <button class="btn btn-outline" onclick="navigator.clipboard.writeText(window.location.href); alert('Profile link copied!')" title="Copy Profile Link">
                             <i class="fas fa-share-alt"></i>
                         </button>
                     </div>
@@ -106,6 +126,7 @@ include 'views/partials/header.php';
                 </p>
             </div>
 
+            <?php if ($isProfessional): ?>
             <div class="pro-card mb-4">
                 <h3 class="pro-card-title"><i class="fas fa-bolt"></i> Expertise</h3>
                 <div class="expertise-tags">
@@ -121,6 +142,7 @@ include 'views/partials/header.php';
                     ?>
                 </div>
             </div>
+            <?php endif; ?>
 
             <?php if ($user['portfolio_link']): ?>
             <div class="pro-card mb-4">
@@ -150,50 +172,61 @@ include 'views/partials/header.php';
 
         <!-- Main Content (Services) -->
         <div class="col-lg-8">
+            <?php if ($isProfessional): ?>
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h2 class="h4 font-weight-800 mb-0"><?php echo $user['role'] === 'agency' ? 'Agency' : 'Professional'; ?> Services</h2>
                 <span class="text-muted fw-500"><?php echo $gigCount; ?> results found</span>
             </div>
+            <?php endif; ?>
 
-            <?php if (empty($allGigs)): ?>
-                <div class="pro-card text-center py-5">
-                    <i class="fas fa-concierge-bell fa-3x text-muted mb-3"></i>
-                    <p class="text-muted mb-0">No active services listed at the moment.</p>
-                </div>
+            <?php if ($isProfessional): ?>
+                <?php if (empty($allGigs)): ?>
+                    <div class="pro-card text-center py-5">
+                        <i class="fas fa-concierge-bell fa-3x text-muted mb-3"></i>
+                        <p class="text-muted mb-0">No active services listed at the moment.</p>
+                    </div>
+                <?php else: ?>
+                    <div class="service-grid">
+                        <?php foreach ($allGigs as $gig): ?>
+                            <div class="pro-service-card">
+                                <a href="<?php echo SITE_URL; ?>/gig?id=<?php echo $gig['id']; ?>" class="text-decoration-none">
+                                    <div class="gig-image-wrapper">
+                                        <img src="<?php echo $gig['image'] ? SITE_URL . '/uploads/' . $gig['image'] : 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=800&q=80'; ?>" alt="<?php echo htmlspecialchars($gig['title']); ?>" class="gig-image">
+                                    </div>
+                                    <div class="gig-content">
+                                        <div class="d-flex justify-content-between align-items-start mb-2">
+                                            <span class="badge bg-light text-primary border rounded-pill" style="font-size: 0.65rem;"><?php echo htmlspecialchars($gig['category']); ?></span>
+                                        </div>
+                                        <h3 class="gig-title"><?php echo htmlspecialchars($gig['title']); ?></h3>
+                                        <?php if ($user['role'] === 'agency' && !empty($gig['full_name'])): ?>
+                                            <div class="d-flex align-items-center gap-2 mb-3">
+                                                <div class="text-muted smaller"><i class="fas fa-user-tie"></i> Member: <?php echo htmlspecialchars($gig['full_name']); ?></div>
+                                            </div>
+                                        <?php endif; ?>
+                                        <div class="gig-footer">
+                                            <div>
+                                                <i class="fas fa-star text-warning small"></i>
+                                                <span class="small fw-600">New</span>
+                                            </div>
+                                            <div>
+                                                <span class="text-muted smaller d-block text-end">Starting at</span>
+                                                <span class="gig-price">$<?php echo number_format($gig['price'], 2); ?></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                <?php endif; ?>
             <?php else: ?>
-                <div class="service-grid">
-                    <?php foreach ($allGigs as $gig): ?>
-                        <div class="pro-service-card">
-                            <a href="<?php echo SITE_URL; ?>/gig?id=<?php echo $gig['id']; ?>" class="text-decoration-none">
-                                <div class="gig-image-wrapper">
-                                    <img src="<?php echo $gig['image'] ? SITE_URL . '/uploads/' . $gig['image'] : 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=800&q=80'; ?>" alt="<?php echo htmlspecialchars($gig['title']); ?>" class="gig-image">
-                                </div>
-                                <div class="gig-content">
-                                    <div class="d-flex justify-content-between align-items-start mb-2">
-                                        <span class="badge bg-light text-primary border rounded-pill" style="font-size: 0.65rem;"><?php echo htmlspecialchars($gig['category']); ?></span>
-                                    </div>
-                                    <h3 class="gig-title"><?php echo htmlspecialchars($gig['title']); ?></h3>
-                                    <?php if ($user['role'] === 'agency' && !empty($gig['full_name'])): ?>
-                                        <div class="d-flex align-items-center gap-2 mb-3">
-                                            <div class="text-muted smaller"><i class="fas fa-user-tie"></i> Member: <?php echo htmlspecialchars($gig['full_name']); ?></div>
-                                        </div>
-                                    <?php endif; ?>
-                                    <div class="gig-footer">
-                                        <div>
-                                            <i class="fas fa-star text-warning small"></i>
-                                            <span class="small fw-600">New</span>
-                                        </div>
-                                        <div>
-                                            <span class="text-muted smaller d-block text-end">Starting at</span>
-                                            <span class="gig-price">$<?php echo number_format($gig['price'], 2); ?></span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                    <?php endforeach; ?>
+                <div class="pro-card text-center py-5">
+                    <i class="fas fa-shopping-bag fa-3x text-muted mb-3"></i>
+                    <h3 class="h4 font-weight-700">Buyer Profile</h3>
+                    <p class="text-muted mb-0">This user is currently in buyer mode and does not have active services.</p>
                 </div>
             <?php endif; ?>
+
         </div>
     </div>
 </div>

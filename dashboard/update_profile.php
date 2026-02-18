@@ -9,6 +9,7 @@ $userModel = new User();
 $user = $userModel->findById($userId);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    requireCSRF();
     $data = [
         'full_name' => sanitizeInput($_POST['full_name'] ?? ''),
         'bio' => sanitizeInput($_POST['bio'] ?? ''),

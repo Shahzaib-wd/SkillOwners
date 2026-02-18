@@ -38,10 +38,10 @@ include '../../views/partials/header.php';
                     <tbody>
                         <?php foreach ($gigs as $gig): ?>
                             <tr id="gig-row-<?php echo $gig['id']; ?>">
-                                <td><span class="font-weight-600"><?php echo htmlspecialchars($gig['title']); ?></span></td>
+                                <td><span class="font-weight-500"><?php echo htmlspecialchars($gig['title']); ?></span></td>
                                 <td><?php echo htmlspecialchars($gig['seller_name'] ?? 'Unknown'); ?></td>
                                 <td><?php echo htmlspecialchars($gig['category']); ?></td>
-                                <td><span class="font-weight-700">$<?php echo number_format($gig['price'], 2); ?></span></td>
+                                <td><span class="font-weight-500">$<?php echo number_format($gig['price'], 2); ?></span></td>
                                 <td class="status-cell">
                                     <?php if ($gig['is_active']): ?>
                                         <span class="badge-success user-role">Live</span>

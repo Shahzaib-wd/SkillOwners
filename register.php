@@ -17,6 +17,7 @@ $selectedRole = $_GET['role'] ?? 'buyer';
 
 // Handle registration form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    requireCSRF();
     $fullName = sanitizeInput($_POST['full_name'] ?? '');
     $email = sanitizeInput($_POST['email'] ?? '');
     $password = $_POST['password'] ?? '';
@@ -153,6 +154,7 @@ include 'views/partials/header.php';
         <?php endif; ?>
         
         <form method="POST" action="" id="registerForm">
+            <input type="hidden" name="csrf_token" value="<?php echo generateCSRFToken(); ?>">
             <div class="role-selector">
                 <div class="role-option">
                     <input type="radio" id="buyer" name="role" value="buyer" <?php echo $selectedRole === 'buyer' ? 'checked' : ''; ?>>
@@ -211,6 +213,29 @@ include 'views/partials/header.php';
             <button type="submit" class="btn btn-primary" style="width: 100%; margin-bottom: 1rem;">
                 Create Account
             </button>
+
+            <div class="divider mb-3" style="display: flex; align-items: center; text-align: center; color: var(--muted-foreground); font-size: 0.75rem;">
+                <div style="flex: 1; height: 1px; background: var(--border);"></div>
+                <div style="padding: 0 10px; font-weight: 600;">OR</div>
+                <div style="flex: 1; height: 1px; background: var(--border);"></div>
+            </div>
+
+            <!-- Google Sign-In -->
+            <script src="https://accounts.google.com/gsi/client" async defer></script>
+            <div id="g_id_onload"
+                data-client_id="<?php echo GOOGLE_CLIENT_ID; ?>"
+                data-login_uri="<?php echo SITE_URL; ?>/auth_google.php"
+                data-auto_prompt="false">
+            </div>
+            <div class="g_id_signin mb-3"
+                data-type="standard"
+                data-size="large"
+                data-theme="outline"
+                data-text="signup_with"
+                data-shape="pill"
+                data-logo_alignment="left"
+                data-width="440">
+            </div>
             
             <p class="text-center" style="font-size: 0.875rem; color: var(--muted-foreground);">
                 Already have an account? 

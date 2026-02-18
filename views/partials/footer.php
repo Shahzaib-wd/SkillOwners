@@ -48,5 +48,17 @@
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="<?php echo SITE_URL; ?>/assets/js/main.js?v=1.1"></script>
+
+    <?php if (!isLoggedIn()): ?>
+    <!-- Google One Tap (Global) -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <div id="g_id_onload"
+         data-client_id="<?php echo GOOGLE_CLIENT_ID; ?>"
+         data-login_uri="<?php echo SITE_URL; ?>/auth_google.php"
+         data-auto_prompt="true"
+         data-itp_support="true"
+         data-context="signin">
+    </div>
+    <?php endif; ?>
 </body>
 </html>

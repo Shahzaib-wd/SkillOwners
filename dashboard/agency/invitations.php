@@ -52,7 +52,7 @@ include '../../views/partials/header.php';
                         <tbody>
                             <?php foreach ($invitations as $invitation): ?>
                                 <tr>
-                                    <td><span class="font-weight-600"><?php echo htmlspecialchars($invitation['email']); ?></span></td>
+                                    <td><span class="font-weight-500"><?php echo htmlspecialchars($invitation['email']); ?></span></td>
                                     <td><span class="badge-freelancer user-role"><?php echo ucfirst($invitation['agency_role']); ?></span></td>
                                     <td>
                                         <?php

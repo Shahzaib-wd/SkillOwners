@@ -45,14 +45,14 @@ include '../../views/partials/header.php';
         </div>
 
         <?php if (!empty($pendingInvitations)): ?>
-            <div class="dashboard-card mb-4" style="border-left: 4px solid var(--primary); background: #f5f3ff;">
+            <div class="dashboard-card mb-4" style="border-left: 3px solid var(--primary); background: #fdfdfd; padding: 1.25rem 1.75rem;">
                 <div class="d-flex align-items-center gap-3">
                     <div class="stat-icon primary">
                         <i class="fas fa-envelope-open-text"></i>
                     </div>
                     <div>
-                        <h5 class="mb-1">Agency Invitations</h5>
-                        <p class="mb-0 text-muted">You have <?php echo count($pendingInvitations); ?> pending invitations to join agencies.</p>
+                        <h5 class="mb-0 font-weight-500">Agency Invitations</h5>
+                        <p class="mb-0 text-muted small">You have <?php echo count($pendingInvitations); ?> pending invitations to join agencies.</p>
                     </div>
                     <a href="agencies" class="btn btn-primary btn-sm ml-auto">View Invitations</a>
                 </div>

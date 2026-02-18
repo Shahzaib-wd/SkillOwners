@@ -132,6 +132,18 @@
     color: var(--muted-foreground);
     margin-left: 0.5rem;
 }
+.role-official-tag {
+    background: #10b981;
+    color: #ffffff;
+    border: 1px solid #059669;
+    font-weight: 700;
+    font-size: 0.6rem;
+    padding: 1px 4px;
+    border-radius: 4px;
+    margin-left: 6px;
+    text-transform: uppercase;
+    vertical-align: middle;
+}
 </style>
 
 <div class="inbox-section" id="messages">
@@ -246,7 +258,10 @@ function renderInbox(conversations) {
                 </div>
                 <div class="conversation-content">
                     <div class="conversation-header">
-                        <div class="conversation-name">${displayName}${typeIcon}</div>
+                        <div class="conversation-name">
+                            ${displayName}${typeIcon}
+                            ${conv.other_user_role === 'admin' ? '<span class="role-official-tag">Official</span>' : ''}
+                        </div>
                         <div class="conversation-time">${timeStr}</div>
                     </div>
                     <div class="conversation-preview">${lastMessage}</div>

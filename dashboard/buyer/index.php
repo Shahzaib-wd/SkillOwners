@@ -75,10 +75,10 @@ include '../../views/partials/header.php';
                         <tbody>
                             <?php foreach ($recent_orders as $order): ?>
                                 <tr>
-                                    <td><span class="font-weight-600 text-primary">#<?php echo $order['id']; ?></span></td>
+                                    <td><span class="text-primary" style="font-weight: 500;">#<?php echo $order['id']; ?></span></td>
                                     <td><?php echo htmlspecialchars($order['gig_title']); ?></td>
                                     <td><?php echo htmlspecialchars($order['seller_name']); ?></td>
-                                    <td><span class="font-weight-700">$<?php echo number_format($order['amount'], 2); ?></span></td>
+                                    <td><span style="font-weight: 600;">$<?php echo number_format($order['amount'], 2); ?></span></td>
                                     <td>
                                         <span class="badge-primary user-role">
                                             <?php echo ucfirst($order['status']); ?>

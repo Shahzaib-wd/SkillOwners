@@ -21,141 +21,7 @@ $orderStats = $orderModel->getStats();
 include '../../views/partials/header.php';
 ?>
 
-<style>
-    :root {
-        --glass-bg: rgba(255, 255, 255, 0.95);
-        --glass-border: 1px solid rgba(255, 255, 255, 0.2);
-        --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
-        --gradient-primary: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
-        --gradient-success: linear-gradient(135deg, #10b981 0%, #059669 100%);
-        --gradient-warning: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-        --gradient-info: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-    }
-
-    body {
-        background-color: #f3f4f6;
-    }
-
-    .dashboard-layout {
-        display: flex;
-        min-height: calc(100vh - 70px);
-    }
-
-    .dashboard-content {
-        flex: 1;
-        padding: 2rem;
-        overflow-x: hidden;
-    }
-
-    .page-header {
-        margin-bottom: 2rem;
-    }
-
-    .page-title {
-        font-size: 1.875rem;
-        font-weight: 800;
-        color: #111827;
-        margin-bottom: 0.5rem;
-        letter-spacing: -0.025em;
-    }
-
-    .stat-card {
-        background: var(--glass-bg);
-        border: var(--glass-border);
-        box-shadow: var(--glass-shadow);
-        border-radius: 1rem;
-        padding: 1.5rem;
-        transition: transform 0.2s, box-shadow 0.2s;
-        position: relative;
-        overflow: hidden;
-    }
-
-    .stat-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.1);
-    }
-
-    .stat-icon-wrapper {
-        width: 48px;
-        height: 48px;
-        border-radius: 12px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1.5rem;
-        color: white;
-        margin-bottom: 1rem;
-    }
-
-    .stat-value {
-        font-size: 2rem;
-        font-weight: 800;
-        color: #111827;
-        line-height: 1;
-        margin-bottom: 0.25rem;
-    }
-
-    .stat-label {
-        color: #6b7280;
-        font-size: 0.875rem;
-        font-weight: 500;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-    }
-
-    .card-pro {
-        background: white;
-        border-radius: 1rem;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-        border: 1px solid #e5e7eb;
-        overflow: hidden;
-    }
-
-    .card-header-pro {
-        padding: 1.25rem 1.5rem;
-        border-bottom: 1px solid #f3f4f6;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-    }
-
-    .card-title-pro {
-        font-size: 1.1rem;
-        font-weight: 700;
-        color: #1f2937;
-        margin: 0;
-    }
-
-    .quick-link-item {
-        display: flex;
-        align-items: center;
-        padding: 1rem 1.5rem;
-        color: #4b5563;
-        text-decoration: none;
-        transition: background-color 0.2s;
-        border-bottom: 1px solid #f3f4f6;
-    }
-
-    .quick-link-item:last-child {
-        border-bottom: none;
-    }
-
-    .quick-link-item:hover {
-        background-color: #f9fafb;
-        color: #6366f1;
-    }
-
-    .quick-link-icon {
-        width: 36px;
-        height: 36px;
-        border-radius: 8px;
-        background-color: #eef2ff;
-        color: #6366f1;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-right: 1rem;
-    }
+    /* Using global style.css for dashboard elements */
 </style>
 
 <div class="dashboard-layout">
@@ -168,89 +34,102 @@ include '../../views/partials/header.php';
         </div>
 
         <!-- Stats Grid -->
-        <div class="row g-4 mb-5">
-            <div class="col-md-3">
-                <div class="stat-card">
-                    <div class="stat-icon-wrapper" style="background: var(--gradient-info);">
-                        <i class="fas fa-users"></i>
-                    </div>
-                    <div class="stat-value"><?php echo number_format($userStats['total_users'] ?? 0); ?></div>
-                    <div class="stat-label">Total Users</div>
+        <div class="stats-grid mb-5">
+            <div class="stat-card">
+                <div class="stat-icon info">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="stat-data">
+                    <span class="stat-value"><?php echo number_format($userStats['total_users'] ?? 0); ?></span>
+                    <span class="stat-label">Total Users</span>
                 </div>
             </div>
             
-            <div class="col-md-3">
-                <div class="stat-card">
-                    <div class="stat-icon-wrapper" style="background: var(--gradient-primary);">
-                        <i class="fas fa-briefcase"></i>
-                    </div>
-                    <div class="stat-value"><?php echo number_format($gigStats['total_gigs'] ?? 0); ?></div>
-                    <div class="stat-label">Active Gigs</div>
+            <div class="stat-card">
+                <div class="stat-icon primary">
+                    <i class="fas fa-briefcase"></i>
+                </div>
+                <div class="stat-data">
+                    <span class="stat-value"><?php echo number_format($gigStats['total_gigs'] ?? 0); ?></span>
+                    <span class="stat-label">Active Gigs</span>
                 </div>
             </div>
             
-            <div class="col-md-3">
-                <div class="stat-card">
-                    <div class="stat-icon-wrapper" style="background: var(--gradient-success);">
-                        <i class="fas fa-check-circle"></i>
-                    </div>
-                    <div class="stat-value"><?php echo number_format($orderStats['completed_orders'] ?? 0); ?></div>
-                    <div class="stat-label">Completed Orders</div>
+            <div class="stat-card">
+                <div class="stat-icon success">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="stat-data">
+                    <span class="stat-value"><?php echo number_format($orderStats['completed_orders'] ?? 0); ?></span>
+                    <span class="stat-label">Completed Orders</span>
                 </div>
             </div>
             
-            <div class="col-md-3">
-                <div class="stat-card">
-                    <div class="stat-icon-wrapper" style="background: var(--gradient-warning);">
-                        <i class="fas fa-shopping-bag"></i>
-                    </div>
-                    <div class="stat-value"><?php echo number_format($orderStats['total_orders'] ?? 0); ?></div>
-                    <div class="stat-label">Total Orders</div>
+            <div class="stat-card">
+                <div class="stat-icon warning">
+                    <i class="fas fa-shopping-bag"></i>
+                </div>
+                <div class="stat-data">
+                    <span class="stat-value"><?php echo number_format($orderStats['total_orders'] ?? 0); ?></span>
+                    <span class="stat-label">Total Orders</span>
                 </div>
             </div>
         </div>
 
         <div class="row">
-            <!-- User Distribution -->
+            <!-- Managed Agencies -->
             <div class="col-lg-8 mb-4">
                 <div class="card-pro h-100">
                     <div class="card-header-pro">
-                        <h3 class="card-title-pro">User Distribution</h3>
-                        <a href="users" class="btn btn-sm btn-outline-primary rounded-pill">Manage Users</a>
+                        <h3 class="card-title-pro">Managed Agencies</h3>
+                        <span class="badge bg-primary">Admin Access</span>
                     </div>
-                    <div class="card-body p-4">
-                        <div class="row text-center">
-                            <div class="col-4">
-                                <div class="p-3 rounded bg-light">
-                                    <h4 class="display-6 fw-bold text-primary mb-0"><?php echo $userStats['freelancers'] ?? 0; ?></h4>
-                                    <small class="text-uppercase text-muted fw-bold">Freelancers</small>
-                                </div>
+                    <div class="card-body p-0">
+                        <?php
+                        $db = getDBConnection();
+                        $managedSql = "SELECT u.id, u.full_name, u.email, u.profile_image, u.is_official 
+                                     FROM users u 
+                                     JOIN agency_members am ON u.id = am.agency_id 
+                                     WHERE am.freelancer_id = :admin_id AND u.role = 'agency'";
+                        $managedStmt = $db->prepare($managedSql);
+                        $managedStmt->execute(['admin_id' => $_SESSION['user_id']]);
+                        $managedAgencies = $managedStmt->fetchAll();
+
+                        if (empty($managedAgencies)): ?>
+                            <div class="p-4 text-center text-muted">
+                                <i class="fas fa-building fa-2x mb-2"></i>
+                                <p>No managed agencies found.</p>
                             </div>
-                            <div class="col-4">
-                                <div class="p-3 rounded bg-light">
-                                    <h4 class="display-6 fw-bold text-info mb-0"><?php echo $userStats['agencies'] ?? 0; ?></h4>
-                                    <small class="text-uppercase text-muted fw-bold">Agencies</small>
-                                </div>
+                        <?php else: ?>
+                            <div class="list-group list-group-flush">
+                                <?php foreach ($managedAgencies as $agency): ?>
+                                    <div class="list-group-item d-flex align-items-center justify-content-between py-3 px-4">
+                                        <div class="d-flex align-items-center gap-3">
+                                            <div class="avatar-sm" style="width: 40px; height: 40px; border-radius: 8px; background: #eef2ff; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+                                                <?php if ($agency['profile_image']): ?>
+                                                    <img src="<?php echo SITE_URL; ?>/uploads/<?php echo $agency['profile_image']; ?>" class="w-100 h-100" style="object-fit: cover;">
+                                                <?php else: ?>
+                                                    <span class="fw-bold text-primary"><?php echo strtoupper(substr($agency['full_name'], 0, 1)); ?></span>
+                                                <?php endif; ?>
+                                            </div>
+                                            <div>
+                                                <div class="fw-bold d-flex align-items-center gap-1">
+                                                    <?php echo htmlspecialchars($agency['full_name']); ?>
+                                                    <?php if ($agency['is_official']): ?>
+                                                        <i class="fas fa-check-circle official-badge-icon" title="Official Agency"></i>
+                                                    <?php endif; ?>
+                                                </div>
+                                                <div class="text-muted small"><?php echo htmlspecialchars($agency['email']); ?></div>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex gap-2">
+                                            <a href="<?php echo SITE_URL; ?>/profile?id=<?php echo $agency['id']; ?>" class="btn btn-sm btn-outline-secondary" target="_blank">View Profile</a>
+                                            <a href="<?php echo SITE_URL; ?>/dashboard/agency" class="btn btn-sm btn-primary">Switch to Agency</a>
+                                        </div>
+                                    </div>
+                                <?php endforeach; ?>
                             </div>
-                            <div class="col-4">
-                                <div class="p-3 rounded bg-light">
-                                    <h4 class="display-6 fw-bold text-warning mb-0"><?php echo $userStats['buyers'] ?? 0; ?></h4>
-                                    <small class="text-uppercase text-muted fw-bold">Buyers</small>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Recent Activity could go here -->
-                        <hr class="my-4">
-                        <h5 class="fw-bold fs-6 text-muted mb-3">SYSTEM HEALTH</h5>
-                        <div class="d-flex align-items-center mb-3">
-                            <span class="badge bg-success me-2">ONLINE</span>
-                            <span class="text-muted small">Database Connection: Active</span>
-                        </div>
-                        <div class="d-flex align-items-center">
-                            <span class="badge bg-success me-2">OK</span>
-                            <span class="text-muted small">Email System: SMTP Configured</span>
-                        </div>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>

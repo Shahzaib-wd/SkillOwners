@@ -167,7 +167,7 @@ class Message {
             return [];
         }
         
-        $sql = "SELECT m.*, u.full_name as sender_name, u.profile_image as sender_image,
+        $sql = "SELECT m.*, u.full_name as sender_name, u.profile_image as sender_image, u.role as global_role,
                    CASE 
                        WHEN c.type = 'agency_internal' AND m.sender_id = c.agency_id THEN 'Owner'
                        WHEN c.type = 'agency_internal' THEN am.agency_role
@@ -217,7 +217,7 @@ class Message {
                     -- Get other participant info for direct chats
                     CASE 
                         WHEN c.type = 'direct' THEN (
-                            SELECT u.full_name 
+                            SELECT CASE WHEN u.role = 'admin' THEN 'SkillOwners' ELSE u.full_name END
                             FROM conversation_participants cp
                             INNER JOIN users u ON cp.user_id = u.id
                             WHERE cp.conversation_id = c.id AND cp.user_id != :user_id_1
@@ -247,6 +247,16 @@ class Message {
                         )
                         ELSE NULL
                     END as other_user_id,
+                    CASE 
+                        WHEN c.type = 'direct' THEN (
+                            SELECT u.role
+                            FROM conversation_participants cp
+                            INNER JOIN users u ON cp.user_id = u.id
+                            WHERE cp.conversation_id = c.id AND cp.user_id != :user_id_7
+                            LIMIT 1
+                        )
+                        ELSE NULL
+                    END as other_user_role,
                     -- Last message info
                     (SELECT m.message FROM messages m WHERE m.conversation_id = c.id ORDER BY m.created_at DESC LIMIT 1) as last_message,
                     (SELECT m.created_at FROM messages m WHERE m.conversation_id = c.id ORDER BY m.created_at DESC LIMIT 1) as last_message_time,
@@ -273,7 +283,8 @@ class Message {
             'user_id_3' => $userId,
             'user_id_4' => $userId,
             'user_id_5' => $userId,
-            'user_id_6' => $userId
+            'user_id_6' => $userId,
+            'user_id_7' => $userId
         ]);
         return $stmt->fetchAll();
     }
