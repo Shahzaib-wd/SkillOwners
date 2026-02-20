@@ -9,32 +9,33 @@
                             <span>Skill<span style="color: #10b981;">Owners</span></span>
                         </span>
                     </div>
-                    <p>The marketplace connecting skilled professionals with businesses worldwide.</p>
+                    <p>Transforming visions into high-performance reality with senior-level technical expertise and aggressive growth strategies.</p>
                 </div>
                 
                 <div class="footer-links">
-                    <h4>For Buyers</h4>
+                    <h4>Solutions</h4>
                     <ul>
-                        <li><a href="<?php echo SITE_URL; ?>/browse">Browse Services</a></li>
-                        <li><a href="<?php echo SITE_URL; ?>/about">How It Works</a></li>
+                        <li><a href="<?php echo SITE_URL; ?>/services">Our Services</a></li>
+                        <li><a href="<?php echo SITE_URL; ?>/portfolio">Portfolio</a></li>
+                        <li><a href="<?php echo SITE_URL; ?>/blog">Insights</a></li>
                     </ul>
                 </div>
                 
                 <div class="footer-links">
-                    <h4>For Sellers</h4>
+                    <h4>Support</h4>
                     <ul>
-                        <li><a href="<?php echo SITE_URL; ?>/register?role=freelancer">Start Selling</a></li>
-                        <li><a href="<?php echo SITE_URL; ?>/register?role=agency">Create Agency</a></li>
+                        <li><a href="<?php echo SITE_URL; ?>/contact">Contact Us</a></li>
+                        <li><a href="<?php echo SITE_URL; ?>/request_quote">Get a Quote</a></li>
+                        <li><a href="<?php echo SITE_URL; ?>/about">Our Story</a></li>
                     </ul>
                 </div>
                 
                 <div class="footer-links">
                     <h4>Company</h4>
                     <ul>
-                        <li><a href="<?php echo SITE_URL; ?>/about">About</a></li>
-                        <li><a href="<?php echo SITE_URL; ?>/privacy_policy">Privacy</a></li>
-                        <li><a href="<?php echo SITE_URL; ?>/terms_conditions">Terms</a></li>
-                        <li><a href="<?php echo SITE_URL; ?>/contact">Contact</a></li>
+                        <li><a href="<?php echo SITE_URL; ?>/privacy_policy">Privacy Policy</a></li>
+                        <li><a href="<?php echo SITE_URL; ?>/terms_conditions">Terms of Service</a></li>
+                        <li><a href="<?php echo SITE_URL; ?>/contact">Support</a></li>
                     </ul>
                 </div>
             </div>
@@ -45,9 +46,14 @@
         </div>
     </footer>
     
+    <!-- Chatbot Component -->
+    <link rel="stylesheet" href="<?php echo SITE_URL; ?>/assets/css/chatbot.css">
+    <?php include 'chatbot.php'; ?>
+
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="<?php echo SITE_URL; ?>/assets/js/main.js?v=1.1"></script>
+    <script src="<?php echo SITE_URL; ?>/assets/js/chatbot.js"></script>
 
     <?php if (!isLoggedIn()): ?>
     <!-- Google One Tap (Global) -->

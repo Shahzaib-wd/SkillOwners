@@ -16,19 +16,32 @@ ServerSignature Off
 # 3. URL Rewriting (PHP Hiding)
 <IfModule mod_rewrite.c>
     RewriteEngine On
-    RewriteBase /
+    RewriteBase /skill_owners/
+
+    # Basic rewrite rules for existing files
+    RewriteCond %{REQUEST_FILENAME} -f [OR]
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^ - [L]
+
+    # Admin sub-pages (Handles /alpha/page)
+    RewriteRule ^alpha/([^/.]+)/?$ dashboard/alpha/$1.php [L]
     
-    # Redirect /page.php to /page (handling query strings, GET only)
-    RewriteCond %{REQUEST_METHOD} GET
-    RewriteCond %{THE_REQUEST} ^[A-Z]{3,9}\ /([^?\ ]+)\.php[?\ ]
-    RewriteRule ^([^.]+)\.php$ $1 [R=301,L,QSA]
+    # Direct file access in admin (for relative links)
+    RewriteRule ^alpha/(.+\.php)$ dashboard/alpha/$1 [L]
     
-    # Internal rewrite /page to /page.php
-    RewriteCond %{REQUEST_FILENAME} !-d
+    # Admin shortcut (/alpha)
+    RewriteRule ^alpha/?$ dashboard/alpha/index.php [L]
+
+    # Friendly Blog Routes
+    RewriteRule ^blog/([^/.]+)/?$ blog_post.php?slug=$1 [L,QSA]
+    RewriteRule ^blog_post/([0-9]+)/?$ blog_post.php?id=$1 [L,QSA]
+
+    # Standard pages (e.g., /services -> services.php)
+    RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME}\.php -f
-    RewriteRule ^(.*)$ $1.php [L]
+    RewriteRule ^([^/]+)/?$ $1.php [L]
 </IfModule>
 
 # 4. Error Handling (Optional but professional)
-ErrorDocument 404 /index
+ErrorDocument 404 /skill_owners/index.php
 

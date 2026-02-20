@@ -14,27 +14,17 @@ include 'views/partials/header.php';
         <div class="hero-grid">
             <div class="hero-left">
                 <h1 class="hero-title reveal-right" style="animation-delay: 0.3s;">
-                    Find the perfect <br>
-                    <span class="text-gradient">expert for your business.</span>
+                    Transforming visions into <br>
+                    <span class="text-gradient">high-performance reality.</span>
                 </h1>
 
                 <p class="hero-description reveal-right" style="animation-delay: 0.4s;">
-                    Work with the top 1% of creative and technical talent across the globe. No hassle, just results.
+                    We are a premier digital agency specializing in bespoke software, high-conversion marketing, and strategic brand growth. Partner with us to dominate your market.
                 </p>
 
-                <div class="premium-search-container reveal-right" style="max-width: 36rem; margin-bottom: 1.5rem; animation-delay: 0.5s;">
-                    <i class="fas fa-search"></i>
-                    <form action="<?php echo SITE_URL; ?>/browse" method="GET">
-                        <input type="text" name="q" placeholder="What service are you looking for today?" required>
-                        <button type="submit" class="btn-search">Search</button>
-                    </form>
-                </div>
-                
-                <div class="popular-tags reveal-right" style="justify-content: flex-start; margin-bottom: 2rem; animation-delay: 0.6s;">
-                    <span style="font-[11px] font-bold text-gray-400 uppercase">Popular:</span>
-                    <a href="<?php echo SITE_URL; ?>/browse?q=Web+Design" class="tag">Web Design</a>
-                    <a href="<?php echo SITE_URL; ?>/browse?q=WordPress" class="tag">WordPress</a>
-                    <a href="<?php echo SITE_URL; ?>/browse?q=Logo+Design" class="tag">Logo Design</a>
+                <div class="cta-btn-group reveal-right" style="margin-bottom: 2rem; animation-delay: 0.5s;">
+                    <a href="<?php echo SITE_URL; ?>/request_quote" class="btn btn-primary btn-lg">Start Your Project</a>
+                    <a href="<?php echo SITE_URL; ?>/portfolio" class="btn btn-outline btn-lg ms-3">View Our Work</a>
                 </div>
 
                 <div class="hero-proof reveal-right" style="animation-delay: 0.7s;">
@@ -47,31 +37,76 @@ include 'views/partials/header.php';
                         <div class="stars">
                             <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
                         </div>
-                        <p>Trusted by 10k+ Founders</p>
+                        <p>Trusted by Global Industry Leaders</p>
                     </div>
                 </div>
             </div>
 
             <div class="hero-right reveal-left" style="animation-delay: 0.5s;">
-                <div class="float-card">
-                    <img src="https://images.unsplash.com/photo-1599566150163-29194dcaad36?auto=format&fit=crop&w=800&q=80" class="card-img" alt="Pro Talent">
-                    <div class="card-badge">
-                        <p>Verified Pro</p>
-                    </div>
-                    <div class="card-body">
-                        <div class="profile-info" style="display: flex; justify-content: space-between; align-items: flex-start;">
-                            <div>
-                                <h3>David Chen</h3>
-                                <p class="role" style="margin-bottom: 0;">Senior Full-Stack Developer</p>
+                <div class="hero-cards-gallery">
+                    <!-- Card 1: Software Architecture -->
+                    <div class="flip-card">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=600&q=80" class="flip-card-img" alt="Infrastructure">
+                                <div class="flip-card-content">
+                                    <h3>Software Architecture</h3>
+                                    <p>Engineering scalable, enterprise-grade systems with architectural precision.</p>
+                                </div>
                             </div>
-                            <div class="rating" style="font-size: 1rem; font-weight: 800; color: #10b981;">
-                                ★ 5.0
+                            <div class="flip-card-back">
+                                <span class="back-header">Technical Core</span>
+                                <h3 class="back-title">Backend Systems</h3>
+                                <div class="back-stats">
+                                    <div class="stat-row"><span>Uptime SLA</span><span>99.99%</span></div>
+                                    <div class="stat-row"><span>Security Level</span><span>Military</span></div>
+                                    <div class="stat-row"><span>Load Capacity</span><span>1M+ RPM</span></div>
+                                </div>
                             </div>
                         </div>
-                        <div class="profile-experience" style="margin-top: 10px; padding-top: 0; border-top: 1px solid #f9fafb;">
-                            <p style="font-size: 0.875rem; color: #6b7280; line-height: 1.6; font-weight: 500; padding-top: 10px;">
-                                David has completed over <span style="color: #10b981; font-weight: 700;">150+ high-scale</span> enterprise projects on SkillOwners with a 100% success rate. Specializing in high-performance system architectures.
-                            </p>
+                    </div>
+
+                    <!-- Card 2: Brand Design -->
+                    <div class="flip-card">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <img src="https://images.unsplash.com/photo-1558655146-d09347e92766?auto=format&fit=crop&w=600&q=80" class="flip-card-img" alt="Design">
+                                <div class="flip-card-content">
+                                    <h3>Creative Direction</h3>
+                                    <p>Forging high-fidelity brand identities that command market attention.</p>
+                                </div>
+                            </div>
+                            <div class="flip-card-back">
+                                <span class="back-header">Visual Impact</span>
+                                <h3 class="back-title">Brand UI/UX</h3>
+                                <div class="back-stats">
+                                    <div class="stat-row"><span>Conversion Lift</span><span>+45%</span></div>
+                                    <div class="stat-row"><span>Retention</span><span>High</span></div>
+                                    <div class="stat-row"><span>Industry Leads</span><span>Top Tier</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 3: Growth Marketing -->
+                    <div class="flip-card">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=600&q=80" class="flip-card-img" alt="Marketing">
+                                <div class="flip-card-content">
+                                    <h3>Growth Strategies</h3>
+                                    <p>Data-driven performance marketing designed for exponential ROI.</p>
+                                </div>
+                            </div>
+                            <div class="flip-card-back">
+                                <span class="back-header">Market Results</span>
+                                <h3 class="back-title">Performance</h3>
+                                <div class="back-stats">
+                                    <div class="stat-row"><span>Avg. ROI</span><span>300%</span></div>
+                                    <div class="stat-row"><span>Market Share</span><span>Growth</span></div>
+                                    <div class="stat-row"><span>Lead Quality</span><span>Verified</span></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -80,378 +115,160 @@ include 'views/partials/header.php';
     </div>
 </section>
 
-<!-- Global Stats Section -->
+<!-- Impact Stats Section -->
 <section class="stats-section">
     <div class="stats-mesh"></div>
     <div class="container">
         <div class="stats-grid">
             <div class="stat-item reveal-up" style="animation-delay: 0.1s;">
-                <div class="stat-number">150k+</div>
-                <div class="stat-label">Verified Experts</div>
+                <div class="stat-number">500+</div>
+                <div class="stat-label">Clients Scaled</div>
             </div>
             <div class="stat-item reveal-up" style="animation-delay: 0.2s;">
-                <div class="stat-number">24/7</div>
-                <div class="stat-label">Global Support</div>
+                <div class="stat-number">99.9%</div>
+                <div class="stat-label">Project Reliability</div>
             </div>
             <div class="stat-item reveal-up" style="animation-delay: 0.3s;">
                 <div class="stat-number">4.9/5</div>
-                <div class="stat-label">Avg. Rating</div>
+                <div class="stat-label">Client Satisfaction</div>
             </div>
             <div class="stat-item reveal-up" style="animation-delay: 0.4s;">
-                <div class="stat-number">1M+</div>
-                <div class="stat-label">Projects Completed</div>
+                <div class="stat-number">$100M+</div>
+                <div class="stat-label">Revenue Generated</div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- Categories Section -->
-<section class="categories-section" id="categories">
+<!-- Solutions Section -->
+<section class="categories-section" id="solutions">
     <div class="category-mesh-bg"></div>
     <div class="container">
         <div class="section-header">
-            <h2 class="section-title">Browse by Category</h2>
+            <h2 class="section-title">Solutions That <span class="text-gradient">Scale</span></h2>
             <p class="section-description">
-                Explore services across every creative and technical discipline
+                Tailored digital strategies designed to drive measurable business impact.
             </p>
         </div>
         
         <div class="categories-grid">
-            <a href="<?php echo SITE_URL; ?>/browse?category=Development" class="category-card">
+            <a href="<?php echo SITE_URL; ?>/services#web-dev" class="category-card">
                 <div class="category-icon">
                     <i class="fas fa-code"></i>
                 </div>
-                <span class="category-name">Development</span>
+                <span class="category-name">Enterprise Development</span>
             </a>
             
-            <a href="<?php echo SITE_URL; ?>/browse?category=Design" class="category-card">
+            <a href="<?php echo SITE_URL; ?>/services#seo" class="category-card">
                 <div class="category-icon">
-                    <i class="fas fa-palette"></i>
+                    <i class="fas fa-search"></i>
                 </div>
-                <span class="category-name">Design</span>
+                <span class="category-name">SEO & Authority</span>
             </a>
             
-            <a href="<?php echo SITE_URL; ?>/browse?category=Writing" class="category-card">
-                <div class="category-icon">
-                    <i class="fas fa-pen-nib"></i>
-                </div>
-                <span class="category-name">Writing</span>
-            </a>
-            
-            <a href="<?php echo SITE_URL; ?>/browse?category=Video+Animation" class="category-card">
-                <div class="category-icon">
-                    <i class="fas fa-video"></i>
-                </div>
-                <span class="category-name">Video & Animation</span>
-            </a>
-            
-            <a href="<?php echo SITE_URL; ?>/browse?category=Marketing" class="category-card">
+            <a href="<?php echo SITE_URL; ?>/services#marketing" class="category-card">
                 <div class="category-icon">
                     <i class="fas fa-chart-line"></i>
                 </div>
-                <span class="category-name">Marketing</span>
+                <span class="category-name">Growth Marketing</span>
             </a>
             
-            <a href="<?php echo SITE_URL; ?>/browse?category=Translation" class="category-card">
+            <a href="<?php echo SITE_URL; ?>/services#paid-ads" class="category-card">
                 <div class="category-icon">
-                    <i class="fas fa-globe"></i>
+                    <i class="fas fa-ad"></i>
                 </div>
-                <span class="category-name">Translation</span>
+                <span class="category-name">Performance Ads</span>
             </a>
             
-            <a href="<?php echo SITE_URL; ?>/browse?category=Music+Audio" class="category-card">
+            <a href="<?php echo SITE_URL; ?>/services#content" class="category-card">
                 <div class="category-icon">
-                    <i class="fas fa-music"></i>
+                    <i class="fas fa-pen-nib"></i>
                 </div>
-                <span class="category-name">Music & Audio</span>
+                <span class="category-name">Content Strategy</span>
             </a>
             
-            <a href="<?php echo SITE_URL; ?>/browse?category=Photography" class="category-card">
+            <a href="<?php echo SITE_URL; ?>/services#branding" class="category-card">
                 <div class="category-icon">
-                    <i class="fas fa-camera"></i>
+                    <i class="fas fa-palette"></i>
                 </div>
-                <span class="category-name">Photography</span>
+                <span class="category-name">Identity & Branding</span>
             </a>
         </div>
     </div>
 </section>
 
-<!-- Buyer Confidence Section -->
+<!-- Strategy Section -->
 <section class="trust-section">
     <div class="container">
         <div class="section-header">
-            <h2 class="section-title">Why Businesses Trust <span class="text-gradient">SkillOwners</span></h2>
+            <h2 class="section-title">The <span class="text-gradient">Strategic</span> Advantage</h2>
             <p class="section-description">
-                We provide the tools and talent you need to grow with absolute peace of mind.
+                Why industry leaders choose us to lead their digital evolution.
             </p>
         </div>
         
         <div class="trust-grid">
             <div class="trust-card reveal-up" style="animation-delay: 0.1s;">
                 <div class="trust-icon-box">
-                    <i class="fas fa-check-circle"></i>
+                    <i class="fas fa-chess-knight"></i>
                 </div>
-                <h3>Verified Experts Only</h3>
-                <p>Every freelancer and agency undergoes a rigorous identity and skill verification process before joining our elite network.</p>
+                <h3>Senior Technical Leads</h3>
+                <p>Every project is spearheaded by a veteran lead with a proven track record in complex enterprise environments.</p>
             </div>
             
             <div class="trust-card reveal-up" style="animation-delay: 0.2s;">
                 <div class="trust-icon-box">
-                    <i class="fas fa-handshake"></i>
+                    <i class="fas fa-sync-alt"></i>
                 </div>
-                <h3>Direct Collaboration</h3>
-                <p>Hire and pay talent directly on your terms. We provide the connections, you manage the relationship with zero platform fees.</p>
+                <h3>End-to-End Delivery</h3>
+                <p>From initial discovery to post-launch optimization, we manage every phase of the lifecycle with precision.</p>
             </div>
             
             <div class="trust-card reveal-up" style="animation-delay: 0.3s;">
                 <div class="trust-icon-box">
-                    <i class="fas fa-headset"></i>
+                    <i class="fas fa-shield-alt"></i>
                 </div>
-                <h3>24/7 Priority Support</h3>
-                <p>Our dedicated success managers are available around the clock to assist you with any questions or project needs.</p>
+                <h3>Guaranteed Performance</h3>
+                <p>Our solutions are built with security and scalability at the core, backed by rigorous testing and deployment standards.</p>
             </div>
         </div>
     </div>
 </section>
 
-<!-- Featured Agencies Showcase -->
-<section class="agency-section">
-    <div class="container">
-        <div class="section-header">
-            <h2 class="section-title">Partner with <span class="text-gradient">Elite Agencies</span></h2>
-            <p class="section-description">
-                Scaling your operations? Collaborate with verified full-service agency teams.
-            </p>
-        </div>
-        
-        <div class="agency-grid">
-            <!-- Agency 1 -->
-            <div class="agency-card reveal-up" style="animation-delay: 0.1s;">
-                <div class="agency-card-cover">
-                    <img src="https://images.unsplash.com/photo-1600607686527-6fb886090705?auto=format&fit=crop&w=800&q=80" alt="Cover">
-                    <div class="agency-badge">
-                        <i class="fas fa-check-shield"></i> Top Rated
-                    </div>
-                </div>
-                
-                <div class="agency-content">
-                    <div class="agency-card-logo">
-                        <img src="https://images.unsplash.com/photo-1560179707-f14e90ef3623?auto=format&fit=crop&w=200&q=80" alt="Pixel Perfect">
-                    </div>
-                    
-                    <h3 class="agency-name">Pixel Perfect Std</h3>
-                    <div class="agency-tagline">Crafting Digital Experiences</div>
-                    
-                    <div class="agency-rating">
-                        <i class="fas fa-star"></i> 4.9 (240+ Reviews)
-                    </div>
-                    
-                    <p class="agency-bio">
-                        Award-winning design studio specializing in high-conversion UI/UX and brand identity for tech startups.
-                    </p>
-                    
-                    <div class="agency-stats-row">
-                        <div class="agency-stat">
-                            <span class="agency-stat-value">350+</span>
-                            <span class="agency-stat-label">Projects</span>
-                        </div>
-                        <div class="agency-stat">
-                            <span class="agency-stat-value">15</span>
-                            <span class="agency-stat-label">Team Size</span>
-                        </div>
-                        <div class="agency-stat">
-                            <span class="agency-stat-value">London</span>
-                            <span class="agency-stat-label">Location</span>
-                        </div>
-                    </div>
 
-                    <div class="agency-services">
-                        <span class="agency-service-tag">UI/UX Design</span>
-                        <span class="agency-service-tag">Branding</span>
-                        <span class="agency-service-tag">Webflow</span>
-                    </div>
-                    
-                    <a href="<?php echo SITE_URL; ?>/browse.php?q=Pixel+Perfect" class="btn agency-btn">View Profile</a>
-                </div>
-            </div>
 
-            <!-- Agency 2 -->
-            <div class="agency-card reveal-up" style="animation-delay: 0.2s;">
-                <div class="agency-card-cover">
-                    <img src="https://images.unsplash.com/photo-1504384308090-c54be3855833?auto=format&fit=crop&w=800&q=80" alt="Cover">
-                </div>
-                
-                <div class="agency-content">
-                    <div class="agency-card-logo">
-                        <img src="https://images.unsplash.com/photo-1549923746-c502d488b3ea?auto=format&fit=crop&w=200&q=80" alt="DevFlow">
-                    </div>
-                    
-                    <h3 class="agency-name">DevFlow Systems</h3>
-                    <div class="agency-tagline">Enterprise Scalability</div>
-                    
-                    <div class="agency-rating">
-                        <i class="fas fa-star"></i> 5.0 (180+ Reviews)
-                    </div>
-                    
-                    <p class="agency-bio">
-                        We build robust, scalable web applications for Fortune 500 companies using modern tech stacks.
-                    </p>
-                    
-                    <div class="agency-stats-row">
-                        <div class="agency-stat">
-                            <span class="agency-stat-value">200+</span>
-                            <span class="agency-stat-label">Projects</span>
-                        </div>
-                        <div class="agency-stat">
-                            <span class="agency-stat-value">24</span>
-                            <span class="agency-stat-label">Team Size</span>
-                        </div>
-                        <div class="agency-stat">
-                            <span class="agency-stat-value">Berlin</span>
-                            <span class="agency-stat-label">Location</span>
-                        </div>
-                    </div>
-
-                    <div class="agency-services">
-                        <span class="agency-service-tag">Laravel</span>
-                        <span class="agency-service-tag">React</span>
-                        <span class="agency-service-tag">Cloud</span>
-                    </div>
-                    
-                    <a href="<?php echo SITE_URL; ?>/browse.php?q=DevFlow" class="btn agency-btn">View Profile</a>
-                </div>
-            </div>
-
-            <!-- Agency 3 -->
-            <div class="agency-card reveal-up" style="animation-delay: 0.3s;">
-                <div class="agency-card-cover">
-                    <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=800&q=80" alt="Cover">
-                </div>
-                
-                <div class="agency-content">
-                    <div class="agency-card-logo">
-                        <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=200&q=80" alt="GrowthMasters">
-                    </div>
-                    
-                    <h3 class="agency-name">GrowthMasters HQ</h3>
-                    <div class="agency-tagline">Data-Driven Marketing</div>
-                    
-                    <div class="agency-rating">
-                        <i class="fas fa-star"></i> 4.8 (310+ Reviews)
-                    </div>
-                    
-                    <p class="agency-bio">
-                        Full-stack digital marketing agency focused on ROI. We turn traffic into paying customers.
-                    </p>
-                    
-                    <div class="agency-stats-row">
-                        <div class="agency-stat">
-                            <span class="agency-stat-value">500+</span>
-                            <span class="agency-stat-label">Campaigns</span>
-                        </div>
-                        <div class="agency-stat">
-                            <span class="agency-stat-value">40</span>
-                            <span class="agency-stat-label">Team Size</span>
-                        </div>
-                        <div class="agency-stat">
-                            <span class="agency-stat-value">New York</span>
-                            <span class="agency-stat-label">Location</span>
-                        </div>
-                    </div>
-
-                    <div class="agency-services">
-                        <span class="agency-service-tag">SEO</span>
-                        <span class="agency-service-tag">PPC</span>
-                        <span class="agency-service-tag">Content</span>
-                    </div>
-                    
-                    <a href="<?php echo SITE_URL; ?>/browse.php?q=GrowthMasters" class="btn agency-btn">View Profile</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- How It Works Section -->
-<section class="how-it-works-section" id="how-it-works">
-    <div class="steps-flow-line"></div>
-    <div class="container">
-        <div class="section-header">
-            <h2 class="section-title">How It Works</h2>
-            <p class="section-description">
-                Three simple steps to get your project done
-            </p>
-        </div>
-        
-        <div class="steps-grid">
-            <div class="step-card">
-                <div class="step-icon-wrapper">
-                    <i class="fas fa-search step-icon"></i>
-                    <span class="step-number">1</span>
-                </div>
-                <h3 class="step-title">Find the Right Talent</h3>
-                <p class="step-description">
-                    Browse thousands of verified freelancers and agencies. Filter by skill, budget, and delivery time.
-                </p>
-            </div>
-            
-            <div class="step-card">
-                <div class="step-icon-wrapper">
-                    <i class="fas fa-shield-alt step-icon"></i>
-                    <span class="step-number">2</span>
-                </div>
-                <h3 class="step-title">Connect Directly</h3>
-                <p class="step-description">
-                    Review portfolios and past work. Message experts directly to discuss terms, budget, and payment methods.
-                </p>
-            </div>
-            
-            <div class="step-card">
-                <div class="step-icon-wrapper">
-                    <i class="fas fa-rocket step-icon"></i>
-                    <span class="step-number">3</span>
-                </div>
-                <h3 class="step-title">Get Results Fast</h3>
-                <p class="step-description">
-                    Receive deliveries on time. Request revisions, leave reviews, and scale your projects effortlessly.
-                </p>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Premium Bento Section -->
+<!-- [Bento Section - Untouched as requested] -->
 <section class="f-bento-section">
     <div class="f-mesh-bg"></div>
     
     <div class="f-container">
         <div class="f-header">
             <div class="f-title-col">
-                <span class="f-badge">Engineered for Excellence</span>
+                <span class="f-badge">Engineered for Domination</span>
                 <h2 class="f-title">
-                    Build it <span class="f-text-gradient">Faster.</span><br> Hire the Best.
+                    Architecting <span class="f-text-gradient">Future-Proof</span><br> Digital Ecosystems.
                 </h2>
                 <p class="f-description">
-                    The next generation of freelance commerce. No noise, just vetted talent working at the speed of thought.
+                    We blend senior-level technical expertise with aggressive growth strategies to turn visionary ideas into market-leading platforms.
                 </p>
             </div>
         </div>
 
         <div class="f-grid">
             <div class="f-bento-card large">
-                <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=1200&q=80" 
-                     class="f-card-img" alt="Advanced Infrastructure">
+                <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&q=80" 
+                     class="f-card-img" alt="Digital Strategy">
                 <div class="f-card-overlay"></div>
                 
                 <div class="relative z-10">
                     <div class="d-flex align-items-center gap-2 mb-3">
                         <div class="f-pulse"></div>
-                        <span class="text-white opacity-50 small font-weight-700 text-uppercase tracking-widest">Advanced Infrastructure</span>
+                        <span class="text-white opacity-50 small font-weight-700 text-uppercase tracking-widest">Full-Stack Mastery</span>
                     </div>
                     
-                    <h3 class="h1 font-weight-800 mb-3">System Architecture</h3>
-                    <p class="text-muted mb-4 lead">Deploy scalable, enterprise-grade backends with our senior engineers.</p>
-                    <a href="<?php echo SITE_URL; ?>/browse" class="f-btn-premium" style="text-decoration: none; display: inline-block;">Explore Solutions</a>
+                    <h3 class="h1 font-weight-800 mb-3">Custom Systems</h3>
+                    <p class="text-muted mb-4 lead">From custom SaaS platforms to enterprise automation, we build for high-stakes performance.</p>
+                    <a href="<?php echo SITE_URL; ?>/request_quote" class="f-btn-premium" style="text-decoration: none; display: inline-block;">Request a Quote</a>
                 </div>
             </div>
 
@@ -462,8 +279,8 @@ include 'views/partials/header.php';
                     <div class="f-card-overlay" style="background: linear-gradient(to right, #050505 40%, transparent);"></div>
                     
                     <div class="relative z-10" style="max-width: 60%">
-                        <h3 class="h4 font-weight-700 mb-1">AI Agents</h3>
-                        <p class="text-muted small mb-0">Automate workflows with custom LLM integrations.</p>
+                        <h3 class="h4 font-weight-700 mb-1">AI Engineering</h3>
+                        <p class="text-muted small mb-0">Integrate advanced LLMs to revolutionize your business operations.</p>
                     </div>
                     <div class="f-icon-box relative z-10">
                         <svg width="40" height="40" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: hsl(var(--f-primary))">
@@ -503,24 +320,86 @@ include 'views/partials/header.php';
     </div>
 </section>
 
+<!-- Latest Insights Section -->
+<section class="blog-preview-section py-5">
+    <div class="container py-5">
+        <div class="row align-items-end mb-5">
+            <div class="col-lg-6">
+                <span class="badge bg-primary-soft text-primary px-3 py-2 rounded-pill mb-3">Industry Insights</span>
+                <h2 class="display-5 font-weight-900 mb-0">Latest from our <br><span class="text-gradient">Experts</span></h2>
+            </div>
+            <div class="col-lg-6 text-lg-end mt-4 mt-lg-0">
+                <a href="<?php echo SITE_URL; ?>/blog" class="btn btn-outline-secondary rounded-pill px-4">View All Insights <i class="fas fa-arrow-right ms-2"></i></a>
+            </div>
+        </div>
 
-<!-- CTA Section -->
-<section class="cta-section" id="get-started">
+        <div class="row g-4">
+            <?php
+            $db = getDBConnection();
+            $homeBlogStmt = $db->query("SELECT * FROM blog_posts WHERE status = 'published' ORDER BY created_at DESC LIMIT 3");
+            $homePosts = $homeBlogStmt->fetchAll();
+
+            foreach ($homePosts as $index => $post):
+            ?>
+            <div class="col-lg-4 col-md-6 reveal-up" style="animation-delay: <?php echo 0.1 * ($index + 1); ?>s;">
+                <article class="card border-0 shadow-sm h-100 overflow-hidden rounded-4 transition-all hover-translate-y">
+                    <div class="position-relative overflow-hidden" style="height: 240px;">
+                        <img src="<?php echo SITE_URL; ?>/uploads/<?php echo $post['featured_image']; ?>" class="w-100 h-100" style="object-fit: cover;" alt="<?php echo htmlspecialchars($post['title']); ?>">
+                        <div class="position-absolute top-0 start-0 m-3">
+                            <span class="badge bg-dark px-3 py-2 rounded-pill"><?php echo htmlspecialchars($post['category']); ?></span>
+                        </div>
+                    </div>
+                    <div class="card-body p-4">
+                        <div class="text-muted small mb-2"><?php echo date('M d, Y', strtotime($post['created_at'])); ?></div>
+                        <h4 class="font-weight-800 mb-3">
+                            <a href="<?php echo SITE_URL; ?>/blog/<?php echo $post['slug']; ?>" class="text-dark text-decoration-none hover-primary">
+                                <?php echo htmlspecialchars($post['title']); ?>
+                            </a>
+                        </h4>
+                        <p class="text-muted small mb-4"><?php echo htmlspecialchars($post['excerpt']); ?></p>
+                        <a href="<?php echo SITE_URL; ?>/blog/<?php echo $post['slug']; ?>" class="font-weight-700 text-primary small text-decoration-none">
+                            Read Article <i class="fas fa-chevron-right ms-1"></i>
+                        </a>
+                    </div>
+                </article>
+            </div>
+            <?php endforeach; if(empty($homePosts)): ?>
+            <div class="col-12 text-center py-5">
+                <p class="text-muted lead">New insights coming soon. Stay tuned!</p>
+            </div>
+            <?php endif; ?>
+        </div>
+    </div>
+</section>
+
+<style>
+.hover-translate-y:hover {
+    transform: translateY(-10px);
+}
+.transition-all {
+    transition: all 0.3s ease;
+}
+.bg-primary-soft {
+    background-color: rgba(16, 185, 129, 0.1);
+}
+</style>
+
+<!-- Final CTA Section -->
+<section class="cta-section" id="partner-up">
     <div class="container">
         <div class="glass-cta">
             <div class="cta-grid-bg"></div>
             <div class="cta-content">
-                <span class="cta-badge">Join the Future</span>
-                <h2 class="cta-title-v2">Ready to scale your <br><span class="text-gradient">vision to reality?</span></h2>
+                <span class="cta-badge">Partner With Peak Performance</span>
+                <h2 class="cta-title-v2">Ready to dominate your <br><span class="text-gradient">digital landscape?</span></h2>
                 <p class="cta-desc-v2">
-                    Whether you're a founder looking for top-tier talent or an expert ready to work with the best, SkillOwners is your home.
+                    Stop settling for average results. Let's build the digital future of your business together.
                 </p>
                 <div class="cta-btn-group">
-                    <a href="<?php echo SITE_URL; ?>/browse" class="cta-btn-glow">
-                        Hire Top Talent
-                        <i class="fas fa-rocket ms-2"></i>
+                    <a href="<?php echo SITE_URL; ?>/request_quote" class="cta-btn-glow">
+                        Schedule Free Audit
+                        <i class="fas fa-chart-line ms-2"></i>
                     </a>
-
                 </div>
             </div>
         </div>

@@ -35,14 +35,15 @@ if (file_exists($envFile)) {
 
 // Database Configuration
 define('DB_HOST', getenv('DB_HOST') ?: 'localhost');
-define('DB_NAME', getenv('DB_NAME') ?: 'u382083643_skillowners');
-define('DB_USER', getenv('DB_USER') ?: 'u382083643_info');
-define('DB_PASS', getenv('DB_PASS') ?: 'HackerAlpha000@');
+define('DB_NAME', getenv('DB_NAME') ?: 'skillowners_db');
+define('DB_USER', getenv('DB_USER') ?: 'root');
+define('DB_PASS', getenv('DB_PASS') ?: '');
 
 // Site Configuration
 define('SITE_NAME', 'Skill Owners');
 define('SITE_URL', getenv('SITE_URL') ?: 'https://skillowners.com');
 define('ADMIN_EMAIL', getenv('ADMIN_EMAIL') ?: 'info@skillowners.com');
+define('ADMIN_LOGIN_EMAIL', getenv('ADMIN_LOGIN_EMAIL') ?: 'alphathewebdeveloper@gmail.com');
 define('GOOGLE_CLIENT_ID', '704228248228-g4sarvdedobjju91ncaqcn8q1abvvgqm.apps.googleusercontent.com');
 
 // Security

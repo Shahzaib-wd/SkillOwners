@@ -24,12 +24,8 @@
     
     <!-- Favicon -->
     <?php
-    // Fetch official agency logo for favicon
-    $db = getDBConnection();
-    $logoStmt = $db->query("SELECT profile_image FROM users WHERE is_official = 1 LIMIT 1");
-    $officialLogo = $logoStmt->fetchColumn();
-    $faviconUrl = ($officialLogo ? SITE_URL . '/uploads/' . $officialLogo : SITE_URL . '/assets/images/favicon.svg') . '?v=' . time();
-    $faviconType = (strpos($faviconUrl, '.svg') !== false) ? 'image/svg+xml' : 'image/x-icon';
+    $faviconUrl = SITE_URL . '/assets/images/favicon.svg?v=' . time();
+    $faviconType = 'image/svg+xml';
     ?>
     <link rel="icon" type="<?php echo $faviconType; ?>" href="<?php echo $faviconUrl; ?>">
     
@@ -56,37 +52,15 @@
             $type_param = $_GET['type'] ?? '';
             ?>
             <ul class="navbar-menu">
-                <li><a href="<?php echo SITE_URL; ?>/browse" class="<?php echo ($is_browse && empty($type_param)) ? 'active' : ''; ?>">Browse Services</a></li>
-                <li><a href="<?php echo SITE_URL; ?>/browse?type=freelancer" class="<?php echo ($is_browse && $type_param === 'freelancer') ? 'active' : ''; ?>">Find Freelancers</a></li>
-                <li><a href="<?php echo SITE_URL; ?>/browse?type=agency" class="<?php echo ($is_browse && $type_param === 'agency') ? 'active' : ''; ?>">Find Agencies</a></li>
-                <li><a href="<?php echo SITE_URL; ?>/about" class="<?php echo str_contains($script_name, 'about') ? 'active' : ''; ?>">How It Works</a></li>
+                <li><a href="<?php echo SITE_URL; ?>/services" class="<?php echo str_contains($script_name, 'services') ? 'active' : ''; ?>">Services</a></li>
+                <li><a href="<?php echo SITE_URL; ?>/portfolio" class="<?php echo str_contains($script_name, 'portfolio') ? 'active' : ''; ?>">Portfolio</a></li>
+                <li><a href="<?php echo SITE_URL; ?>/blog" class="<?php echo str_contains($script_name, 'blog') ? 'active' : ''; ?>">Blog</a></li>
+                <li><a href="<?php echo SITE_URL; ?>/about" class="<?php echo str_contains($script_name, 'about') ? 'active' : ''; ?>">About Us</a></li>
+                <li><a href="<?php echo SITE_URL; ?>/contact" class="<?php echo str_contains($script_name, 'contact') ? 'active' : ''; ?>">Contact</a></li>
             </ul>
             
             <div class="navbar-actions">
-                <?php if (isLoggedIn()): ?>
-                    <?php 
-                    $currentRole = getUserRole();
-                    $switchLabel = ($currentRole === 'buyer') ? 'Switch to Selling' : 'Switch to Buying';
-                    $canSwitch = ($currentRole === 'buyer' || $currentRole === 'freelancer');
-                    ?>
-                    
-                    <?php if ($canSwitch): ?>
-                        <a href="<?php echo SITE_URL; ?>/switch_role" class="btn btn-ghost btn-sm text-primary fw-700">
-                            <i class="fas fa-random me-1"></i> <?php echo $switchLabel; ?>
-                        </a>
-                    <?php endif; ?>
-
-                    <a href="<?php echo SITE_URL; ?>/dashboard/<?php echo $currentRole; ?>" class="btn btn-ghost btn-sm">Dashboard</a>
-                    <a href="javascript:void(0);" onclick="scrollToMessages()" class="navbar-messages-icon" id="navbarMessagesIcon" title="Messages">
-                        <i class="fas fa-envelope"></i>
-                        <span class="navbar-unread-dot" id="navbarUnreadDot" style="display: none;"></span>
-                    </a>
-                    <a href="<?php echo SITE_URL; ?>/logout" class="btn btn-outline btn-sm">Logout</a>
-
-                <?php else: ?>
-                    <a href="<?php echo SITE_URL; ?>/login" class="btn btn-ghost btn-sm">Log In</a>
-                    <a href="<?php echo SITE_URL; ?>/register" class="btn btn-primary btn-sm">Get Started</a>
-                <?php endif; ?>
+                <a href="<?php echo SITE_URL; ?>/request_quote" class="btn btn-primary btn-sm">Request a Quote</a>
             </div>
             
             <button class="mobile-toggle" onclick="toggleMobileMenu()">
@@ -145,121 +119,9 @@
     </style>
     
     <script>
-    function scrollToMessages() {
-        // Always navigate to dedicated inbox page
-        window.location.href = '<?php echo SITE_URL; ?>/inbox';
-    }
-    
     function toggleMobileMenu() {
         document.querySelector('.navbar-menu').classList.toggle('show');
-        // Removed navbar-actions toggle since we use mobile-only links now
     }
-    
-    <?php if (isLoggedIn()): ?>
-    // Poll for unread messages count (navbar indicator)
-    let navbarPreviousUnreadCount = 0;
-    
-    function updateNavbarUnreadIndicator() {
-        if (typeof ajaxRequest === 'function') {
-            ajaxRequest('<?php echo SITE_URL; ?>/chat_api?action=get_unread_count&_=' + Date.now())
-                .then(data => {
-                    if (data.success) {
-                        const count = parseInt(data.unread_count) || 0;
-                        const dot = document.getElementById('navbarUnreadDot');
-                        
-                        if (dot) {
-                            if (count > 0) {
-                                dot.style.display = 'block';
-                                
-                                // Play sound if count increased (new message)
-                                if (count > navbarPreviousUnreadCount && navbarPreviousUnreadCount >= 0) {
-                                    playMessageNotificationSound();
-                                }
-                            } else {
-                                dot.style.display = 'none';
-                            }
-                        }
-                        
-                        navbarPreviousUnreadCount = count;
-                    }
-                })
-                .catch(error => {
-                    console.error('Error updating navbar unread indicator:', error);
-                });
-        }
-    }
-    
-    // Sound notification
-    function playMessageNotificationSound() {
-        try {
-            // Create a pleasant notification sound using Web Audio API
-            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            const oscillator = audioContext.createOscillator();
-            const gainNode = audioContext.createGain();
-            
-            oscillator.connect(gainNode);
-            gainNode.connect(audioContext.destination);
-            
-            // Pleasant notification tone (two quick beeps)
-            oscillator.frequency.value = 800; // Higher pitch
-            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
-            
-            oscillator.start(audioContext.currentTime);
-            oscillator.stop(audioContext.currentTime + 0.1);
-            
-            // Second beep
-            setTimeout(() => {
-                const oscillator2 = audioContext.createOscillator();
-                const gainNode2 = audioContext.createGain();
-                
-                oscillator2.connect(gainNode2);
-                gainNode2.connect(audioContext.destination);
-                
-                oscillator2.frequency.value = 1000;
-                gainNode2.gain.setValueAtTime(0.3, audioContext.currentTime);
-                gainNode2.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
-                
-                oscillator2.start(audioContext.currentTime);
-                oscillator2.stop(audioContext.currentTime + 0.1);
-            }, 150);
-            
-        } catch (error) {
-            console.log('Audio notification not available:', error);
-        }
-    }
-    
-    // Initial check and polling
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', function() {
-            updateNavbarUnreadIndicator();
-            setInterval(updateNavbarUnreadIndicator, 10000); // Check every 10 seconds
-            
-            // Scroll to messages if anchor present
-            if (window.location.hash === '#messages') {
-                const messagesSection = document.getElementById('messages');
-                if (messagesSection) {
-                    setTimeout(() => {
-                        messagesSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    }, 300);
-                }
-            }
-        });
-    } else {
-        updateNavbarUnreadIndicator();
-        setInterval(updateNavbarUnreadIndicator, 10000);
-        
-        // Scroll to messages if anchor present
-        if (window.location.hash === '#messages') {
-            const messagesSection = document.getElementById('messages');
-            if (messagesSection) {
-                setTimeout(() => {
-                    messagesSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }, 300);
-            }
-        }
-    }
-    <?php endif; ?>
     </script>
 </nav>
 

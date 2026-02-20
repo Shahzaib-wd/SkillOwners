@@ -4,122 +4,211 @@ include 'views/partials/header.php';
 ?>
 
 <!-- Hero Section -->
-<section class="about-hero">
+<section class="contact-hero">
     <div class="container text-center">
-        <h1 class="display-3 font-weight-900 mb-4 reveal-up">We Are <span class="text-gradient">Skill Owners</span></h1>
-        <p class="lead mb-5 opacity-75 mx-auto reveal-up" style="max-width: 700px; animation-delay: 0.1s;">
-            The marketplace built for the future of work. We connect visionary businesses with world-class talent to build extraordinary things.
+        <span class="hero-tag reveal-up">
+            <i class="fas fa-users"></i>
+            <span>Our Story</span>
+        </span>
+        <h1 class="hero-title reveal-up" style="animation-delay: 0.2s;">We Are <span class="text-gradient">Skill Owners</span></h1>
+        <p class="hero-description mx-auto text-center reveal-up" style="animation-delay: 0.3s;">
+            A premier digital agency dedicated to empowering businesses through high-performance technology and visionary marketing strategies.
         </p>
     </div>
 </section>
 
-<!-- Stats Grid -->
-<div class="container" style="margin-top: -4rem; position: relative; z-index: 2;">
+<!-- Stats Matrix -->
+<div class="container" style="margin-top: -6rem; position: relative; z-index: 20;">
     <div class="row g-4 justify-content-center">
-        <div class="col-md-3 col-6">
-            <div class="card border-0 shadow-sm text-center py-4 h-100 reveal-up" style="animation-delay: 0.2s;">
-                <h3 class="display-5 font-weight-800 text-primary mb-1">10k+</h3>
-                <p class="text-muted font-weight-600 mb-0 small text-uppercase tracking-wide">Active Experts</p>
-            </div>
-        </div>
-        <div class="col-md-3 col-6">
-            <div class="card border-0 shadow-sm text-center py-4 h-100 reveal-up" style="animation-delay: 0.3s;">
-                <h3 class="display-5 font-weight-800 text-primary mb-1">50k+</h3>
-                <p class="text-muted font-weight-600 mb-0 small text-uppercase tracking-wide">Projects Done</p>
-            </div>
-        </div>
-        <div class="col-md-3 col-6">
-            <div class="card border-0 shadow-sm text-center py-4 h-100 reveal-up" style="animation-delay: 0.4s;">
-                <h3 class="display-5 font-weight-800 text-primary mb-1">98%</h3>
-                <p class="text-muted font-weight-600 mb-0 small text-uppercase tracking-wide">Success Rate</p>
-            </div>
-        </div>
-        <div class="col-md-3 col-6">
-            <div class="card border-0 shadow-sm text-center py-4 h-100 reveal-up" style="animation-delay: 0.5s;">
-                <h3 class="display-5 font-weight-800 text-primary mb-1">24/7</h3>
-                <p class="text-muted font-weight-600 mb-0 small text-uppercase tracking-wide">Support</p>
+        <div class="col-lg-10">
+            <div class="glass-container p-4 p-md-5 rounded-5 shadow-elevated border-glow reveal-up" style="animation-delay: 0.4s; background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(20px);">
+                <div class="row g-4 text-center">
+                    <div class="col-md-3 col-6 border-end-md">
+                        <h3 class="display-6 font-weight-900 text-primary mb-1">50+</h3>
+                        <p class="text-muted small font-weight-700 text-uppercase tracking-widest">Global Experts</p>
+                    </div>
+                    <div class="col-md-3 col-6 border-end-md">
+                        <h3 class="display-6 font-weight-900 text-primary mb-1">$10M+</h3>
+                        <p class="text-muted small font-weight-700 text-uppercase tracking-widest">Revenue Impact</p>
+                    </div>
+                    <div class="col-md-3 col-6 border-end-md">
+                        <h3 class="display-6 font-weight-900 text-primary mb-1">99.8%</h3>
+                        <p class="text-muted small font-weight-700 text-uppercase tracking-widest">Uptime Record</p>
+                    </div>
+                    <div class="col-md-3 col-6">
+                        <h3 class="display-6 font-weight-900 text-primary mb-1">15+</h3>
+                        <p class="text-muted small font-weight-700 text-uppercase tracking-widest">Industry Awards</p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Mission Section -->
-<section class="py-5 my-5">
+<!-- Our Mission: Strategic Powerhouse -->
+<section class="section-padding-fluid position-relative overflow-hidden">
     <div class="container">
-        <div class="row align-items-center">
-            <div class="col-lg-6 mb-5 mb-lg-0 reveal-left">
-                <span class="badge bg-primary-soft text-primary mb-3">Our Mission</span>
-                <h2 class="display-5 font-weight-800 mb-4">Empowering the <br>World's Talent</h2>
-                <p class="lead text-muted mb-4">
-                    We believe that talent refers to what you can do, not where you are located. Our mission is to bridge the gap between skilled professionals and the businesses that need them.
+        <div class="row align-items-center g-5">
+            <div class="col-lg-6 reveal-left">
+                <span class="hero-tag mb-4 shadow-none" style="background: hsla(150, 100%, 35%, 0.1); color: var(--primary);">
+                    <i class="fas fa-bolt"></i>
+                    <span>Our Philosophy</span>
+                </span>
+                <h2 class="display-4 font-weight-900 mb-4">Precision Engineering <br>Meets <span class="text-gradient">Aggressive Growth</span></h2>
+                <p class="lead text-muted mb-5">
+                    SkillOwners was founded on a single premise: Technical excellence should be the foundation of every business strategy. We bridge the gap between complex engineering and measurable ROI.
                 </p>
-                <div class="d-flex align-items-start mb-4">
-                    <div class="about-icon-box flex-shrink-0 me-4">
-                        <i class="fas fa-globe"></i>
+                
+                <div class="milestone-box d-flex gap-4 mb-4">
+                    <div class="icon-circle bg-primary-soft text-primary flex-shrink-0">
+                        <i class="fas fa-microchip"></i>
                     </div>
                     <div>
-                        <h4 class="font-weight-700">Global Reach</h4>
-                        <p class="text-muted">Access top-tier talent from over 100 countries, vetted and ready to work.</p>
+                        <h4 class="font-weight-800 mb-2">Sovereign-Level Security</h4>
+                        <p class="text-muted small">We implement military-grade protocols to protect your intellectual property and user data at every layer.</p>
                     </div>
                 </div>
-                <div class="d-flex align-items-start">
-                    <div class="about-icon-box flex-shrink-0 me-4">
-                        <i class="fas fa-shield-alt"></i>
+
+                <div class="milestone-box d-flex gap-4">
+                    <div class="icon-circle bg-primary-soft text-primary flex-shrink-0">
+                        <i class="fas fa-chart-pie"></i>
                     </div>
                     <div>
-                        <h4 class="font-weight-700">Secure Payments</h4>
-                        <p class="text-muted">Your funds are protected with our robust escrow system until you are satisfied.</p>
+                        <h4 class="font-weight-800 mb-2">Elite-Grade Analytics</h4>
+                        <p class="text-muted small">Every pixel and line of code is tracked against its ability to convert visitors into loyal advocates.</p>
                     </div>
                 </div>
             </div>
+            
             <div class="col-lg-6 reveal-right">
-                <div class="position-relative">
-                    <div class="position-absolute top-0 start-0 w-100 h-100 bg-primary opacity-10 rounded-pill" style="transform: rotate(-6deg) scale(0.9);"></div>
-                    <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80" alt="Team Collaboration" class="img-fluid rounded-3 shadow-lg position-relative">
+                <div class="image-stack position-relative ms-lg-5">
+                    <div class="stack-back rounded-5"></div>
+                    <div class="stack-main rounded-5 overflow-hidden shadow-elevated">
+                        <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80" alt="Leadership Collaboration" class="img-fluid">
+                        <div class="glass-overlay p-4 text-white">
+                            <h5 class="mb-0 font-weight-800">Team Collaboration</h5>
+                            <p class="small mb-0 opacity-75">Designing the next generation of SaaS</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- Values Grid -->
-<section class="bg-light py-5">
+<!-- Strategic Delivery Framework -->
+<section class="py-5 overflow-hidden" style="background: #0a0a0a; border-radius: 4rem 4rem 0 0;">
     <div class="container py-5">
-        <div class="text-center mb-5">
-            <h2 class="font-weight-800 display-6">Why Choose Skill Owners?</h2>
-            <p class="text-muted lead">Built for reliability, speed, and quality.</p>
+        <div class="text-center mb-5 reveal-up">
+            <span class="font-weight-800 text-uppercase tracking-widest small d-block mb-3" style="color: #10b981;">Our Methodology</span>
+            <h2 class="display-5 font-weight-900 text-white mb-4">The Strategic <span class="text-gradient">Framework</span></h2>
+            <p class="text-light opacity-75 mx-auto" style="max-width: 600px;">A disciplined, four-phase approach that ensures every project is delivered with surgical precision and massive impact.</p>
         </div>
-        
+
         <div class="row g-4">
-            <div class="col-md-4">
-                <div class="card h-100 border-0 shadow-hover p-4 text-center reveal-up">
-                    <div class="about-icon-box mx-auto bg-blue-soft text-blue">
-                        <i class="fas fa-search"></i>
-                    </div>
-                    <h4>Smart Matching</h4>
-                    <p class="text-muted">Our algorithm connects you with the perfect expert for your specific needs instantly.</p>
+            <div class="col-lg-3 col-md-6 reveal-up" style="animation-delay: 0.1s;">
+                <div class="process-card p-4 h-100 rounded-5 transition-all">
+                    <div class="step-number">01</div>
+                    <h3 class="h4 font-weight-800 text-white mb-3">Discovery</h3>
+                    <p class="text-light opacity-75 small">We deep-dive into your market dynamics, identifying hidden opportunities and technical bottlenecks before a single line of code is written.</p>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="card h-100 border-0 shadow-hover p-4 text-center reveal-up" style="animation-delay: 0.1s;">
-                    <div class="about-icon-box mx-auto bg-purple-soft text-purple">
-                        <i class="fas fa-check-circle"></i>
-                    </div>
-                    <h4>Quality Assured</h4>
-                    <p class="text-muted">We verify skills and identities so you can hire with absolute confidence.</p>
+            <div class="col-lg-3 col-md-6 reveal-up" style="animation-delay: 0.2s;">
+                <div class="process-card p-4 h-100 rounded-5 transition-all">
+                    <div class="step-number">02</div>
+                    <h3 class="h4 font-weight-800 text-white mb-3">Architecture</h3>
+                    <p class="text-light opacity-75 small">Mapping out scalable, future-proof infrastructures using the latest technical stacks designed for extreme performance and security.</p>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="card h-100 border-0 shadow-hover p-4 text-center reveal-up" style="animation-delay: 0.2s;">
-                    <div class="about-icon-box mx-auto bg-orange-soft text-orange">
-                        <i class="fas fa-headset"></i>
-                    </div>
-                    <h4>24/7 Support</h4>
-                    <p class="text-muted">Our dedicated support team is always here to help resolve any issues quickly.</p>
+            <div class="col-lg-3 col-md-6 reveal-up" style="animation-delay: 0.3s;">
+                <div class="process-card p-4 h-100 rounded-5 transition-all active">
+                    <div class="step-number">03</div>
+                    <h3 class="h4 font-weight-800 text-white mb-3">Execution</h3>
+                    <p class="text-light opacity-75 small">Rapid, agile development overseen by senior leads. We prioritize modular, clean code that delivers immediate functionality.</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 reveal-up" style="animation-delay: 0.4s;">
+                <div class="process-card p-4 h-100 rounded-5 transition-all">
+                    <div class="step-number">04</div>
+                    <h3 class="h4 font-weight-800 text-white mb-3">Optimization</h3>
+                    <p class="text-light opacity-75 small">Continuous performance monitoring and aggressive growth iterations to ensure your platform remains at the cutting edge.</p>
                 </div>
             </div>
         </div>
     </div>
 </section>
+
+<!-- Leadership / Core Values -->
+<section class="py-5" style="background: #f8fafc;">
+    <div class="container py-5">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-5 reveal-left">
+                <h2 class="display-5 font-weight-900 mb-4">Unwavering <br><span class="text-gradient">Core Values</span></h2>
+                <div class="value-item d-flex gap-3 mb-4">
+                    <div class="text-primary"><i class="fas fa-check-circle fa-lg"></i></div>
+                    <div>
+                        <h5 class="font-weight-800 mb-1">Radical Transparency</h5>
+                        <p class="text-muted small">No fluff. No technical jargon. Just honest, data-backed updates on your project's progress and health.</p>
+                    </div>
+                </div>
+                <div class="value-item d-flex gap-3 mb-4">
+                    <div class="text-primary"><i class="fas fa-check-circle fa-lg"></i></div>
+                    <div>
+                        <h5 class="font-weight-800 mb-1">Sovereign Ownership</h5>
+                        <p class="text-muted small">We build for you. Once delivered, you own every intellectual property right and technical asset entirely.</p>
+                    </div>
+                </div>
+                <div class="value-item d-flex gap-3">
+                    <div class="text-primary"><i class="fas fa-check-circle fa-lg"></i></div>
+                    <div>
+                        <h5 class="font-weight-800 mb-1">Exponential Growth</h5>
+                        <p class="text-muted small">Our success is tied to yours. We benchmark all activities against your specific business growth targets.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-7 reveal-right">
+                <div class="row g-4">
+                    <div class="col-6 mt-md-5">
+                        <div class="p-4 rounded-5 bg-white shadow-sm border text-center transition-all hover-translate-y">
+                            <div class="contact-icon mx-auto mb-3"><i class="fas fa-gem"></i></div>
+                            <h4 class="h5 font-weight-800">Quality First</h4>
+                            <p class="text-muted smaller mb-0">Uncompromising standards in every deliverable.</p>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="p-4 rounded-5 bg-white shadow-sm border text-center transition-all hover-translate-y">
+                            <div class="contact-icon mx-auto mb-3"><i class="fas fa-tachometer-alt"></i></div>
+                            <h4 class="h5 font-weight-800">Apex Speed</h4>
+                            <p class="text-muted smaller mb-0">High-velocity delivery without sacrificing integrity.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+/* Exclusive About Styles */
+.about-hero-premium { background: var(--primary-bg); color: white; min-height: 400px; display: flex; align-items: center; }
+.bg-primary-soft { background: hsla(150, 100%, 35%, 0.1); }
+.icon-circle { width: 56px; height: 56px; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
+
+/* Image Stack */
+.stack-back { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: var(--primary); transform: translate(-20px, 20px) rotate(-3deg); z-index: 1; opacity: 0.1; }
+.stack-main { position: relative; z-index: 5; }
+.glass-overlay { position: absolute; bottom: 0; left: 0; width: 100%; background: linear-gradient(transparent, rgba(0,0,0,0.8)); }
+
+/* Process Cards */
+.process-card { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); position: relative; }
+.process-card.active { background: rgba(16, 185, 129, 0.1); border-color: var(--primary); box-shadow: 0 0 30px rgba(16, 185, 129, 0.2); }
+.step-number { font-size: 3rem; font-weight: 900; color: var(--primary); opacity: 0.3; line-height: 1; margin-bottom: 1.5rem; font-style: italic; }
+
+.smaller { font-size: 0.8rem; }
+.border-end-md { border-right: 1px solid rgba(0,0,0,0.05); }
+@media (max-width: 768px) { .border-end-md { border-right: none; } }
+
+.hover-translate-y:hover { transform: translateY(-10px); }
+</style>
 
 <?php include 'views/partials/footer.php'; ?>

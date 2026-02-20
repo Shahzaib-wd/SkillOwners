@@ -8,9 +8,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = sanitizeInput($_POST['email'] ?? '');
     $subject = sanitizeInput($_POST['subject'] ?? 'General Inquiry');
     $message = sanitizeInput($_POST['message'] ?? '');
+    $phone = sanitizeInput($_POST['phone'] ?? '');
     
     if (empty($name) || empty($email) || empty($message)) {
-        showError('All fields are required');
+        showError('Name, Email, and Message are required');
     } else {
         require_once 'models/ContactMessage.php';
         $contactModel = new ContactMessage();
@@ -24,10 +25,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <h3>New Contact Form Submission</h3>
         <p><strong>Name:</strong> $name</p>
         <p><strong>Email:</strong> $email</p>
-        <p><strong>Subject:</strong> $subject</p>
+        <p><strong>Phone:</strong> $phone</p>
+        <p><strong>Service:</strong> $subject</p>
         <p><strong>Message:</strong><br>" . nl2br($message) . "</p>";
         
         MailHelper::send($to, $fullSubject, $body);
+        
+        // Also store in new table
+        $db = getDBConnection();
+        $stmt = $db->prepare("INSERT INTO contact_submissions (name, email, phone, service_interested, message) VALUES (?, ?, ?, ?, ?)");
+        $stmt->execute([$name, $email, $phone, $subject, $message]);
+        
         showSuccess('Message sent successfully! Our team will get back to you within 24 hours.');
     }
     redirect("/contact");
@@ -37,121 +45,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 include 'views/partials/header.php';
 ?>
 
-<style>
-.contact-hero {
-    padding: 8rem 0 4rem;
-    background: var(--gradient-hero);
-    position: relative;
-    overflow: hidden;
-}
-
-.contact-hero::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-image: radial-gradient(var(--primary) 1px, transparent 1px);
-    background-size: 40px 40px;
-    opacity: 0.05;
-}
-
-.contact-card {
-    background: rgba(255, 255, 255, 0.7);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    border-radius: 2rem;
-    padding: 2.5rem;
-    height: 100%;
-    transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02);
-}
-
-.contact-card:hover {
-    transform: translateY(-8px);
-    background: white;
-    box-shadow: var(--shadow-elevated);
-    border-color: hsla(150, 100%, 35%, 0.2);
-}
-
-.contact-icon {
-    width: 64px;
-    height: 64px;
-    background: hsla(150, 100%, 35%, 0.1);
-    color: var(--primary);
-    border-radius: 1.25rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.5rem;
-    margin-bottom: 1.5rem;
-}
-
-.form-glass {
-    background: rgba(255, 255, 255, 0.8);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.7);
-    border-radius: 2.5rem;
-    padding: 3.5rem;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.08);
-}
-
-.input-glass {
-    background: rgba(255, 255, 255, 0.5);
-    border: 1px solid var(--border);
-    border-radius: 1rem;
-    padding: 0.875rem 1.25rem;
-    transition: all 0.3s ease;
-}
-
-.input-glass:focus {
-    background: white;
-    border-color: var(--primary);
-    box-shadow: 0 0 0 4px hsla(150, 100%, 35%, 0.1);
-    outline: none;
-}
-
-.faq-item {
-    border-bottom: 1px solid var(--border);
-    padding: 1.5rem 0;
-}
-
-.faq-question {
-    font-weight: 700;
-    font-size: 1.125rem;
-    cursor: pointer;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    color: var(--foreground);
-    transition: color 0.3s ease;
-}
-
-.faq-question:hover {
-    color: var(--primary);
-}
-
-.faq-answer {
-    margin-top: 1rem;
-    color: var(--muted-foreground);
-    display: none;
-}
-
-.faq-item.active .faq-answer {
-    display: block;
-}
-
-.faq-item.active .faq-question i {
-    transform: rotate(180deg);
-}
-
-.faq-question i {
-    transition: transform 0.3s ease;
-    font-size: 0.875rem;
-}
-</style>
 
 <section class="contact-hero">
     <div class="container text-center">
@@ -161,7 +54,7 @@ include 'views/partials/header.php';
         </span>
         <h1 class="hero-title reveal-up" style="animation-delay: 0.2s;">How can we <span class="text-gradient">help you?</span></h1>
         <p class="hero-description mx-auto text-center reveal-up" style="animation-delay: 0.3s;">
-            Whether you're a freelancer, agency, or buyer, our team is here to support your journey on Skill Owners.
+            Ready to scale your digital presence? Get in touch with our experts today.
         </p>
     </div>
 </section>
@@ -176,7 +69,7 @@ include 'views/partials/header.php';
                     </div>
                     <h3 class="h5 font-weight-700">Email Support</h3>
                     <p class="text-muted small mb-4">Drop us a line and we'll get back to you within 24 hours.</p>
-                    <a href="mailto:support@skillowners.com" class="font-weight-700 text-primary">support@skillowners.com</a>
+                    <a href="mailto:info@skillowners.com" class="font-weight-700 text-primary">info@skillowners.com</a>
                 </div>
             </div>
             
@@ -197,8 +90,8 @@ include 'views/partials/header.php';
                         <i class="fas fa-map-marker-alt"></i>
                     </div>
                     <h3 class="h5 font-weight-700">Global Offices</h3>
-                    <p class="text-muted small mb-4">Our headquarters are located in the heart of London's tech district.</p>
-                    <span class="font-weight-700">London, United Kingdom</span>
+                    <p class="text-muted small mb-4">Our operations hub is located in the vibrant tech landscape of Karachi.</p>
+                    <span class="font-weight-700">Karachi, Pakistan</span>
                 </div>
             </div>
         </div>
@@ -217,13 +110,20 @@ include 'views/partials/header.php';
                                 <label class="font-weight-700 small text-uppercase tracking-wider mb-2 d-block">Email Address</label>
                                 <input type="email" name="email" class="form-control input-glass" placeholder="john@example.com" required>
                             </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="font-weight-700 small text-uppercase tracking-wider mb-2 d-block">Phone Number</label>
+                                <input type="tel" name="phone" class="form-control input-glass" placeholder="+1 (555) 000-0000">
+                            </div>
                             <div class="col-12 mb-3">
-                                <label class="font-weight-700 small text-uppercase tracking-wider mb-2 d-block">Inquiry Type</label>
+                                <label class="font-weight-700 small text-uppercase tracking-wider mb-2 d-block">Service Interested In</label>
                                 <select name="subject" class="form-select input-glass">
-                                    <option value="General Support">General Support</option>
-                                    <option value="Billing">Billing & Payments</option>
-                                    <option value="Account Issue">Account Issues</option>
-                                    <option value="Partner">Partnership Inquiries</option>
+                                    <option value="Web Development">Web Development</option>
+                                    <option value="SEO Services">SEO Services</option>
+                                    <option value="Digital Marketing">Digital Marketing</option>
+                                    <option value="Paid Ads">Paid Ads Management</option>
+                                    <option value="Content Writing">Content Writing</option>
+                                    <option value="Branding">Branding & Identity</option>
+                                    <option value="Maintenance">Website Maintenance</option>
                                 </select>
                             </div>
                             <div class="col-12 mb-4">
@@ -253,31 +153,41 @@ include 'views/partials/header.php';
                     
                     <div class="faq-item">
                         <div class="faq-question">
-                            What are the platform fees?
+                            What is your average project timeline?
                             <i class="fas fa-chevron-down"></i>
                         </div>
                         <div class="faq-answer">
-                            SkillOwners is completely free — we do not take any commission. Our goal is to empower freelancers and clients to collaborate freely without platform fees.
+                            Typical business websites take 2-4 weeks, while complex e-commerce platforms or custom systems may take 6-12 weeks depending on requirements.
                         </div>
                     </div>
                     
                     <div class="faq-item">
                         <div class="faq-question">
-                            Is my data secure?
+                            Do you offer monthly maintenance?
                             <i class="fas fa-chevron-down"></i>
                         </div>
                         <div class="faq-answer">
-                            Absolutely. We use enterprise-grade encryption for all communications and don't store your sensitive payment information on our servers.
+                            Yes, we provide 24/7 security monitoring, daily backups, and performance optimization packages to keep your site running perfectly.
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            Can you help with rebranding?
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            Absolutely. Our creative team specializes in modern brand identity, logo design, and unified design languages for growing businesses.
                         </div>
                     </div>
                     
                     <div class="faq-item" style="border-bottom: none;">
                         <div class="faq-question">
-                            How can I become a verified pro?
+                            Do you provide a dedicated project manager?
                             <i class="fas fa-chevron-down"></i>
                         </div>
                         <div class="faq-answer">
-                            Pro verification is awarded to users who maintain a 4.9+ rating and have completed over 50 projects with a 100% on-time delivery rate.
+                            Every client is assigned a dedicated success manager who ensures clear communication and on-time delivery of all milestones.
                         </div>
                     </div>
                 </div>
