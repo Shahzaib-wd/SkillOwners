@@ -80,8 +80,6 @@ $db = getDBConnection();
 $stats = [
     'contacts' => $db->query("SELECT COUNT(*) FROM contact_submissions")->fetchColumn(),
     'quotes' => $db->query("SELECT COUNT(*) FROM quote_requests")->fetchColumn(),
-    'blogs' => $db->query("SELECT COUNT(*) FROM blog_posts")->fetchColumn(),
-    'portfolio' => $db->query("SELECT COUNT(*) FROM portfolio_projects")->fetchColumn(),
 ];
 
 // Recent Quotes
@@ -101,7 +99,7 @@ include '../../views/partials/header.php';
         </header>
 
         <div class="row g-4 mb-5">
-            <div class="col-6 col-md-3">
+            <div class="col-6 col-md-6">
                 <div class="glass-card p-4 stat-card border">
                     <div class="d-flex justify-content-between align-items-start mb-3">
                         <div class="stat-icon bg-primary bg-opacity-10 text-primary"><i class="fas fa-file-invoice-dollar"></i></div>
@@ -110,31 +108,13 @@ include '../../views/partials/header.php';
                     <h2 class="fw-bold mb-0"><?php echo $stats['quotes']; ?></h2>
                 </div>
             </div>
-            <div class="col-6 col-md-3">
+            <div class="col-6 col-md-6">
                 <div class="glass-card p-4 stat-card border">
                     <div class="d-flex justify-content-between align-items-start mb-3">
                         <div class="stat-icon bg-success bg-opacity-10 text-success"><i class="fas fa-envelope"></i></div>
                     </div>
                     <h5 class="text-muted small text-uppercase fw-bold mb-1" style="font-size: 0.7rem;">Contacts</h5>
                     <h2 class="fw-bold mb-0"><?php echo $stats['contacts']; ?></h2>
-                </div>
-            </div>
-            <div class="col-6 col-md-3">
-                <div class="glass-card p-4 stat-card border">
-                    <div class="d-flex justify-content-between align-items-start mb-3">
-                        <div class="stat-icon bg-info bg-opacity-10 text-info"><i class="fas fa-blog"></i></div>
-                    </div>
-                    <h5 class="text-muted small text-uppercase fw-bold mb-1" style="font-size: 0.7rem;">Posts</h5>
-                    <h2 class="fw-bold mb-0"><?php echo $stats['blogs']; ?></h2>
-                </div>
-            </div>
-            <div class="col-6 col-md-3">
-                <div class="glass-card p-4 stat-card border">
-                    <div class="d-flex justify-content-between align-items-start mb-3">
-                        <div class="stat-icon bg-warning bg-opacity-10 text-warning"><i class="fas fa-project-diagram"></i></div>
-                    </div>
-                    <h5 class="text-muted small text-uppercase fw-bold mb-1" style="font-size: 0.7rem;">Projects</h5>
-                    <h2 class="fw-bold mb-0"><?php echo $stats['portfolio']; ?></h2>
                 </div>
             </div>
         </div>
@@ -154,20 +134,11 @@ include '../../views/partials/header.php';
                             </a>
                         </div>
                         <div class="col-sm-6">
-                            <a href="portfolio.php" class="d-flex align-items-center p-3 border rounded-3 text-decoration-none text-dark hover-bg-light transition-all h-100">
-                                <div class="icon-box bg-success bg-opacity-10 text-success p-3 rounded-3 me-3"><i class="fas fa-folder-plus"></i></div>
+                            <a href="<?php echo SITE_URL; ?>" target="_blank" class="d-flex align-items-center p-3 border rounded-3 text-decoration-none text-dark hover-bg-light transition-all h-100">
+                                <div class="icon-box bg-warning bg-opacity-10 text-warning p-3 rounded-3 me-3"><i class="fas fa-eye"></i></div>
                                 <div>
-                                    <h6 class="mb-0 fw-bold">New Portfolio Project</h6>
-                                    <small class="text-muted">Showcase recent work</small>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="col-sm-6">
-                            <a href="blog.php" class="d-flex align-items-center p-3 border rounded-3 text-decoration-none text-dark hover-bg-light transition-all h-100">
-                                <div class="icon-box bg-info bg-opacity-10 text-info p-3 rounded-3 me-3"><i class="fas fa-edit"></i></div>
-                                <div>
-                                    <h6 class="mb-0 fw-bold">Write Blog Post</h6>
-                                    <small class="text-muted">Share industry insights</small>
+                                    <h6 class="mb-0 fw-bold">View Live Site</h6>
+                                    <small class="text-muted">See changes in real-time</small>
                                 </div>
                             </a>
                         </div>

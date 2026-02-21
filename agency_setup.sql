@@ -114,4 +114,6 @@ INSERT INTO `services` (`title`, `description`, `icon`, `is_home`, `order_index`
 ('Digital Marketing', 'Growth strategies and social media marketing to scale your reach.', 'fas fa-chart-line', 1, 3),
 ('Paid Ads', 'Google Ads and Meta Ads management for immediate ROI.', 'fas fa-ad', 1, 4),
 ('Content Writing', 'SEO-friendly blogs and professional website copy.', 'fas fa-pen-nib', 1, 5),
-('Maintenance & Support', 'Keeping your website secure, updated, and fast.', 'fas fa-tools', 1, 6);
+('Maintenance & Support', 'Keeping your website secure, updated, and fast.', 'fas fa-tools', 1, 6),
+('Web Design', 'Stunning, conversion-focused website designs with modern UI/UX principles and pixel-perfect execution.', 'fas fa-paint-brush', 1, 7),
+('App Development', 'Native and cross-platform mobile applications engineered for performance, scalability, and seamless user experience.', 'fas fa-mobile-alt', 1, 8);

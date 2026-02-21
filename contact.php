@@ -1,7 +1,5 @@
 <?php
 require_once 'config.php';
-$success = getSuccess();
-$error = getError();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = sanitizeInput($_POST['name'] ?? '');
@@ -15,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         require_once 'models/ContactMessage.php';
         $contactModel = new ContactMessage();
-        $contactModel->create($name, $email, $subject, $message);
+        $contactModel->create($name, $email, $subject, $message, $phone);
 
         require_once 'helpers/MailHelper.php';
         
@@ -29,12 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <p><strong>Service:</strong> $subject</p>
         <p><strong>Message:</strong><br>" . nl2br($message) . "</p>";
         
-        MailHelper::send($to, $fullSubject, $body);
-        
-        // Also store in new table
-        $db = getDBConnection();
-        $stmt = $db->prepare("INSERT INTO contact_submissions (name, email, phone, service_interested, message) VALUES (?, ?, ?, ?, ?)");
-        $stmt->execute([$name, $email, $phone, $subject, $message]);
+        // MailHelper::send($to, $fullSubject, $body); // Disabled as per user request (admin-only)
         
         showSuccess('Message sent successfully! Our team will get back to you within 24 hours.');
     }
@@ -119,11 +112,6 @@ include 'views/partials/header.php';
                                 <select name="subject" class="form-select input-glass">
                                     <option value="Web Development">Web Development</option>
                                     <option value="SEO Services">SEO Services</option>
-                                    <option value="Digital Marketing">Digital Marketing</option>
-                                    <option value="Paid Ads">Paid Ads Management</option>
-                                    <option value="Content Writing">Content Writing</option>
-                                    <option value="Branding">Branding & Identity</option>
-                                    <option value="Maintenance">Website Maintenance</option>
                                 </select>
                             </div>
                             <div class="col-12 mb-4">

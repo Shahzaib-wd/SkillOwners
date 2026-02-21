@@ -53,8 +53,6 @@
             ?>
             <ul class="navbar-menu">
                 <li><a href="<?php echo SITE_URL; ?>/services" class="<?php echo str_contains($script_name, 'services') ? 'active' : ''; ?>">Services</a></li>
-                <li><a href="<?php echo SITE_URL; ?>/portfolio" class="<?php echo str_contains($script_name, 'portfolio') ? 'active' : ''; ?>">Portfolio</a></li>
-                <li><a href="<?php echo SITE_URL; ?>/blog" class="<?php echo str_contains($script_name, 'blog') ? 'active' : ''; ?>">Blog</a></li>
                 <li><a href="<?php echo SITE_URL; ?>/about" class="<?php echo str_contains($script_name, 'about') ? 'active' : ''; ?>">About Us</a></li>
                 <li><a href="<?php echo SITE_URL; ?>/contact" class="<?php echo str_contains($script_name, 'contact') ? 'active' : ''; ?>">Contact</a></li>
             </ul>

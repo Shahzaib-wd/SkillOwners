@@ -6,16 +6,9 @@ $new_quotes_count = 0;
 $new_contacts_count = 0;
 
 try {
-    $conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
-    if (!$conn->connect_error) {
-        $res_quotes = $conn->query("SELECT COUNT(*) as count FROM quote_requests WHERE status = 'New'");
-        if ($res_quotes) $new_quotes_count = $res_quotes->fetch_assoc()['count'];
-        
-        $res_contacts = $conn->query("SELECT COUNT(*) as count FROM contact_submissions WHERE status = 'new'");
-        if ($res_contacts) $new_contacts_count = $res_contacts->fetch_assoc()['count'];
-        
-        $conn->close();
-    }
+    $db = getDBConnection();
+    $new_quotes_count = $db->query("SELECT COUNT(*) FROM quote_requests WHERE status = 'New'")->fetchColumn();
+    $new_contacts_count = $db->query("SELECT COUNT(*) FROM contact_submissions WHERE status = 'new'")->fetchColumn();
 } catch (Exception $e) {
     // Fail silently
 }
@@ -23,7 +16,7 @@ try {
 <style>
     :root {
         --dashboard-sidebar-width: 260px;
-        --sidebar-bg: #111827;
+        --sidebar-bg: #050505;
         --sidebar-accent: #10b981;
     }
 
@@ -33,13 +26,13 @@ try {
         height: calc(100vh - 64px); 
         position: fixed; 
         left: 0;
-        top: 64px; /* Align with global navbar height */
+        top: 64px;
         background: var(--sidebar-bg); 
         color: white; 
         padding: 1.5rem 1rem; 
-        z-index: 1040; /* Below navbar (1050) but above content */
+        z-index: 1040;
         transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        border-right: 1px solid rgba(255,255,255,0.05);
+        border-right: 1px solid hsla(0, 0%, 100%, 0.05);
     }
 
     .nav-link {
@@ -47,7 +40,7 @@ try {
         display: flex;
         align-items: center;
         gap: 0.75rem;
-        color: #9ca3af;
+        color: #94a3b8;
         padding: 0.75rem 1rem;
         border-radius: 0.5rem;
         margin-bottom: 0.35rem;
@@ -57,13 +50,13 @@ try {
     }
 
     .nav-link:hover, .nav-link.active {
-        background: rgba(255,255,255,0.05);
+        background: hsla(0, 0%, 100%, 0.05);
         color: white;
     }
 
     .nav-link.active {
         border-left: 3px solid var(--sidebar-accent);
-        background: rgba(16, 185, 129, 0.1);
+        background: hsla(150, 100%, 35%, 0.1);
         color: var(--sidebar-accent);
     }
 
@@ -129,22 +122,66 @@ try {
         padding: 2.5rem;
         transition: 0.3s;
         min-height: calc(100vh - 64px);
-        overflow-x: hidden; /* Prevent horizontal scroll */
+        overflow-x: hidden;
+        color: white;
     }
 
-    /* Dashboard UI Components */
+    /* Dashboard UI Components Override for dark dashboard */
     .glass-card {
-        background: rgba(255, 255, 255, 0.95);
+        background: hsla(0, 0%, 100%, 0.03);
         backdrop-filter: blur(10px);
         border-radius: 1rem;
-        box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
-        border: 1px solid rgba(255,255,255,0.2);
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        border: 1px solid hsla(0, 0%, 100%, 0.05);
         transition: transform 0.3s, box-shadow 0.3s;
     }
 
     .glass-card:hover {
         transform: translateY(-2px);
-        box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        border-color: hsla(150, 100%, 35%, 0.2);
+    }
+
+    /* Dark Mode Utility Overrides */
+    .content .text-muted {
+        color: #94a3b8 !important;
+    }
+
+    .content .bg-light {
+        background-color: hsla(0, 0%, 100%, 0.05) !important;
+        color: white !important;
+    }
+
+    .content .border {
+        border-color: hsla(0, 0%, 100%, 0.05) !important;
+    }
+
+    .content a.text-dark {
+        color: white !important;
+    }
+
+    .content .hover-bg-light:hover {
+        background-color: hsla(0, 0%, 100%, 0.08) !important;
+        transform: translateX(5px);
+    }
+
+    /* Table Fixes */
+    .content .table {
+        color: white;
+    }
+    
+    .content .table thead th {
+        background: hsla(0, 0%, 100%, 0.02);
+        border-bottom-color: hsla(0, 0%, 100%, 0.05);
+    }
+
+    .content .table tbody td {
+        border-bottom-color: hsla(0, 0%, 100%, 0.03);
+    }
+
+    .content .table-hover tbody tr:hover {
+        background-color: hsla(0,0%,100%,0.02);
+        color: white;
     }
 
     .stat-card {
@@ -167,11 +204,6 @@ try {
         transition: transform 0.2s;
     }
 
-    .hover-bg-light:hover {
-        background-color: #f9fafb !important;
-        transform: translateX(5px);
-    }
-
     .line-clamp-2 {
         display: -webkit-box;
         -webkit-line-clamp: 2;
@@ -184,6 +216,69 @@ try {
         -webkit-line-clamp: 3;
         -webkit-box-orient: vertical;
         overflow: hidden;
+    }
+
+    /* Modal Styling for Admin */
+    .modal-content {
+        background: #0a0a0b;
+        color: white;
+        border: 1px solid hsla(0, 0%, 100%, 0.1);
+    }
+
+    .modal-header.bg-light {
+        background: hsla(0, 0%, 100%, 0.05) !important;
+        border-bottom: 1px solid hsla(0, 0%, 100%, 0.05);
+    }
+
+    .modal .text-muted {
+        color: #94a3b8 !important;
+    }
+
+    .modal .border-end {
+        border-color: hsla(0, 0%, 100%, 0.05) !important;
+    }
+
+    /* Button and Badge fixes - Making them pop with a solid primary background */
+    .btn-light {
+        background: var(--sidebar-accent) !important;
+        color: #000000 !important;
+        border: none !important;
+        padding: 0.5rem 1.25rem;
+        font-weight: 700;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        box-shadow: 0 4px 10px rgba(16, 185, 129, 0.2);
+    }
+
+    .btn-light i {
+        color: #000000 !important;
+    }
+
+    .btn-light:hover {
+        background: #059669 !important; /* Slightly darker emerald */
+        color: #ffffff !important;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 15px rgba(16, 185, 129, 0.4);
+    }
+
+    .btn-light:hover i {
+        color: #ffffff !important;
+    }
+
+    .badge.bg-success.bg-opacity-10 {
+        background-color: hsla(150, 100%, 35%, 0.15) !important;
+        color: #10b981 !important;
+    }
+
+    .badge.bg-primary.bg-opacity-10 {
+        background-color: hsla(210, 100%, 50%, 0.1) !important;
+        color: #3b82f6 !important;
+    }
+
+    .badge.bg-danger.bg-opacity-10 {
+        background-color: hsla(0, 100%, 50%, 0.1) !important;
+        color: #ef4444 !important;
     }
 
     @media (max-width: 991.98px) {
@@ -254,8 +349,6 @@ try {
         </a>
         <div class="px-3 mt-4 mb-2 small text-muted text-uppercase fw-bold" style="font-size: 0.65rem; letter-spacing: 1px;">Content</div>
         <a href="<?php echo SITE_URL; ?>/dashboard/alpha/services.php" class="nav-link <?php echo (str_contains($current_page, 'services')) ? 'active' : ''; ?>"><i class="fas fa-concierge-bell"></i> Services</a>
-        <a href="<?php echo SITE_URL; ?>/dashboard/alpha/portfolio.php" class="nav-link <?php echo (str_contains($current_page, 'portfolio')) ? 'active' : ''; ?>"><i class="fas fa-project-diagram"></i> Portfolio</a>
-        <a href="<?php echo SITE_URL; ?>/dashboard/alpha/blog.php" class="nav-link <?php echo (str_contains($current_page, 'blog')) ? 'active' : ''; ?>"><i class="fas fa-newspaper"></i> Blog Posts</a>
         
         <div class="mt-5 pt-3 border-top border-secondary">
             <a href="<?php echo SITE_URL; ?>/logout.php" class="nav-link text-danger"><i class="fas fa-sign-out-alt"></i> Sign Out</a>

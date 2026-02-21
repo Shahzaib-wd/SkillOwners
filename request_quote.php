@@ -27,9 +27,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 include 'views/partials/header.php';
-
-$success = getSuccess();
-$error = getError();
 ?>
 
 <section class="contact-hero">
@@ -85,13 +82,6 @@ $error = getError();
                 <div class="form-glass reveal-up" style="animation-delay: 0.7s;">
                     <h2 class="h3 font-weight-800 mb-4">Project <span class="text-gradient">Details</span></h2>
                     <form method="POST" id="quoteForm">
-                        <?php if ($success): ?>
-                            <div class="alert alert-success rounded-4 border-0 shadow-sm mb-4"><?php echo $success; ?></div>
-                        <?php endif; ?>
-                        
-                        <?php if ($error): ?>
-                            <div class="alert alert-danger rounded-4 border-0 shadow-sm mb-4"><?php echo $error; ?></div>
-                        <?php endif; ?>
 
                         <div class="row g-4">
                             <div class="col-md-6">
@@ -99,56 +89,49 @@ $error = getError();
                                 <input type="text" name="full_name" class="form-control input-glass" placeholder="Jane Smith" required>
                             </div>
                             <div class="col-md-6">
-                                <label class="font-weight-700 small text-uppercase tracking-wider mb-2 d-block">Company Name</label>
-                                <input type="text" name="company_name" class="form-control input-glass" placeholder="Acme Corp">
-                            </div>
-                            <div class="col-md-6">
                                 <label class="font-weight-700 small text-uppercase tracking-wider mb-2 d-block">Email Address *</label>
                                 <input type="email" name="email" class="form-control input-glass" placeholder="jane@acme.com" required>
                             </div>
-                            <div class="col-md-6">
-                                <label class="font-weight-700 small text-uppercase tracking-wider mb-2 d-block">Phone Number</label>
-                                <input type="tel" name="phone" class="form-control input-glass" placeholder="+1 (555) 000-0000">
-                            </div>
                             
-                            <div class="col-md-4">
-                                <label class="font-weight-700 small text-uppercase tracking-wider mb-2 d-block">Budget Range</label>
-                                <select name="budget_range" class="form-select input-glass">
-                                    <option value="Less than $1k">Less than $1,000</option>
-                                    <option value="$1k - $5k">$1,000 - $5,000</option>
-                                    <option value="$5k - $15k" selected>$5,000 - $15,000</option>
-                                    <option value="$15k - $50k">$15,000 - $50,000</option>
-                                    <option value="$50k+">$50,000+</option>
-                                </select>
-                            </div>
-                            <div class="col-md-4">
-                                <label class="font-weight-700 small text-uppercase tracking-wider mb-2 d-block">Service Type</label>
+                            <div class="col-md-12">
+                                <label class="font-weight-700 small text-uppercase tracking-wider mb-2 d-block">Service Interested In</label>
                                 <select name="service_type" class="form-select input-glass">
                                     <option value="Web Development">Web Development</option>
-                                    <option value="SEO">SEO Services</option>
-                                    <option value="Digital Marketing">Digital Marketing</option>
-                                    <option value="Branding">Branding & Identity</option>
-                                    <option value="Custom System">Custom Software Systems</option>
+                                    <option value="SEO">SEO & Google Rankings</option>
                                 </select>
                             </div>
-                            <div class="col-md-4">
-                                <label class="font-weight-700 small text-uppercase tracking-wider mb-2 d-block">Expected Timeline</label>
-                                <select name="timeline" class="form-select input-glass">
-                                    <option value="Less than 1 month">Less than 1 month</option>
-                                    <option value="1-3 months" selected>1-3 months</option>
-                                    <option value="3-6 months">3-6 months</option>
-                                    <option value="6 months+">6 months+</option>
-                                </select>
-                            </div>
-                            
+
                             <div class="col-12">
-                                <label class="font-weight-700 small text-uppercase tracking-wider mb-2 d-block">Project Description *</label>
-                                <textarea name="project_description" class="form-control input-glass" rows="6" placeholder="Tell us more about what you're looking to build..." required></textarea>
-                                <div class="text-muted small mt-2">Maximum characters: 2000</div>
+                                <label class="font-weight-700 small text-uppercase tracking-wider mb-2 d-block">Tell us about your project *</label>
+                                <textarea name="project_description" class="form-control input-glass" rows="5" placeholder="What are your goals? (e.g., I need a new website for my law firm...)" required></textarea>
+                                <div class="text-muted small mt-2">More details help us provide a more accurate quote.</div>
+                            </div>
+
+                            <!-- Optional Fields Collapsible or Secondary Group -->
+                            <div class="col-12 pt-2">
+                                <p class="small text-muted mb-3 font-weight-700 text-uppercase tracking-widest">Additional Details (Optional)</p>
+                                <div class="row g-3">
+                                    <div class="col-md-4">
+                                        <select name="budget_range" class="form-select input-glass">
+                                            <option value="" selected disabled>Select Budget Range</option>
+                                            <option value="Less than $1k">Under $1,000</option>
+                                            <option value="$1k - $5k">$1,000 - $5,000</option>
+                                            <option value="$5k - $15k">$5,000 - $15,000</option>
+                                            <option value="$15k+">$15,000+</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <input type="text" name="company_name" class="form-control input-glass" placeholder="Company Name">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <input type="tel" name="phone" class="form-control input-glass" placeholder="Phone Number">
+                                    </div>
+                                </div>
                             </div>
                             
                             <div class="col-12 pt-3">
-                                <button type="submit" class="btn btn-primary btn-lg px-5 w-100">Submit Quote Request</button>
+                                <button type="submit" class="btn btn-primary btn-lg px-5 w-100">Send Quote Request</button>
+                                <p class="text-center small text-muted mt-3 mb-0">No commitment required. We'll respond within 24 hours.</p>
                             </div>
                         </div>
                     </form>

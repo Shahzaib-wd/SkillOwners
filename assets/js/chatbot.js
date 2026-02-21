@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const quickBtns = document.querySelectorAll('.btn-quick');
 
     const responses = {
-        services: "We offer a wide range of senior-level digital solutions, including:<br><br>• <b>Web Development</b> (SaaS, E-commerce, Portals)<br>• <b>SEO & Performance</b> (Aggressive growth strategies)<br>• <b>Digital Marketing</b> (Paid ads, Content, Strategy)<br>• <b>Maintenance</b> (24/7 security monitoring)",
+        services: "We specialize in two core areas to grow your business:<br><br>• <b>Website Development</b> (Custom, fast, and high-converting)<br>• <b>SEO & Rankings</b> (Proven strategies to get you on page one of Google)",
         timeline: "Typical projects follow our Strategic Framework:<br><br>• <b>Business Sites:</b> 2-4 weeks<br>• <b>E-commerce/SaaS:</b> 6-12 weeks<br><br>Every project includes a dedicated project manager to ensure on-time delivery.",
         pricing: "At SkillOwners, we value <b>Radical Transparency</b>.<br><br>We handle direct billing between you and our experts. <b>No platform fees</b>, no hidden escrow deductions, and no intermediary charges.",
         location: "Our primary operations hub is located in <b>Karachi, Pakistan</b>, serving a global clientele with elite-level technical expertise.",

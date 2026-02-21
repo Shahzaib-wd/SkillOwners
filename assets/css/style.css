@@ -8,25 +8,24 @@
 /* ===== CSS Variables ===== */
 :root {
     /* Colors */
-    --background: hsl(210, 20%, 98%);
-    --foreground: hsl(220, 25%, 10%);
-    --card: hsl(0, 0%, 100%);
-    --card-foreground: hsl(220, 25%, 10%);
+    --background: hsl(240, 10%, 3.9%);
+    /* Deep Black */
+    --foreground: hsl(0, 0%, 98%);
+    /* Off-White */
+    --card: hsl(240, 10%, 10%);
+    /* Dark Card */
+    --card-foreground: hsl(0, 0%, 98%);
     --primary: hsl(150, 100%, 35%);
     /* Emerald Green */
     --primary-foreground: hsl(0, 0%, 100%);
-    --secondary: hsl(160, 84%, 19%);
-    /* Pine Green */
+    --secondary: hsl(240, 5%, 15%);
     --secondary-foreground: hsl(0, 0%, 100%);
-    --muted: hsl(220, 15%, 94%);
-    --muted-foreground: hsl(220, 10%, 46%);
+    --muted: hsl(240, 5%, 15%);
+    --muted-foreground: hsl(240, 5%, 65%);
     --accent: hsl(142, 71%, 45%);
-    /* Vibrant Leaf Green */
     --accent-foreground: hsl(0, 0%, 100%);
-    --destructive: hsl(0, 72%, 51%);
-    --destructive-foreground: hsl(0, 0%, 100%);
-    --border: hsl(220, 13%, 90%);
-    --input: hsl(220, 13%, 90%);
+    --border: hsla(0, 0%, 100%, 0.1);
+    --input: hsla(0, 0%, 100%, 0.1);
     --ring: hsl(150, 100%, 35%);
 
     /* Fonts */
@@ -34,16 +33,17 @@
     --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 
     /* Border Radius */
-    --radius: 0.75rem;
+    --radius: 1rem;
 
     /* Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(150, 100%, 35%), hsl(180, 100%, 30%));
+    --gradient-primary: linear-gradient(135deg, hsl(150, 100%, 35%), hsl(160, 100%, 25%));
     --gradient-accent: linear-gradient(135deg, hsl(142, 71%, 45%), hsl(160, 100%, 35%));
-    --gradient-hero: linear-gradient(160deg, hsla(150, 100%, 35%, 0.05), hsla(180, 65%, 45%, 0.08), hsla(142, 71%, 45%, 0.05));
+    --gradient-hero: radial-gradient(circle at top left, hsla(150, 100%, 35%, 0.1), transparent 40%),
+        radial-gradient(circle at bottom right, hsla(160, 100%, 25%, 0.1), transparent 40%);
 
     /* Shadows */
-    --shadow-elevated: 0 20px 60px -15px hsla(150, 100%, 35%, 0.15);
-    --shadow-card: 0 4px 20px -4px hsla(220, 25%, 10%, 0.08);
+    --shadow-elevated: 0 20px 60px -15px hsla(150, 100%, 35%, 0.3);
+    --shadow-card: 0 4px 20px -4px hsla(0, 0%, 0%, 0.5);
 }
 
 /* ===== Reset & Base ===== */
@@ -65,7 +65,7 @@ body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     padding-top: 75px;
-    /* Prevent content from hiding behind fixed navbar */
+    background-image: var(--gradient-hero);
 }
 
 h1,
@@ -139,10 +139,10 @@ img {
     left: 0;
     right: 0;
     z-index: 1050;
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border-bottom: 1px solid hsla(220, 13%, 90%, 0.5);
+    background: rgba(5, 5, 5, 0.85);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid hsla(0, 0%, 100%, 0.05);
     height: 64px;
 }
 
@@ -160,6 +160,7 @@ img {
     font-family: var(--font-display);
     font-weight: 700;
     font-size: 1.25rem;
+    color: var(--foreground) !important;
 }
 
 .navbar-brand .logo {
@@ -283,7 +284,7 @@ img {
 .btn-outline:hover {
     border-color: var(--primary);
     color: var(--primary);
-    background: hsla(150, 100%, 35%, 0.05);
+    background: hsla(150, 100%, 35%, 0.1);
 }
 
 .btn-lg {
@@ -299,14 +300,14 @@ img {
 /* ===== Hero Section v2 ===== */
 .hero-section {
     position: relative;
-    padding: 4rem 0 6rem;
-    background-color: #fdfdfd;
+    padding: 6rem 0 8rem;
+    background-color: transparent;
     overflow: hidden;
 }
 
 .grid-bg {
-    background-image: radial-gradient(#e5e7eb 1px, transparent 1px);
-    background-size: 40px 40px;
+    background-image: radial-gradient(hsla(0, 0%, 100%, 0.05) 1px, transparent 1px);
+    background-size: 60px 60px;
 }
 
 .hero-grid {
@@ -351,8 +352,8 @@ img {
     font-weight: 800;
     line-height: 1.1;
     margin-bottom: 2rem;
-    letter-spacing: -0.03em;
-    color: #1a1a1a;
+    letter-spacing: -0.04em;
+    color: #ffffff;
     text-align: left;
 }
 
@@ -576,11 +577,11 @@ img {
     border-radius: 2rem;
     overflow: hidden;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid hsla(0, 0%, 100%, 0.1);
 }
 
 .flip-card-front {
-    background-color: #fff;
+    background-color: var(--card);
 }
 
 .flip-card-back {
@@ -828,7 +829,7 @@ img {
 .section-description {
     font-size: 1.125rem;
     color: var(--muted-foreground);
-    max-width: 28rem;
+    max-width: 32rem;
     margin: 0 auto;
 }
 
@@ -850,11 +851,38 @@ img {
     }
 }
 
+.solutions-grid-2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+    .solutions-grid-2 {
+        grid-template-columns: 1fr;
+        max-width: 100%;
+    }
+
+    .category-card {
+        padding: 2.5rem 1.5rem;
+        gap: 1.5rem;
+        border-radius: 1.5rem;
+    }
+
+    .category-icon {
+        width: 64px;
+        height: 64px;
+        font-size: 1.75rem;
+    }
+}
+
 /* Category Card */
 .category-card {
-    background: rgba(255, 255, 255, 0.7);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.5);
+    background: hsla(0, 0%, 100%, 0.03);
+    backdrop-filter: blur(12px);
+    border: 1px solid hsla(0, 0%, 100%, 0.05);
     padding: 3.5rem 2rem;
     border-radius: 2.5rem;
     display: flex;
@@ -869,9 +897,13 @@ img {
 
 .category-card:hover {
     transform: translateY(-10px);
-    border-color: hsla(150, 100%, 35%, 0.3);
+    border-color: var(--primary);
     background: white;
-    box-shadow: 0 20px 40px -15px hsla(150, 100%, 35%, 0.15);
+    box-shadow: 0 20px 40px -15px hsla(150, 100%, 35%, 0.3);
+}
+
+.category-card:hover .category-name {
+    color: #000000;
 }
 
 .category-icon {
@@ -951,67 +983,157 @@ img {
     justify-content: center;
 }
 
-/* ===== Footer ===== */
+/* ===== Premium Footer Redesign ===== */
 .footer {
-    border-top: 1px solid var(--border);
-    background: hsla(220, 15%, 94%, 0.2);
-    padding: 3rem 0;
+    background: #050505;
+    padding: 6rem 0 3rem;
+    position: relative;
+    overflow: hidden;
+    border-top: 1px solid hsla(0, 0%, 100%, 0.05);
 }
 
-.footer-content {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 2rem;
-    margin-bottom: 2rem;
+.footer-top {
+    padding-bottom: 4rem;
+    border-bottom: 1px solid hsla(0, 0%, 100%, 0.05);
+    margin-bottom: 4rem;
 }
 
-.footer-brand {
-    grid-column: span 1;
-}
-
-.footer-brand .brand-logo {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
+.footer-cta-title {
+    font-size: 2.5rem;
+    font-weight: 800;
     margin-bottom: 1rem;
+    color: white;
+    letter-spacing: -0.02em;
 }
 
-.footer-brand p {
-    font-size: 0.875rem;
-    color: var(--muted-foreground);
-    line-height: 1.6;
+.footer-newsletter {
+    display: flex;
+    gap: 1rem;
+    background: hsla(0, 0%, 100%, 0.03);
+    padding: 0.5rem;
+    border-radius: 1.25rem;
+    border: 1px solid hsla(0, 0%, 100%, 0.1);
+}
+
+.footer-newsletter input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    padding: 0.75rem 1.25rem;
+    color: white;
+    font-weight: 500;
+}
+
+.footer-newsletter input:focus {
+    outline: none;
+}
+
+.footer-newsletter .btn-primary {
+    padding: 0.75rem 2rem;
+    white-space: nowrap;
+}
+
+.footer-main {
+    display: grid;
+    grid-template-columns: 1.5fr 2fr;
+    gap: 4rem;
+    margin-bottom: 4rem;
+}
+
+.brand-desc {
+    color: #94a3b8;
+    font-size: 1rem;
+    line-height: 1.7;
+    margin-bottom: 2rem;
+    max-width: 320px;
+}
+
+.footer-nav-group {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
 }
 
 .footer-links h4 {
-    font-size: 0.875rem;
-    font-weight: 600;
-    margin-bottom: 0.75rem;
+    color: white;
+    font-size: 0.9rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 1.5rem;
 }
 
 .footer-links ul {
     list-style: none;
+    padding: 0;
 }
 
 .footer-links li {
-    margin-bottom: 0.5rem;
+    margin-bottom: 1rem;
 }
 
 .footer-links a {
-    font-size: 0.875rem;
-    color: var(--muted-foreground);
-    transition: color 0.3s ease;
+    color: #94a3b8;
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
 }
 
 .footer-links a:hover {
-    color: var(--foreground);
+    color: var(--primary);
+    padding-left: 5px;
 }
 
 .footer-bottom {
-    border-top: 1px solid var(--border);
-    padding-top: 1.5rem;
-    text-align: center;
-    font-size: 0.75rem;
-    color: var(--muted-foreground);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 2rem;
+    border-top: 1px solid hsla(0, 0%, 100%, 0.05);
+    color: #475569;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.footer-bottom-links {
+    display: flex;
+    gap: 2rem;
+}
+
+.footer-bottom-links span {
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    font-size: 0.7rem;
+    font-weight: 800;
+}
+
+@media (max-width: 991px) {
+    .footer-main {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+    }
+}
+
+@media (max-width: 767px) {
+    .footer-cta-title {
+        font-size: 2rem;
+    }
+
+    .footer-newsletter {
+        flex-direction: column;
+        padding: 1rem;
+    }
+
+    .footer-nav-group {
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+    }
+
+    .footer-bottom {
+        flex-direction: column;
+        gap: 1.5rem;
+        text-align: center;
+    }
 }
 
 /* ===== Form Styles ===== */
@@ -1088,7 +1210,7 @@ textarea.form-control {
     border: 1px solid var(--border);
     border-radius: var(--radius);
     padding: 1.5rem;
-    box-shadow: var(--shadow-card);
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
 }
 
 .card-header {
@@ -1140,21 +1262,27 @@ textarea.form-control {
     }
 
     .navbar-menu {
-        display: none;
+        display: flex;
         flex-direction: column;
         position: absolute;
         top: 100%;
         left: 0;
         right: 0;
         background: white;
-        padding: 1rem;
+        padding: 0 1rem;
         border-bottom: 1px solid var(--border);
         box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         z-index: 999;
+        max-height: 0;
+        opacity: 0;
+        overflow: hidden;
+        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .navbar-menu.show {
-        display: flex;
+        max-height: 400px;
+        opacity: 1;
+        padding: 1rem;
     }
 
     .navbar-menu li {
@@ -1701,6 +1829,18 @@ textarea.form-control {
     opacity: 1;
 }
 
+.f-bento-card .text-muted {
+    color: #9ca3af !important;
+    /* Lighter grey for better contrast on dark */
+    opacity: 0.9;
+}
+
+.f-bento-card:hover .text-muted {
+    color: #d1d5db !important;
+    /* Even lighter on hover */
+    opacity: 1;
+}
+
 .f-card-img {
     position: absolute;
     top: 0;
@@ -1800,7 +1940,7 @@ textarea.form-control {
 
 body .trust-section {
     padding: 10rem 0 !important;
-    background: #ffffff !important;
+    background: var(--background) !important;
     position: relative;
     overflow: hidden;
 }
@@ -1814,22 +1954,41 @@ body .trust-section {
 
 .trust-card {
     padding: 3.5rem 2.5rem;
-    background: #f8fafc;
+    background: hsla(0, 0%, 100%, 0.03);
+    backdrop-filter: blur(12px);
     border-radius: 2.5rem;
-    border: 1px solid #f1f5f9;
+    border: 1px solid hsla(0, 0%, 100%, 0.05);
     transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
 }
 
 .trust-card:hover {
     transform: translateY(-15px);
     background: #ffffff;
-    border-color: #10b981;
-    box-shadow: 0 40px 80px -20px rgba(16, 185, 129, 0.15);
+    border-color: var(--primary);
+    box-shadow: 0 40px 80px -20px hsla(150, 100%, 35%, 0.3);
+}
+
+.trust-card:hover h3,
+.trust-card:hover p {
+    color: #000000 !important;
+}
+
+.category-desc {
+    color: var(--muted-foreground) !important;
+    font-size: 1rem !important;
+    line-height: 1.6;
+    margin-top: 1rem;
+    opacity: 0.8;
+}
+
+.category-card:hover .category-desc {
+    color: #000000 !important;
+    opacity: 1;
 }
 
 .trust-icon-box {
@@ -1856,11 +2015,11 @@ body .trust-section {
     font-size: 1.5rem;
     font-weight: 800;
     margin-bottom: 1.25rem;
-    color: #0f172a;
+    color: #ffffff;
 }
 
 .trust-card p {
-    color: #475569;
+    color: var(--muted-foreground);
     font-size: 1.05rem;
     line-height: 1.7;
     font-weight: 500;
@@ -1870,20 +2029,20 @@ body .trust-section {
 /* Glassmorphism CTA Section */
 body .cta-section {
     padding: 12rem 0 !important;
-    background: #ffffff !important;
+    background: var(--background) !important;
     position: relative;
 }
 
 .glass-cta {
     position: relative;
     padding: 8rem 4rem;
-    background: rgba(255, 255, 255, 0.8);
+    background: hsla(0, 0%, 100%, 0.03);
     backdrop-filter: blur(30px);
-    border: 1px solid rgba(255, 255, 255, 0.6);
+    border: 1px solid hsla(0, 0%, 100%, 0.1);
     border-radius: 5rem;
     text-align: center;
     overflow: hidden;
-    box-shadow: 0 50px 120px -30px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 50px 120px -30px rgba(0, 0, 0, 0.5);
 }
 
 .cta-grid-bg {
@@ -1915,12 +2074,12 @@ body .cta-section {
     line-height: 1;
     margin-bottom: 2rem;
     letter-spacing: -0.05em;
-    color: #0f172a;
+    color: #ffffff;
 }
 
 .cta-desc-v2 {
     font-size: 1.35rem;
-    color: #475569;
+    color: var(--muted-foreground);
     max-width: 45rem;
     margin: 0 auto 4rem;
     font-weight: 500;
@@ -1958,8 +2117,8 @@ body .cta-section {
 
 .cta-btn-outline {
     background: transparent;
-    border: 2px solid #e2e8f0;
-    color: #1e293b;
+    border: 2px solid var(--border);
+    color: #ffffff;
     padding: 1.5rem 4rem;
     border-radius: 1.5rem;
     font-weight: 800;
@@ -1995,7 +2154,7 @@ body .cta-section {
 /* Global Stats Section */
 body .stats-section {
     padding: 10rem 0 !important;
-    background: #0f172a !important;
+    background: var(--background) !important;
     color: white !important;
     position: relative;
     overflow: hidden;
@@ -2251,15 +2410,15 @@ body .stats-section {
 
 .contact-card,
 .info-card-premium {
-    background: rgba(255, 255, 255, 0.7);
+    background: hsla(0, 0%, 100%, 0.03);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.5);
+    border: 1px solid hsla(0, 0%, 100%, 0.1);
     border-radius: 2rem;
     padding: 2.5rem;
     height: 100%;
     transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 }
 
 .contact-card:hover,
@@ -2267,7 +2426,14 @@ body .stats-section {
     transform: translateY(-8px);
     background: white;
     box-shadow: var(--shadow-elevated);
-    border-color: hsla(150, 100%, 35%, 0.2);
+    border-color: var(--primary);
+}
+
+.contact-card:hover h3,
+.contact-card:hover p,
+.info-card-premium:hover h3,
+.info-card-premium:hover p {
+    color: #000000 !important;
 }
 
 .contact-icon,
@@ -2285,20 +2451,25 @@ body .stats-section {
 }
 
 .form-glass {
-    background: rgba(255, 255, 255, 0.8);
+    background: hsla(0, 0%, 100%, 0.03);
     backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.7);
+    border: 1px solid hsla(0, 0%, 100%, 0.1);
     border-radius: 2.5rem;
     padding: 3.5rem;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
 }
 
 .input-glass {
-    background: rgba(255, 255, 255, 0.5);
-    border: 1px solid var(--border);
+    background: hsla(0, 0%, 100%, 0.05);
+    border: 1px solid hsla(0, 0%, 100%, 0.1);
     border-radius: 1rem;
     padding: 0.875rem 1.25rem;
+    color: white;
     transition: all 0.3s ease;
+}
+
+.input-glass::placeholder {
+    color: hsla(0, 0%, 100%, 0.4);
 }
 
 .input-glass:focus {
@@ -2306,6 +2477,11 @@ body .stats-section {
     border-color: var(--primary);
     box-shadow: 0 0 0 4px hsla(150, 100%, 35%, 0.1);
     outline: none;
+    color: #000000;
+}
+
+.input-glass:focus::placeholder {
+    color: hsla(0, 0%, 0%, 0.4);
 }
 
 /* FAQ Styles */
