@@ -81,38 +81,38 @@ include '../../views/partials/header.php';
     <!-- View Modal -->
     <div class="modal fade" id="viewModal-<?php echo $contact['id']; ?>" tabindex="-1">
         <div class="modal-dialog modal-lg">
-            <div class="modal-content rounded-4 border-0">
-                <div class="modal-header border-0 bg-light rounded-top-4">
-                    <h5 class="modal-title fw-bold">Message Details</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            <div class="modal-content rounded-4 border-0" style="background: #111; border: 1px solid hsla(0,0%,100%,0.1) !important;">
+                <div class="modal-header border-0 rounded-top-4" style="background: hsla(0,0%,100%,0.03);">
+                    <h5 class="modal-title fw-bold text-white">Message Details</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body p-4">
                     <div class="row g-4">
                         <div class="col-md-6">
                             <label class="small text-muted text-uppercase fw-bold mb-1">Sender</label>
-                            <p class="fw-bold mb-0"><?php echo htmlspecialchars($contact['name']); ?></p>
-                            <p class="text-primary small"><?php echo htmlspecialchars($contact['email']); ?></p>
+                            <p class="fw-bold mb-0 text-white"><?php echo htmlspecialchars($contact['name']); ?></p>
+                            <p class="text-primary small mb-1"><?php echo htmlspecialchars($contact['email']); ?></p>
                             <?php if(!empty($contact['phone'])): ?>
                                 <p class="text-muted small"><i class="fas fa-phone me-1"></i> <?php echo htmlspecialchars($contact['phone']); ?></p>
                             <?php endif; ?>
                         </div>
                         <div class="col-md-6">
                             <label class="small text-muted text-uppercase fw-bold mb-1">Date Received</label>
-                            <p class="mb-0 small"><?php echo date('F j, Y, g:i a', strtotime($contact['created_at'])); ?></p>
+                            <p class="mb-0 small text-white-50"><?php echo date('F j, Y, g:i a', strtotime($contact['created_at'])); ?></p>
                         </div>
                         <div class="col-12">
                             <label class="small text-muted text-uppercase fw-bold mb-1">Service Interested</label>
-                            <h6 class="fw-bold"><?php echo htmlspecialchars($contact['service_interested'] ?: 'General Inquiry'); ?></h6>
+                            <h6 class="fw-bold text-white"><?php echo htmlspecialchars($contact['service_interested'] ?: 'General Inquiry'); ?></h6>
                         </div>
                         <div class="col-12">
                             <label class="small text-muted text-uppercase fw-bold mb-1">Message Content</label>
-                            <div class="bg-light p-4 rounded-4 small leading-relaxed" style="white-space: pre-line;">
+                            <div class="p-4 rounded-4 small leading-relaxed text-white-50" style="white-space: pre-line; background: hsla(0,0%,100%,0.02); border: 1px solid hsla(0,0%,100%,0.05);">
                                 <?php echo htmlspecialchars($contact['message']); ?>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer border-0">
+                <div class="modal-footer border-0" style="background: hsla(0,0%,100%,0.02);">
                     <button type="button" class="btn btn-primary rounded-pill px-4" data-bs-dismiss="modal">Close</button>
                 </div>
             </div>

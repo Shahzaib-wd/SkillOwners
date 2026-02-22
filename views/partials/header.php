@@ -5,22 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <!-- SEO Meta Tags -->
-    <title>Skill Owners - Find Expert Freelancers & Agencies Instantly</title>
-    <meta name="description" content="Connect with top freelancers and agencies. Get projects done faster with verified professionals. Browse thousands of services in design, development, marketing, and more.">
-    <meta name="keywords" content="freelancers, agencies, hire freelancers, gig marketplace, web development, design services, digital marketing">
+    <title>Skill Owners - Elite Website Development & SEO Agency</title>
+    <meta name="description" content="Skill Owners is a premier digital agency specializing in high-performance website development and strategic SEO rankings. We build and rank digital assets that grow your business.">
+    <meta name="keywords" content="website development, SEO agency, google rankings, custom web design, business growth, digital strategy">
     <meta name="author" content="Skill Owners">
     
     <!-- Open Graph -->
-    <meta property="og:title" content="Skill Owners - Find Expert Talent Instantly">
-    <meta property="og:description" content="Connect with top freelancers and agencies worldwide. Browse verified professionals and get your projects done.">
+    <meta property="og:title" content="Skill Owners - Elite Website Development & SEO Agency">
+    <meta property="og:description" content="High-performance website development and strategic SEO rankings. We build and rank digital assets that grow your business.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="<?php echo SITE_URL; ?>">
     <meta property="og:image" content="<?php echo SITE_URL; ?>/assets/images/og-image.svg">
     
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Skill Owners - Find Expert Talent Instantly">
-    <meta name="twitter:description" content="Connect with top freelancers and agencies worldwide.">
+    <meta name="twitter:title" content="Skill Owners - Elite Website Development & SEO Agency">
+    <meta name="twitter:description" content="High-performance website development and strategic SEO rankings.">
     
     <!-- Favicon -->
     <?php

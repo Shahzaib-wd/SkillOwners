@@ -76,18 +76,18 @@ include '../../views/partials/header.php';
     <!-- Modal -->
     <div class="modal fade" id="quoteModal-<?php echo $quote['id']; ?>" tabindex="-1">
         <div class="modal-dialog modal-lg">
-            <div class="modal-content rounded-4 overflow-hidden border-0">
-                <div class="modal-header bg-dark text-white border-0 py-3">
-                    <h5 class="modal-title h6 fw-bold mb-0">Quote Request Breakdown</h5>
+            <div class="modal-content rounded-4 overflow-hidden border-0" style="background: #111; border: 1px solid hsla(0,0%,100%,0.1) !important;">
+                <div class="modal-header border-0 py-3" style="background: hsla(0,0%,100%,0.03);">
+                    <h5 class="modal-title h6 fw-bold mb-0 text-white">Quote Request Breakdown</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body p-4">
                     <div class="row g-4">
-                        <div class="col-md-6 border-end">
+                        <div class="col-md-6 border-end" style="border-color: hsla(0,0%,100%,0.05) !important;">
                             <h6 class="small text-muted text-uppercase fw-bold mb-3" style="letter-spacing: 1px;">Contact Information</h6>
                             <div class="mb-3">
                                 <label class="d-block text-muted small">Full Name</label>
-                                <span class="fw-bold"><?php echo htmlspecialchars($quote['full_name']); ?></span>
+                                <span class="fw-bold text-white"><?php echo htmlspecialchars($quote['full_name']); ?></span>
                             </div>
                             <div class="mb-3">
                                 <label class="d-block text-muted small">Email Address</label>
@@ -95,12 +95,12 @@ include '../../views/partials/header.php';
                             </div>
                             <div class="mb-3">
                                 <label class="d-block text-muted small">Company</label>
-                                <span class="fw-bold"><?php echo htmlspecialchars($quote['company_name'] ?: 'Not specified'); ?></span>
+                                <span class="fw-bold text-white"><?php echo htmlspecialchars($quote['company_name'] ?: 'Not specified'); ?></span>
                             </div>
                             <?php if(!empty($quote['phone'])): ?>
                             <div class="mb-3">
                                 <label class="d-block text-muted small">Phone</label>
-                                <span class="fw-bold"><?php echo htmlspecialchars($quote['phone']); ?></span>
+                                <span class="fw-bold text-white"><?php echo htmlspecialchars($quote['phone']); ?></span>
                             </div>
                             <?php endif; ?>
                         </div>
@@ -116,22 +116,22 @@ include '../../views/partials/header.php';
                             </div>
                             <div class="mb-0">
                                 <label class="d-block text-muted small">Timeline</label>
-                                <span class="fw-bold"><?php echo htmlspecialchars($quote['timeline']); ?></span>
+                                <span class="fw-bold text-white"><?php echo htmlspecialchars($quote['timeline']); ?></span>
                             </div>
                             <div class="mt-3">
                                 <label class="d-block text-muted small">Submission Date</label>
                                 <span class="text-muted small"><?php echo date('F j, Y, g:i a', strtotime($quote['created_at'])); ?></span>
                             </div>
                         </div>
-                        <div class="col-12 mt-4 pt-4 border-top">
+                        <div class="col-12 mt-4 pt-4 border-top" style="border-color: hsla(0,0%,100%,0.05) !important;">
                             <h6 class="small text-muted text-uppercase fw-bold mb-3" style="letter-spacing: 1px;">Project Description</h6>
-                            <div class="p-3 bg-light rounded-3 small leading-relaxed" style="white-space: pre-line;">
+                            <div class="p-3 rounded-3 small leading-relaxed text-white-50" style="white-space: pre-line; background: hsla(0,0%,100%,0.02); border: 1px solid hsla(0,0%,100%,0.05);">
                                 <?php echo htmlspecialchars($quote['project_description']); ?>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer bg-light border-0">
+                <div class="modal-footer border-0" style="background: hsla(0,0%,100%,0.02);">
                     <button type="button" class="btn btn-secondary rounded-pill px-4" data-bs-dismiss="modal">Close</button>
                     <a href="mailto:<?php echo $quote['email']; ?>" class="btn btn-primary rounded-pill px-4">Reply via Email</a>
                 </div>

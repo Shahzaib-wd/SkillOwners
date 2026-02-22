@@ -125,24 +125,6 @@ include '../../views/partials/header.php';
                     <h5 class="fw-bold mb-4">Quick Actions</h5>
                     <div class="row g-3">
                         <div class="col-sm-6">
-                            <a href="services.php" class="d-flex align-items-center p-3 border rounded-3 text-decoration-none text-dark hover-bg-light transition-all h-100">
-                                <div class="icon-box bg-primary bg-opacity-10 text-primary p-3 rounded-3 me-3"><i class="fas fa-plus-circle"></i></div>
-                                <div>
-                                    <h6 class="mb-0 fw-bold">Add New Service</h6>
-                                    <small class="text-muted">Launch a new agency offering</small>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="col-sm-6">
-                            <a href="<?php echo SITE_URL; ?>" target="_blank" class="d-flex align-items-center p-3 border rounded-3 text-decoration-none text-dark hover-bg-light transition-all h-100">
-                                <div class="icon-box bg-warning bg-opacity-10 text-warning p-3 rounded-3 me-3"><i class="fas fa-eye"></i></div>
-                                <div>
-                                    <h6 class="mb-0 fw-bold">View Live Site</h6>
-                                    <small class="text-muted">See changes in real-time</small>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="col-sm-6">
                             <a href="<?php echo SITE_URL; ?>" target="_blank" class="d-flex align-items-center p-3 border rounded-3 text-decoration-none text-dark hover-bg-light transition-all h-100">
                                 <div class="icon-box bg-warning bg-opacity-10 text-warning p-3 rounded-3 me-3"><i class="fas fa-eye"></i></div>
                                 <div>

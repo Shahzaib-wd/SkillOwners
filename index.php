@@ -134,7 +134,7 @@ include 'views/partials/header.php';
                     <i class="fas fa-code"></i>
                 </div>
                 <span class="category-name">Website Development</span>
-                <p class="category-desc text-muted small mt-2 mb-0">We build fast, modern, mobile-first websites that convert visitors into customers.</p>
+                <p class="category-desc text-muted small mt-2 mb-0 text-center">We build fast, modern, mobile-first websites that convert visitors into customers.</p>
             </a>
             
             <a href="<?php echo SITE_URL; ?>/services" class="category-card">
@@ -142,7 +142,7 @@ include 'views/partials/header.php';
                     <i class="fas fa-search"></i>
                 </div>
                 <span class="category-name">SEO & Google Rankings</span>
-                <p class="category-desc text-muted small mt-2 mb-0">We rank your website on page one of Google so customers find you — not your competition.</p>
+                <p class="category-desc text-muted small mt-2 mb-0 text-center">We rank your website on page one of Google so customers find you — not your competition.</p>
             </a>
         </div>
     </div>

@@ -5,8 +5,13 @@
  */
 
 // Error handling — log errors but never show to visitors in production
-ini_set('display_errors', 0);
-ini_set('display_startup_errors', 0);
+if (isset($_SERVER['HTTP_HOST']) && ($_SERVER['HTTP_HOST'] === 'localhost' || $_SERVER['SERVER_NAME'] === 'localhost')) {
+    ini_set('display_errors', 1);
+    ini_set('display_startup_errors', 1);
+} else {
+    ini_set('display_errors', 0);
+    ini_set('display_startup_errors', 0);
+}
 error_reporting(E_ALL);
 ini_set('log_errors', 1);
 
@@ -70,7 +75,11 @@ define('SMTP_FROM_NAME', getenv('SMTP_FROM_NAME') ?: 'Skill Owners');
 
 // Error Reporting
 error_reporting(E_ALL);
-ini_set('display_errors', 0);
+if (isset($_SERVER['HTTP_HOST']) && ($_SERVER['HTTP_HOST'] === 'localhost' || $_SERVER['SERVER_NAME'] === 'localhost')) {
+    ini_set('display_errors', 1);
+} else {
+    ini_set('display_errors', 0);
+}
 ini_set('log_errors', 1);
 ini_set('error_log', __DIR__ . '/error.log');
 

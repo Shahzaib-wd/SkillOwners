@@ -347,10 +347,8 @@ try {
             <i class="fas fa-envelope"></i> Contacts
             <?php if ($new_contacts_count > 0): ?><span class="notification-dot"></span><?php endif; ?>
         </a>
-        <div class="px-3 mt-4 mb-2 small text-muted text-uppercase fw-bold" style="font-size: 0.65rem; letter-spacing: 1px;">Content</div>
-        <a href="<?php echo SITE_URL; ?>/dashboard/alpha/services.php" class="nav-link <?php echo (str_contains($current_page, 'services')) ? 'active' : ''; ?>"><i class="fas fa-concierge-bell"></i> Services</a>
-        
-        <div class="mt-5 pt-3 border-top border-secondary">
+        <div class="px-3 mt-4 mb-2 small text-muted text-uppercase fw-bold" style="font-size: 0.65rem; letter-spacing: 1px;">Session</div>
+        <div class="mt-2 pt-3 border-top border-secondary">
             <a href="<?php echo SITE_URL; ?>/logout.php" class="nav-link text-danger"><i class="fas fa-sign-out-alt"></i> Sign Out</a>
         </div>
     </nav>
